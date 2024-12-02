@@ -20,7 +20,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
                         className="h-full w-full rounded-md object-cover"
                     />
                 </figure>
-                <div className="flex flex-1 flex-col justify-between p-4">
+                <div className="flex flex-1 flex-col justify-between px-2">
                     <section>
                         <h2 className="font-medium">{name}</h2>
                         <p>cuisine: {cuisineId}</p>
