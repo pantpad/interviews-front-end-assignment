@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { Recipe } from '../../api/recipe'
-
+import Cuisine from './Cuisine'
 interface RecipeCardProps {
     recipe: Recipe
 }
@@ -23,7 +23,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
                 <div className="flex flex-1 flex-col justify-between px-2">
                     <section>
                         <h2 className="font-medium">{name}</h2>
-                        <p>cuisine: {cuisineId}</p>
+                        <Cuisine cuisineId={cuisineId} />
                         <p>diet: {dietId}</p>
                         <p>difficulty: {difficultyId}</p>
                     </section>

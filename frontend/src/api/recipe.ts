@@ -15,3 +15,8 @@ export const getRecipes = async (page: number): Promise<Recipe[]> => {
     const response = await fetch(`${endpoint}?_page=${page}`)
     return response.json()
 }
+
+export type CuisineType = {
+    id: string
+    name: string
+}
