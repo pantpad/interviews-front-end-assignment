@@ -7,9 +7,11 @@ import Layout from '../components/ui/Layout'
 export const Route = createRootRoute({
     component: () => (
         <>
-            <Layout className="bg-red-500">
+            <Layout className="flex min-h-screen flex-col bg-zinc-100">
                 <AppHeader />
-                <Outlet />
+                <Layout className="flex-1">
+                    <Outlet />
+                </Layout>
                 <AppFooter />
             </Layout>
             <TanStackRouterDevtools />
