@@ -7,7 +7,6 @@ interface RecipeCardProps {
 
 export default function RecipeCard({ recipe }: RecipeCardProps) {
     const { name, image, cuisineId, dietId, difficultyId } = recipe
-    console.log(recipe)
 
     return (
         <Link to="/recipes/$recipeId" params={{ recipeId: recipe.id }}>
