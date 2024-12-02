@@ -9,9 +9,7 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
     children,
     ...props
 }) => {
-    const combinedClassName = `existing-class ${className}`
-        .replace(/\s+/g, ' ')
-        .trim()
+    const combinedClassName = `${className}`.replace(/\s+/g, ' ').trim()
 
     return (
         <div className={combinedClassName} {...props}>
