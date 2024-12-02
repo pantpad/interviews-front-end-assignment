@@ -1,6 +1,6 @@
 export default function RecipesPagination() {
     return (
-        <nav className="flex items-center gap-1">
+        <nav className="flex items-center justify-center gap-1">
             {[1, 2, 3, 4, '...', 25].map((page, index) => (
                 <button
                     key={index}
