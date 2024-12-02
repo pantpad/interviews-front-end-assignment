@@ -12,6 +12,6 @@ export type Recipe = {
 }
 
 export const getRecipes = async (page: number): Promise<Recipe[]> => {
-    const response = await fetch(`${endpoint}?page=${page}`)
+    const response = await fetch(`${endpoint}?_page=${page}&_limit=4`)
     return response.json()
 }
