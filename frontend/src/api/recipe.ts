@@ -16,7 +16,4 @@ export const getRecipes = async (page: number): Promise<Recipe[]> => {
     return response.json()
 }
 
-export type CuisineType = {
-    id: string
-    name: string
-}
+export type DetailsType = Record<'id' | 'name', string>

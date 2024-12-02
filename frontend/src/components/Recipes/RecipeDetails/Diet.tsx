@@ -1,7 +1,7 @@
 import useFetch from '../../../hooks/useFetch'
 import { DetailsType } from '../../../api/recipe'
 
-export default function Cuisine({ cuisineId }: { cuisineId: string }) {
+export default function Diet({ cuisineId }: { cuisineId: string }) {
     const {
         data: cuisine,
         loading: cuisineLoading,
@@ -12,5 +12,5 @@ export default function Cuisine({ cuisineId }: { cuisineId: string }) {
     if (cuisineLoading) return <p>Loading cuisine...</p>
     if (!cuisine) return <p>No cuisine found</p>
 
-    return <p>Cuisine: {cuisine.name}</p>
+    return <p>Diet: {cuisine.name}</p>
 }
