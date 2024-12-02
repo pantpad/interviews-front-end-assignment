@@ -1,32 +1,29 @@
 import { Link } from '@tanstack/react-router'
 
+const links = [
+    { to: '/', label: 'Recipes' },
+    { to: '/about', label: 'Cuisines' },
+    { to: '/about', label: 'Dietary' },
+]
+
 export default function AppHeader() {
     return (
         <header className="border-b border-zinc-200 bg-white">
             <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-                <div className="flex items-center gap-12">
+                <div className="flex items-center gap-4 md:gap-12">
                     <Link to="/" className="text-xl font-bold">
-                        RecipeBoo
+                        RecipeBook
                     </Link>
-                    <div className="flex gap-8">
-                        <Link
-                            to="/"
-                            className="text-sm text-zinc-600 hover:text-zinc-900 [&.active]:text-zinc-900"
-                        >
-                            Main
-                        </Link>
-                        <Link
-                            to="/about"
-                            className="text-sm text-zinc-600 hover:text-zinc-900 [&.active]:text-zinc-900"
-                        >
-                            Cuisines
-                        </Link>
-                        <Link
-                            to="/about"
-                            className="text-sm text-zinc-600 hover:text-zinc-900 [&.active]:text-zinc-900"
-                        >
-                            Dietary
-                        </Link>
+                    <div className="flex gap-4 md:gap-8">
+                        {links.map((link) => (
+                            <Link
+                                key={link.label}
+                                to={link.to}
+                                className="text-sm text-zinc-600 hover:text-zinc-900 [&.active]:text-zinc-900"
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
