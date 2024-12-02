@@ -2,15 +2,13 @@ import useFetch from '../../../hooks/useFetch'
 import { DetailsType } from '../../../api/recipe'
 
 export default function Cuisine({ cuisineId }: { cuisineId: string }) {
-    const {
-        data: cuisine,
-        loading: cuisineLoading,
-        error: cuisineError,
-    } = useFetch<DetailsType>(`http://localhost:8080/cuisines/${cuisineId}`)
+    const { data, loading, error } = useFetch<DetailsType>(
+        `http://localhost:8080/cuisines/${cuisineId}`
+    )
 
-    if (cuisineError) return <p>Error loading cuisine</p>
-    if (cuisineLoading) return <p>Loading cuisine...</p>
-    if (!cuisine) return <p>No cuisine found</p>
+    if (error) return <p>Error loading cuisine</p>
+    if (loading) return <p>Loading cuisine...</p>
+    if (!data) return <p>No cuisine found</p>
 
-    return <p>Cuisine: {cuisine.name}</p>
+    return <p>Cuisine: {data.name}</p>
 }
