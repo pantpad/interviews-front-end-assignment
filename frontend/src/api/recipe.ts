@@ -16,4 +16,9 @@ export const getRecipes = async (page: number): Promise<Recipe[]> => {
     return response.json()
 }
 
+export const getRecipe = async (recipeId: string): Promise<Recipe> => {
+    const response = await fetch(`${endpoint}/${recipeId}`)
+    return response.json()
+}
+
 export type DetailsType = Record<'id' | 'name', string>
