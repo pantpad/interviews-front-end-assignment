@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { Recipe } from '../../api/recipe'
-import Cuisine from './Cuisine'
+import Cuisine from './RecipeDetails/Cuisine'
 interface RecipeCardProps {
     recipe: Recipe
 }

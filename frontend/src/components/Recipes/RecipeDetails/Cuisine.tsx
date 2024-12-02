@@ -1,5 +1,5 @@
-import useFetch from '../../hooks/useFetch'
-import { CuisineType } from '../../api/recipe'
+import useFetch from '../../../hooks/useFetch'
+import { CuisineType } from '../../../api/recipe'
 
 export default function Cuisine({ cuisineId }: { cuisineId: string }) {
     const {
