@@ -1,6 +1,10 @@
 import { Link } from '@tanstack/react-router'
 import { Recipe } from '../../api/recipe'
+
 import Cuisine from './RecipeDetails/Cuisine'
+import Diet from './RecipeDetails/Diet'
+import Difficulty from './RecipeDetails/Difficulty'
+
 interface RecipeCardProps {
     recipe: Recipe
 }
@@ -24,8 +28,8 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
                     <section>
                         <h2 className="font-medium">{name}</h2>
                         <Cuisine cuisineId={cuisineId} />
-                        <p>diet: {dietId}</p>
-                        <p>difficulty: {difficultyId}</p>
+                        <Diet dietId={dietId} />
+                        <Difficulty difficultyId={difficultyId} />
                     </section>
                     <button className="mt-4 w-full rounded-md bg-red-500 py-2 text-white">
                         View Options

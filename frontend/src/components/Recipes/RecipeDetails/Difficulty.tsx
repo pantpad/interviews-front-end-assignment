@@ -3,7 +3,7 @@ import { DetailsType } from '../../../api/recipe'
 
 export default function Difficulty({ difficultyId }: { difficultyId: string }) {
     const { data, loading, error } = useFetch<DetailsType>(
-        `http://localhost:8080/diets/${difficultyId}`
+        `http://localhost:8080/difficulties/${difficultyId}`
     )
 
     if (error) return <p>Error loading difficulty</p>
