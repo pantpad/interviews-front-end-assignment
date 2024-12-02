@@ -3,7 +3,7 @@ import { Link } from '@tanstack/react-router'
 export default function AppHeader() {
     return (
         <header className="border-b border-zinc-200 bg-white">
-            <nav className="mx-a    uto flex max-w-7xl items-center justify-between px-4 py-3">
+            <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
                 <div className="flex items-center gap-12">
                     <Link to="/" className="text-xl font-bold">
                         RecipeBoo
@@ -16,13 +16,13 @@ export default function AppHeader() {
                             Main
                         </Link>
                         <Link
-                            to="/cuisines"
+                            to="/about"
                             className="text-sm text-zinc-600 hover:text-zinc-900 [&.active]:text-zinc-900"
                         >
                             Cuisines
                         </Link>
                         <Link
-                            to="/dietary"
+                            to="/about"
                             className="text-sm text-zinc-600 hover:text-zinc-900 [&.active]:text-zinc-900"
                         >
                             Dietary
@@ -31,7 +31,7 @@ export default function AppHeader() {
                 </div>
                 <div className="flex items-center gap-3">
                     <Link
-                        to="/add"
+                        to="/about"
                         className="rounded-full border border-zinc-300 px-6 py-2 text-sm hover:bg-zinc-50"
                     >
                         Add
