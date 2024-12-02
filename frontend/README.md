@@ -1,6 +1,6 @@
 # Recipe App
 
-# Frontend Stack
+## FE Stack
 
 - React
 - TypeScript
