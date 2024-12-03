@@ -24,8 +24,8 @@ const Home: React.FC = () => {
                 />
                 <h1 className="text-2xl font-bold">Recipe Book</h1>
                 <p>Discover your favorite recipes</p>
-                <Link to="/about">
-                    <button className="rounded bg-red-500 px-4 py-1 text-white">
+                <Link to="/recipes">
+                    <button className="rounded bg-red-500 px-4 py-1 text-lg text-white">
                         Explore
                     </button>
                 </Link>

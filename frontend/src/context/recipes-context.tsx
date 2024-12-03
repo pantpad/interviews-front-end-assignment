@@ -7,9 +7,11 @@ import {
     useMemo,
 } from 'react'
 
-import { DetailsType } from '../api/recipe'
-
-export const RecipesContext = createContext<RecipesProviderProps | null>(null)
+export const RecipesContext = createContext<{
+    cuisines: Record<number, string>
+    diets: Record<number, string>
+    difficulties: Record<number, string>
+} | null>(null)
 
 export const useRecipesContext = () => {
     const context = useContext(RecipesContext)
@@ -21,18 +23,30 @@ export const useRecipesContext = () => {
     return context
 }
 
-type RecipesProviderProps = {
-    [key: string]: DetailsType[]
-}
-
 const RecipesProvider: FC<PropsWithChildren> = ({ children }) => {
     const { cuisines, diets, difficulties } = useLoaderData({
         from: '/recipes',
     })
 
+    const cuisinesMap = Object.fromEntries(
+        cuisines.map((obj) => [obj.id, obj.name])
+    )
+
+    const dietsMap = Object.fromEntries(diets.map((obj) => [obj.id, obj.name]))
+
+    const difficultiesMap = Object.fromEntries(
+        difficulties.map((obj) => [obj.id, obj.name])
+    )
+
+    console.log(cuisinesMap, dietsMap, difficultiesMap)
+
     const recipesCtx = useMemo(() => {
-        return { cuisines, diets, difficulties }
-    }, [cuisines, diets, difficulties])
+        return {
+            cuisines: cuisinesMap,
+            diets: dietsMap,
+            difficulties: difficultiesMap,
+        }
+    }, [cuisinesMap, dietsMap, difficultiesMap])
 
     return (
         <RecipesContext.Provider value={recipesCtx}>
