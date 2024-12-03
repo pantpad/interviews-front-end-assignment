@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router'
 
 import './index.css'
+
 import App from './App'
+import Home from './routes'
 
 const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
@@ -13,9 +15,9 @@ if (!rootElement.innerHTML) {
         <StrictMode>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<App />} />
-                    <Route index element={<Index />} />
-
+                    <Route path="/" element={<App />}>
+                        <Route index element={<Home />} />
+                    </Route>
                 </Routes>
             </BrowserRouter>
         </StrictMode>
