@@ -1,4 +1,4 @@
-export const endpoint = 'http://localhost:8080'
+export const endpoint = import.meta.env.VITE_API_ENDPOINT
 
 export type Recipe = {
     id: string
