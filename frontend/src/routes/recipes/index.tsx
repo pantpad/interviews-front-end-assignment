@@ -1,13 +1,22 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { getRecipes } from '../../api/recipe'
+import {
+    getCuisines,
+    getDiets,
+    getDifficulties,
+    getRecipes,
+} from '../../api/recipe'
 
 import RecipesList from '../../components/Recipes/RecipesList'
 
 export const Route = createFileRoute('/recipes/')({
     component: RouteComponent,
-    loader: async ({ search }) => {
-        getRecipes(1);
-
+    loader: async () => {
+        return {
+            recipes: await getRecipes(1),
+            cuisines: await getCuisines(),
+            diets: await getDiets(),
+            difficulties: await getDifficulties(),
+        }
     },
 })
 

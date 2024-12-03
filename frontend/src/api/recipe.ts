@@ -21,18 +21,18 @@ export const getRecipe = async (recipeId: string): Promise<Recipe> => {
     return response.json()
 }
 
-export const getCuisine = async (cuisineId: string): Promise<DetailsType> => {
-    const response = await fetch(`${endpoint}/cuisines/${cuisineId}`)
+export const getCuisines = async (): Promise<DetailsType[]> => {
+    const response = await fetch(`${endpoint}/cuisines`)
     return response.json()
 }
 
-export const getDifficulty = async (difficultyId: string): Promise<DetailsType> => {
-    const response = await fetch(`${endpoint}/difficulties/${difficultyId}`)
+export const getDifficulties = async (): Promise<DetailsType[]> => {
+    const response = await fetch(`${endpoint}/difficulties`)
     return response.json()
 }
 
-export const getDiet = async (dietId: string): Promise<DetailsType> => {
-    const response = await fetch(`${endpoint}/diets/${dietId}`)
+export const getDiets = async (): Promise<DetailsType> => {
+    const response = await fetch(`${endpoint}/diets`)
     return response.json()
 }
 
