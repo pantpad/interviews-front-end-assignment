@@ -1,20 +1,13 @@
-import { Link } from '@tanstack/react-router'
+import { Link } from 'react-router'
 import { Recipe } from '../../api/recipe'
 import { useRecipesContext } from '../../context/recipes-context'
-interface RecipeCardProps {
-    recipe: Recipe
-}
 
 export default function RecipeCard() {
-    const { name, image, cuisineId, dietId, difficultyId } = recipe
-    const {
-        cuisines,
-        diets,
-        difficulties,
-    } = useRecipesContext()
+    const { name, image, cuisineId, dietId, difficultyId } = {} as Recipe
+    const { cuisines, diets, difficulties } = useRecipesContext()
 
     return (
-        <Link to="/recipes/$recipeId" params={{ recipeId: recipe.id }}>
+        <Link to="/recipes/$recipeId">
             <article className="flex flex-wrap overflow-hidden rounded-lg bg-white p-2 shadow transition hover:shadow-md">
                 <figure className="relative w-full sm:max-w-64">
                     <img
