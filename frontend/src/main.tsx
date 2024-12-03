@@ -7,9 +7,9 @@ import './index.css'
 
 import App from './App'
 import Home from './routes'
-import RecipesIndex from './routes/recipes'
 import Recipes from './components/Recipes/Recipes'
 import RecipeCard from './components/Recipes/RecipeCard'
+import RecipesProvider from './context/recipes-context'
 
 const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
@@ -20,13 +20,15 @@ if (!rootElement.innerHTML) {
                 <Routes>
                     <Route path="/" element={<App />}>
                         <Route index element={<Home />} />
-                        <Route path="/recipes" element={<RecipesIndex />}>
-                            <Route index element={<Recipes />} />
-                            <Route
-                                path="/recipes/:recipeId"
-                                element={<RecipeCard />}
-                            />
-                        </Route>
+                        <RecipesProvider>
+                            <Route path="/recipes">
+                                <Route index element={<Recipes />} />
+                                <Route
+                                    path="/recipes/:recipeId"
+                                    element={<RecipeCard />}
+                                />
+                            </Route>
+                        </RecipesProvider>
                     </Route>
                 </Routes>
             </BrowserRouter>

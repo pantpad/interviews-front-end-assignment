@@ -2,8 +2,8 @@ import { Link } from 'react-router'
 import { Recipe } from '../../api/recipe'
 import { useRecipesContext } from '../../context/recipes-context'
 
-export default function RecipeCard() {
-    const { name, image, cuisineId, dietId, difficultyId } = {} as Recipe
+export default function RecipeCard({ recipe }: { recipe: Recipe }) {
+    const { name, image, cuisineId, dietId, difficultyId } = recipe
     const { cuisines, diets, difficulties } = useRecipesContext()
 
     return (

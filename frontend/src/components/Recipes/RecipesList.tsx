@@ -5,7 +5,7 @@ export default function RecipesList({ recipes }: { recipes: Recipe[] }) {
     return (
         <div className="flex flex-col gap-4">
             {recipes.map((recipe) => {
-                return <RecipeCard key={recipe.id} />
+                return <RecipeCard key={recipe.id} recipe={recipe} />
             })}
         </div>
     )
