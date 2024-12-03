@@ -1,15 +1,38 @@
 import useData from './useData'
 
+import { DetailsType } from '../api/recipe'
+
 export default function useRecipeDetails() {
-    const { data: cuisines } = useData<Record<number, string>>(
-        'http://localhost:3000/api/cuisines'
-    )
-    const { data: diets } = useData<Record<number, string>>(
+    const { data: cuisines = [], error: cuisinesError } = useData<
+        DetailsType[]
+    >('http://localhost:3000/api/cuisines')
+
+    const { data: diets = [], error: dietsError } = useData<DetailsType[]>(
         'http://localhost:3000/api/diets'
     )
-    const { data: difficulties } = useData<Record<number, string>>(
-        'http://localhost:3000/api/difficulties'
+    const { data: difficulties = [], error: difficultiesError } = useData<
+        DetailsType[]
+    >('http://localhost:3000/api/difficulties')
+
+    if (cuisinesError || dietsError || difficultiesError) {
+        throw new Error('Failed to fetch recipe details')
+    }
+
+    const cuisinesMap = Object.fromEntries(
+        cuisines?.map((obj) => [obj.id, obj.name]) ?? []
     )
 
-    return { cuisines, diets, difficulties }
+    const dietsMap = Object.fromEntries(
+        diets?.map((obj) => [obj.id, obj.name]) ?? []
+    )
+
+    const difficultiesMap = Object.fromEntries(
+        difficulties?.map((obj) => [obj.id, obj.name]) ?? []
+    )
+
+    return {
+        cuisines: cuisinesMap,
+        diets: dietsMap,
+        difficulties: difficultiesMap,
+    }
 }
