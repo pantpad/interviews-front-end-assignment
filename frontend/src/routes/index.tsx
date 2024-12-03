@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { Link } from 'react-router'
 import chef from '../assets/chef.png'
 import plate from '../assets/plate.png'
 
@@ -34,6 +34,4 @@ const Home: React.FC = () => {
     )
 }
 
-export const Route = createFileRoute('/')({
-    component: Home,
-})
+export default Home

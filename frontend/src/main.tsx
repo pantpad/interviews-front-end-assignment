@@ -14,6 +14,8 @@ if (!rootElement.innerHTML) {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<App />} />
+                    <Route index element={<Index />} />
+
                 </Routes>
             </BrowserRouter>
         </StrictMode>
