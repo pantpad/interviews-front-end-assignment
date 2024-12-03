@@ -2,7 +2,12 @@ import { Link } from 'react-router'
 import { Recipe } from '../../api/recipe'
 import { useRecipesContext } from '../../context/recipes-context'
 
-export default function RecipeCard({ recipe }: { recipe: Recipe }) {
+type RecipeCardProps = {
+    recipe: Recipe
+    noLink?: boolean
+}
+
+export default function RecipeCard({ recipe, noLink }: RecipeCardProps) {
     const { name, image, cuisineId, dietId, difficultyId, id } = recipe
     const { cuisines, diets, difficulties } = useRecipesContext()
 
@@ -25,9 +30,11 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
                         <p>Diet: {diets[Number(dietId)]}</p>
                         <p>Difficulty: {difficulties[Number(difficultyId)]}</p>
                     </section>
-                    <button className="mt-4 w-full rounded-md bg-red-500 py-2 text-white">
-                        View Options
-                    </button>
+                    {!noLink ? (
+                        <button className="mt-4 w-full rounded-md bg-red-500 py-2 text-white">
+                            View Options
+                        </button>
+                    ) : null}
                 </div>
             </article>
         </Link>
