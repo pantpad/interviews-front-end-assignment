@@ -1,4 +1,4 @@
-import useData from './useData'
+import { useData } from './useData'
 import { endpoint } from '../api/recipe'
 import { DetailsType } from '../api/recipe'
 
