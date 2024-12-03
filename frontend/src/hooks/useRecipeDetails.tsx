@@ -1,18 +1,18 @@
 import useData from './useData'
-
+import { endpoint } from '../api/recipe'
 import { DetailsType } from '../api/recipe'
 
 export default function useRecipeDetails() {
     const { data: cuisines = [], error: cuisinesError } = useData<
         DetailsType[]
-    >('http://localhost:3000/api/cuisines')
+    >(`${endpoint}/cuisines`)
 
     const { data: diets = [], error: dietsError } = useData<DetailsType[]>(
-        'http://localhost:3000/api/diets'
+        `${endpoint}/diets`
     )
     const { data: difficulties = [], error: difficultiesError } = useData<
         DetailsType[]
-    >('http://localhost:3000/api/difficulties')
+    >(`${endpoint}/difficulties`)
 
     if (cuisinesError || dietsError || difficultiesError) {
         throw new Error('Failed to fetch recipe details')

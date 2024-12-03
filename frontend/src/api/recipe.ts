@@ -1,4 +1,4 @@
-const endpoint = 'http://localhost:8080'
+export const endpoint = 'http://localhost:8080'
 
 export type Recipe = {
     id: string
