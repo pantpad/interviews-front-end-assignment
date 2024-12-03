@@ -11,6 +11,7 @@ export const Route = createFileRoute('/recipes')({
             difficulties: await getDifficulties(),
         }
     },
+    staleTime: Infinity,
 })
 
 function RouteComponent() {

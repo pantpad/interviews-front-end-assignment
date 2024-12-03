@@ -3,7 +3,7 @@ import { useLoaderData } from '@tanstack/react-router'
 import { RecipeCard, RecipesPagination, RecipesHeader } from '.'
 
 export default function RecipesList() {
-    const { recipes } = useLoaderData({ from: '/recipes/' })
+    const recipes = useLoaderData({ from: '/recipes/' })
 
     return (
         <section className="flex flex-col gap-4">

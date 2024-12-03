@@ -27,7 +27,7 @@ type RecipesProviderProps = {
 
 const RecipesProvider: FC<PropsWithChildren> = ({ children }) => {
     const { cuisines, diets, difficulties } = useLoaderData({
-        from: '/recipes/',
+        from: '/recipes',
     })
 
     const recipesCtx = useMemo(() => {
