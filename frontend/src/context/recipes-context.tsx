@@ -25,9 +25,7 @@ type RecipesProviderProps = {
     [key: string]: DetailsType[]
 }
 
-const RecipesProvider: FC<PropsWithChildren<RecipesProviderProps>> = ({
-    children,
-}) => {
+const RecipesProvider: FC<PropsWithChildren> = ({ children }) => {
     const { cuisines, diets, difficulties } = useLoaderData({
         from: '/recipes/',
     })
