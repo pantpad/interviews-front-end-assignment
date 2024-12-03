@@ -22,10 +22,7 @@ if (!rootElement.innerHTML) {
                         <Route index element={<Home />} />
                         <Route path="/recipes" element={<Recipes />}>
                             <Route index element={<RecipesList />} />
-                            <Route
-                                path="/recipes/:recipeId"
-                                element={<RecipeCard />}
-                            />
+                            <Route path="/recipes/:recipeId" element={<RecipeCard />} />
                         </Route>
                     </Route>
                 </Routes>
