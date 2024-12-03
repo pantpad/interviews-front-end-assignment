@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router'
 import './index.css'
 
 import App from './App'
-import Home from './routes'
+import Home from './components/Home'
 import Recipes from './components/Recipes/Recipes'
 import RecipeDetails from './components/Recipes/RecipeDetails'
 import RecipesIndex from './components/Recipes/RecipesIndex'
