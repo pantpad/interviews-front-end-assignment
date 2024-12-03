@@ -1,9 +1,5 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useLoaderData } from '@tanstack/react-router'
 import { Recipe } from '../../api/recipe'
-
-import Cuisine from './RecipeDetails/Cuisine'
-import Diet from './RecipeDetails/Diet'
-import Difficulty from './RecipeDetails/Difficulty'
 
 interface RecipeCardProps {
     recipe: Recipe
@@ -11,6 +7,9 @@ interface RecipeCardProps {
 
 export default function RecipeCard({ recipe }: RecipeCardProps) {
     const { name, image, cuisineId, dietId, difficultyId } = recipe
+    const { cuisines, diets, difficulties } = useLoaderData({
+        from: '/recipes/',
+    })
 
     return (
         <Link to="/recipes/$recipeId" params={{ recipeId: recipe.id }}>
@@ -27,9 +26,12 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
                 <div className="flex flex-1 flex-col justify-between px-2">
                     <section>
                         <h2 className="font-medium">{name}</h2>
-                        <Cuisine cuisineId={cuisineId} />
-                        <Diet dietId={dietId} />
-                        <Difficulty difficultyId={difficultyId} />
+                        <p>Cuisine: {cuisines[Number(cuisineId) - 1]?.name}</p>
+                        <p>Diet: {diets[Number(dietId) - 1]?.name}</p>
+                        <p>
+                            Difficulty:{' '}
+                            {difficulties[Number(difficultyId) - 1]?.name}
+                        </p>
                     </section>
                     <button className="mt-4 w-full rounded-md bg-red-500 py-2 text-white">
                         View Options

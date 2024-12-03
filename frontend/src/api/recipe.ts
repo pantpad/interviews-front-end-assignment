@@ -31,7 +31,7 @@ export const getDifficulties = async (): Promise<DetailsType[]> => {
     return response.json()
 }
 
-export const getDiets = async (): Promise<DetailsType> => {
+export const getDiets = async (): Promise<DetailsType[]> => {
     const response = await fetch(`${endpoint}/diets`)
     return response.json()
 }
