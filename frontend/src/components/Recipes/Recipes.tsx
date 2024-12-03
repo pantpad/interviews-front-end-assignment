@@ -24,12 +24,10 @@ export default function Recipes() {
     }
 
     return (
-        <div className="mx-auto w-full max-w-7xl p-2">
-            <section className="flex flex-col gap-4">
-                <RecipesHeader />
-                <RecipesList recipes={recipes} />
-                <RecipesPagination />
-            </section>
-        </div>
+        <section className="flex flex-col gap-4">
+            <RecipesHeader />
+            <RecipesList recipes={recipes} />
+            <RecipesPagination />
+        </section>
     )
 }

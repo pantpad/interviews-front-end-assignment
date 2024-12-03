@@ -26,7 +26,7 @@ export default function RecipeDetails() {
     }
 
     return (
-        <div className="mx-auto w-full max-w-7xl p-2">
+        <div>
             <RecipeCard recipe={recipe} noLink />
         </div>
     )
