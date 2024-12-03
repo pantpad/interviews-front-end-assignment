@@ -5,7 +5,10 @@ import RecipesList from '../../components/Recipes/RecipesList'
 
 export const Route = createFileRoute('/recipes/')({
     component: RouteComponent,
-    loader: () => getRecipes(1),
+    loader: async ({ search }) => {
+        getRecipes(1);
+
+    },
 })
 
 function RouteComponent() {

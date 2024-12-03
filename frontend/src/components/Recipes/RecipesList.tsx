@@ -4,6 +4,7 @@ import { RecipeCard, RecipesPagination, RecipesHeader } from '.'
 
 export default function RecipesList() {
     const recipes = useLoaderData({ from: '/recipes/' })
+    console.log(recipes)
 
     return (
         <section className="flex flex-col gap-4">
