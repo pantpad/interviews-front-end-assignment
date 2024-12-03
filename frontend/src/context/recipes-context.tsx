@@ -1,4 +1,3 @@
-import { useLoaderData } from '@tanstack/react-router'
 import {
     createContext,
     FC,
@@ -24,9 +23,11 @@ export const useRecipesContext = () => {
 }
 
 const RecipesProvider: FC<PropsWithChildren> = ({ children }) => {
-    const { cuisines, diets, difficulties } = useLoaderData({
-        from: '/recipes',
-    })
+    const { cuisines, diets, difficulties } = {} as {
+        cuisines: Record<'id' | 'name', string>[]
+        diets: Record<'id' | 'name', string>[]
+        difficulties: Record<'id' | 'name', string>[]
+    }
 
     const cuisinesMap = Object.fromEntries(
         cuisines.map((obj) => [obj.id, obj.name])
