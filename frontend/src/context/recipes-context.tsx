@@ -1,5 +1,12 @@
 import { useLoaderData } from '@tanstack/react-router'
-import { createContext, FC, PropsWithChildren, useContext } from 'react'
+import {
+    createContext,
+    FC,
+    PropsWithChildren,
+    useContext,
+    useMemo,
+} from 'react'
+
 import { DetailsType } from '../api/recipe'
 
 export const RecipesContext = createContext<RecipesProviderProps | null>(null)
@@ -25,8 +32,12 @@ const RecipesProvider: FC<PropsWithChildren<RecipesProviderProps>> = ({
         from: '/recipes/',
     })
 
+    const recipesCtx = useMemo(() => {
+        return { cuisines, diets, difficulties }
+    }, [cuisines, diets, difficulties])
+
     return (
-        <RecipesContext.Provider value={{ cuisines, diets, difficulties }}>
+        <RecipesContext.Provider value={recipesCtx}>
             {children}
         </RecipesContext.Provider>
     )
