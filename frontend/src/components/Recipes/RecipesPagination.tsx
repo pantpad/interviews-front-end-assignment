@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+import { Link } from 'react-router'
 import { useState } from 'react'
 
 export default function RecipesPagination() {
@@ -7,14 +7,7 @@ export default function RecipesPagination() {
 
     return (
         <nav className="flex items-center justify-center gap-2">
-            <Link
-                to="/recipes"
-                search={(prev) => ({
-                    ...prev,
-                    page: Math.max(1, currentPage - 1),
-                })}
-                onClick={() => setCurrentPage(currentPage - 1)}
-            >
+            <Link to="/recipes" onClick={() => setCurrentPage(currentPage - 1)}>
                 <button
                     disabled={currentPage === 1}
                     className={`flex h-8 items-center justify-center rounded-full px-3 ${
@@ -33,14 +26,7 @@ export default function RecipesPagination() {
                 {currentPage}
             </div>
 
-            <Link
-                to="/recipes"
-                search={(prev) => ({
-                    ...prev,
-                    page: Math.min(totalPages, currentPage + 1),
-                })}
-                onClick={() => setCurrentPage(currentPage + 1)}
-            >
+            <Link to="/recipes" onClick={() => setCurrentPage(currentPage + 1)}>
                 <button
                     disabled={currentPage === totalPages}
                     className={`flex h-8 items-center justify-center rounded-full px-3 ${
