@@ -11,7 +11,7 @@ export default function Recipes() {
         loading,
     } = useData<Recipe[]>(`${endpoint}/recipes`)
 
-    console.log(recipes, error, loading)
+    console.log(recipes)
 
     if (error) {
         return <div>Error: {error.message}</div>
@@ -26,10 +26,12 @@ export default function Recipes() {
     }
 
     return (
-        <section className="flex flex-col gap-4">
-            <RecipesHeader />
-            <RecipesList recipes={recipes} />
-            <RecipesPagination />
-        </section>
+        <div className="mx-auto w-full max-w-7xl p-2">
+            <section className="flex flex-col gap-4">
+                <RecipesHeader />
+                <RecipesList recipes={recipes} />
+                <RecipesPagination />
+            </section>
+        </div>
     )
 }
