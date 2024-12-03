@@ -3,11 +3,11 @@ import { Recipe } from '../../api/recipe'
 import { useRecipesContext } from '../../context/recipes-context'
 
 export default function RecipeCard({ recipe }: { recipe: Recipe }) {
-    const { name, image, cuisineId, dietId, difficultyId } = recipe
+    const { name, image, cuisineId, dietId, difficultyId, id } = recipe
     const { cuisines, diets, difficulties } = useRecipesContext()
 
     return (
-        <Link to="/recipes/$recipeId">
+        <Link to={`/recipes/${id}`}>
             <article className="flex flex-wrap overflow-hidden rounded-lg bg-white p-2 shadow transition hover:shadow-md">
                 <figure className="relative w-full sm:max-w-64">
                     <img

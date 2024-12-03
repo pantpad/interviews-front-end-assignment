@@ -9,6 +9,7 @@ import App from './App'
 import Home from './routes'
 import Recipes from './components/Recipes/Recipes'
 import RecipeDetails from './components/Recipes/RecipeDetails'
+import RecipesIndex from './components/Recipes/RecipesIndex'
 
 const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
@@ -19,7 +20,7 @@ if (!rootElement.innerHTML) {
                 <Routes>
                     <Route path="/" element={<App />}>
                         <Route index element={<Home />} />
-                        <Route path="/recipes">
+                        <Route path="/recipes" element={<RecipesIndex />}>
                             <Route index element={<Recipes />} />
                             <Route
                                 path="/recipes/:recipeId"
