@@ -14,13 +14,13 @@ export default function RecipeCard({ recipe, noLink }: RecipeCardProps) {
     return (
         <Link to={`/recipes/${id}`}>
             <article className="flex flex-wrap overflow-hidden rounded-lg bg-white p-2 shadow transition hover:shadow-md">
-                <figure className="relative w-full sm:max-w-64">
+                <figure className="relative h-full w-full sm:max-w-64">
                     <img
                         src={`http://localhost:8080${image}`}
                         alt={name}
                         height={64}
                         width={64}
-                        className="h-full w-full rounded-md object-cover"
+                        className="aspect-square h-full w-full rounded-md object-cover"
                     />
                 </figure>
                 <div className="flex flex-1 flex-col justify-between px-2">
