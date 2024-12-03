@@ -5,7 +5,7 @@ interface RecipeCardProps {
     recipe: Recipe
 }
 
-export default function RecipeCard({ recipe }: RecipeCardProps) {
+export default function RecipeCard() {
     const { name, image, cuisineId, dietId, difficultyId } = recipe
     const {
         cuisines,

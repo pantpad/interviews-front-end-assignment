@@ -1,5 +1,3 @@
-import { useLoaderData } from '@tanstack/react-router'
-
 import { RecipeCard, RecipesPagination, RecipesHeader } from '.'
 
 export default function RecipesList() {
