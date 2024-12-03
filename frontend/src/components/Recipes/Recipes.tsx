@@ -11,8 +11,6 @@ export default function Recipes() {
         loading,
     } = useData<Recipe[]>(`${endpoint}/recipes`)
 
-    console.log(recipes)
-
     if (error) {
         return <div>Error: {error.message}</div>
     }
