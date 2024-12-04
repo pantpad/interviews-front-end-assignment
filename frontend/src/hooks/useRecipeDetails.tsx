@@ -5,14 +5,15 @@ import { DetailsType } from '../api/recipe'
 export default function useRecipeDetails() {
     const { data: cuisines = [], error: cuisinesError } = useData<
         DetailsType[]
-    >(`${endpoint}/cuisines`)
+    >(`${endpoint}/cuisines`, [])
 
     const { data: diets = [], error: dietsError } = useData<DetailsType[]>(
-        `${endpoint}/diets`
+        `${endpoint}/diets`,
+        []
     )
     const { data: difficulties = [], error: difficultiesError } = useData<
         DetailsType[]
-    >(`${endpoint}/difficulties`)
+    >(`${endpoint}/difficulties`, [])
 
     if (cuisinesError || dietsError || difficultiesError) {
         throw new Error('Failed to fetch recipe details')
