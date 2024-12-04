@@ -3,14 +3,14 @@ import { Link } from 'react-router'
 type RecipesPaginationProps = {
     page: number
     setPage: (page: number) => void
+    totalPages: number
 }
 
 export default function RecipesPagination({
     page,
     setPage,
+    totalPages,
 }: RecipesPaginationProps) {
-    const totalPages: number = 25
-
     return (
         <nav className="flex items-center justify-center gap-2">
             <Link to="/recipes" onClick={() => setPage(page - 1)}>

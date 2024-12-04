@@ -8,6 +8,9 @@ import RecipesList from './RecipesList'
 
 export default function Recipes() {
     const [page, setPage] = useState(1)
+    const { data: totalRecipes } = useData<Recipe[]>(`${endpoint}/recipes`)
+
+    const totalPages = Math.ceil((totalRecipes?.length || 0) / 10)
 
     const {
         data: recipes,
@@ -19,7 +22,7 @@ export default function Recipes() {
         return <div>Error: {error.message}</div>
     }
 
-    if (loading) {
+    if (loading || totalRecipes?.length === 0) {
         return <div>Loading...</div>
     }
 
@@ -31,7 +34,11 @@ export default function Recipes() {
         <section className="flex flex-col gap-4">
             <RecipesHeader />
             <RecipesList recipes={recipes} />
-            <RecipesPagination page={page} setPage={setPage} />
+            <RecipesPagination
+                page={page}
+                setPage={setPage}
+                totalPages={totalPages}
+            />
         </section>
     )
 }
