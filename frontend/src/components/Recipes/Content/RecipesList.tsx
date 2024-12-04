@@ -6,13 +6,14 @@ import { useData } from '../../../hooks/useData'
 export default function RecipesList() {
     const [searchParams] = useSearchParams()
     const page = Number(searchParams.get('_page')) || 1
+    const term = searchParams.get('q') || ''
 
     const {
         data: recipes = [],
         error,
         loading,
     } = useData<Recipe[]>(
-        `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}&_expand=difficulty`,
+        `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}&q=${term}&_expand=difficulty`,
         []
     )
 

@@ -1,4 +1,4 @@
-export default function SearchName({
+export default function SearchTerm({
     value,
     onChange,
 }: {

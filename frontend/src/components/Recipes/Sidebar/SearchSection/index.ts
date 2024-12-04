@@ -1,6 +1,6 @@
-import SearchName from './SearchName'
+import SearchTerm from './SearchTerm'
 import SelectCategory from './SelectCategory'
 import SelectCuisine from './SelectCuisine'
 import SelectPreference from './SelectPreference'
 
-export { SearchName, SelectCategory, SelectCuisine, SelectPreference }
+export { SearchTerm, SelectCategory, SelectCuisine, SelectPreference }
