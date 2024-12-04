@@ -1,6 +1,6 @@
-import { RecipesPagination, RecipesHeader } from '.'
+import { RecipesPagination, RecipesHeader } from '..'
 
-import RecipesList from './Content/RecipesList'
+import RecipesList from './RecipesList'
 
 export default function Recipes() {
     return (

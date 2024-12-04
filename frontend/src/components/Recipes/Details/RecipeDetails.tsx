@@ -1,8 +1,8 @@
 import { useParams } from 'react-router'
-import { RecipeCard } from '.'
-import { Recipe } from '../../api/recipe'
-import { endpoint } from '../../api/recipe'
-import { useData } from '../../hooks/useData'
+import { RecipeCard } from '..'
+import { Recipe } from '../../../api/recipe'
+import { endpoint } from '../../../api/recipe'
+import { useData } from '../../../hooks/useData'
 
 export default function RecipeDetails() {
     const { recipeId } = useParams()
