@@ -2,12 +2,12 @@ import { RecipesPagination, RecipesHeader } from '..'
 
 import RecipesList from './RecipesList'
 
-export default function Recipes() {
+export default function RecipesContent() {
     return (
-        <section className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
             <RecipesHeader />
             <RecipesList />
             <RecipesPagination />
-        </section>
+        </div>
     )
 }
