@@ -1,5 +1,5 @@
 import RecipesContent from './Content'
-import RecipesSidebar from './Sidebar'
+import RecipesSidebar from './Sidebar/Sidebar'
 
 export default function RecipesLayout() {
     return (
