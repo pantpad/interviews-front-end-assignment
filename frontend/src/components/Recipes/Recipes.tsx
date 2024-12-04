@@ -11,8 +11,8 @@ export default function Recipes() {
     const [searchParams] = useSearchParams()
     const page = Number(searchParams.get('_page')) || 1
 
+    // Get total number of recipes
     const { data: totalRecipes } = useData<Recipe[]>(`${endpoint}/recipes`)
-
     const totalPages = Math.ceil((totalRecipes?.length || 0) / LIMIT)
 
     const {
