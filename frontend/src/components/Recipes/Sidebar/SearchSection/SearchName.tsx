@@ -1,8 +1,10 @@
-import { useState } from 'react'
-
-export default function SearchName() {
-    const [searchName, setSearchName] = useState('')
-
+export default function SearchName({
+    value,
+    onChange,
+}: {
+    value: string
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}) {
     return (
         <div>
             <label className="mb-1 block text-sm">Search by name</label>
@@ -10,8 +12,8 @@ export default function SearchName() {
                 type="text"
                 placeholder="Enter recipe name"
                 className="w-full rounded-md border p-2"
-                value={searchName}
-                onChange={(e) => setSearchName(e.target.value)}
+                value={value}
+                onChange={onChange}
             />
         </div>
     )

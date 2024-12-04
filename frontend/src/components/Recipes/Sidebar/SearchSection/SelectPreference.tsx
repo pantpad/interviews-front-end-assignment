@@ -1,8 +1,10 @@
-import { useState } from 'react'
-
-export default function SelectPreference() {
-    const [preference, setPreference] = useState('')
-
+export default function SelectPreference({
+    value,
+    onChange,
+}: {
+    value: string
+    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+}) {
     return (
         <div>
             <label className="mb-1 block text-sm">
@@ -10,8 +12,8 @@ export default function SelectPreference() {
             </label>
             <select
                 className="w-full rounded-md border p-2 text-gray-500"
-                value={preference}
-                onChange={(e) => setPreference(e.target.value)}
+                value={value}
+                onChange={onChange}
             >
                 <option value="">Choose preference</option>
             </select>
