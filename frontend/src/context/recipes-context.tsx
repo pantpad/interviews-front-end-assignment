@@ -1,4 +1,3 @@
-import { useLoaderData } from '@tanstack/react-router'
 import {
     createContext,
     FC,
@@ -6,6 +5,7 @@ import {
     useContext,
     useMemo,
 } from 'react'
+import useRecipeDetails from '../hooks/useRecipeDetails'
 
 export const RecipesContext = createContext<{
     cuisines: Record<number, string>
@@ -24,29 +24,15 @@ export const useRecipesContext = () => {
 }
 
 const RecipesProvider: FC<PropsWithChildren> = ({ children }) => {
-    const { cuisines, diets, difficulties } = useLoaderData({
-        from: '/recipes',
-    })
-
-    const cuisinesMap = Object.fromEntries(
-        cuisines.map((obj) => [obj.id, obj.name])
-    )
-
-    const dietsMap = Object.fromEntries(diets.map((obj) => [obj.id, obj.name]))
-
-    const difficultiesMap = Object.fromEntries(
-        difficulties.map((obj) => [obj.id, obj.name])
-    )
-
-    console.log(cuisinesMap, dietsMap, difficultiesMap)
+    const { cuisines, diets, difficulties } = useRecipeDetails()
 
     const recipesCtx = useMemo(() => {
         return {
-            cuisines: cuisinesMap,
-            diets: dietsMap,
-            difficulties: difficultiesMap,
+            cuisines,
+            diets,
+            difficulties,
         }
-    }, [cuisinesMap, dietsMap, difficultiesMap])
+    }, [cuisines, diets, difficulties])
 
     return (
         <RecipesContext.Provider value={recipesCtx}>

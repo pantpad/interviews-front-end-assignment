@@ -1,19 +1,12 @@
-import { useLoaderData } from '@tanstack/react-router'
+import { RecipeCard } from '.'
+import { Recipe } from '../../api/recipe'
 
-import { RecipeCard, RecipesPagination, RecipesHeader } from '.'
-
-export default function RecipesList() {
-    const recipes = useLoaderData({ from: '/recipes/' })
-
+export default function RecipesList({ recipes }: { recipes: Recipe[] }) {
     return (
-        <section className="flex flex-col gap-4">
-            <RecipesHeader />
-            <div className="flex flex-col gap-4">
-                {recipes.map((recipe) => {
-                    return <RecipeCard key={recipe.id} recipe={recipe} />
-                })}
-            </div>
-            <RecipesPagination />
-        </section>
+        <div className="flex flex-col gap-4">
+            {recipes.map((recipe) => {
+                return <RecipeCard key={recipe.id} recipe={recipe} />
+            })}
+        </div>
     )
 }

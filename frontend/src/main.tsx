@@ -1,24 +1,35 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
-import { routeTree } from './routeTree.gen'
+
+import { BrowserRouter, Routes, Route } from 'react-router'
+
 import './index.css'
 
-const router = createRouter({ routeTree })
-
-// Register the router instance for type safety
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router
-  }
-}
+import App from './App'
+import Home from './components/Home'
+import Recipes from './components/Recipes/Recipes'
+import RecipeDetails from './components/Recipes/RecipeDetails'
+import RecipesIndex from './components/Recipes/RecipesIndex'
 
 const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement)
-  root.render(
-    <StrictMode>
-      <RouterProvider router={router} />
-    </StrictMode>,
-  )
+    const root = ReactDOM.createRoot(rootElement)
+    root.render(
+        <StrictMode>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<App />}>
+                        <Route index element={<Home />} />
+                        <Route path="/recipes" element={<RecipesIndex />}>
+                            <Route index element={<Recipes />} />
+                            <Route
+                                path="/recipes/:recipeId"
+                                element={<RecipeDetails />}
+                            />
+                        </Route>
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </StrictMode>
+    )
 }
