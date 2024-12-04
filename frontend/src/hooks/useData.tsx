@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-export function useData<T>(url: string) {
-    const [data, setData] = useState<T | null>(null)
+export function useData<T>(url: string, initialData: T) {
+    const [data, setData] = useState<T>(initialData)
     const [error, setError] = useState<Error | null>(null)
     const [loading, setLoading] = useState(false)
 

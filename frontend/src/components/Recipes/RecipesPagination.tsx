@@ -9,6 +9,20 @@ export default function RecipesPagination({
     page,
     totalPages,
 }: RecipesPaginationProps) {
+    if (page > totalPages) {
+        return (
+            <nav className="flex items-center justify-center gap-2">
+                <Link to={`/recipes?_page=1`}>
+                    <div
+                        className={`flex h-8 min-w-[32px] items-center justify-center rounded-full bg-red-500 px-3 text-white`}
+                    >
+                        Go to first page
+                    </div>
+                </Link>
+            </nav>
+        )
+    }
+
     return (
         <nav className="flex items-center justify-center gap-2">
             <Link to={`/recipes?_page=${page - 1}`}>

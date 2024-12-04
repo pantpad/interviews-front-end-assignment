@@ -12,14 +12,17 @@ export default function Recipes() {
     const page = Number(searchParams.get('_page')) || 1
 
     // Get total number of recipes
-    const { data: totalRecipes } = useData<Recipe[]>(`${endpoint}/recipes`)
+    const { data: totalRecipes } = useData<Recipe[]>(`${endpoint}/recipes`, [])
     const totalPages = Math.ceil((totalRecipes?.length || 0) / LIMIT)
 
     const {
-        data: recipes,
+        data: recipes = [],
         error,
         loading,
-    } = useData<Recipe[]>(`${endpoint}/recipes?_page=${page}&_limit=${LIMIT}`)
+    } = useData<Recipe[]>(
+        `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}&_expand=difficulty`,
+        []
+    )
 
     if (error) {
         return <div>Error: {error.message}</div>
@@ -27,10 +30,6 @@ export default function Recipes() {
 
     if (loading || totalRecipes?.length === 0) {
         return <div>Loading...</div>
-    }
-
-    if (!recipes) {
-        return <div>No recipes found</div>
     }
 
     return (
