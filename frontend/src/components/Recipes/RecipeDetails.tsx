@@ -11,7 +11,7 @@ export default function RecipeDetails() {
         data: recipe,
         error,
         loading,
-    } = useData<Recipe>(`${endpoint}/recipes/${recipeId}`)
+    } = useData<Recipe>(`${endpoint}/recipes/${recipeId}`, {} as Recipe)
 
     if (error) {
         return <div>Error: {error.message}</div>

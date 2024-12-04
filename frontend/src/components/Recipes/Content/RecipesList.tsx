@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router'
-import { RecipeCard } from '.'
-import { endpoint, LIMIT, Recipe } from '../../api/recipe'
-import { useData } from '../../hooks/useData'
+import { RecipeCard } from '..'
+import { endpoint, LIMIT, Recipe } from '../../../api/recipe'
+import { useData } from '../../../hooks/useData'
 
 export default function RecipesList() {
     const [searchParams] = useSearchParams()

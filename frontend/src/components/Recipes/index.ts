@@ -1,5 +1,5 @@
 import RecipeCard from './RecipeCard'
-import RecipesPagination from './RecipesPagination'
-import RecipesHeader from './RecipesHeader'
+import RecipesPagination from './Content/RecipesPagination'
+import RecipesHeader from './Content/RecipesHeader'
 
 export { RecipeCard, RecipesPagination, RecipesHeader }

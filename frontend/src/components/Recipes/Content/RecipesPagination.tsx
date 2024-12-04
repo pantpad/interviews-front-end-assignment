@@ -1,8 +1,8 @@
 import { Link, useSearchParams } from 'react-router'
-import { Recipe } from '../../api/recipe'
-import { endpoint } from '../../api/recipe'
-import { LIMIT } from '../../api/recipe'
-import { useData } from '../../hooks/useData'
+import { Recipe } from '../../../api/recipe'
+import { endpoint } from '../../../api/recipe'
+import { LIMIT } from '../../../api/recipe'
+import { useData } from '../../../hooks/useData'
 
 export default function RecipesPagination() {
     const [searchParams] = useSearchParams()
