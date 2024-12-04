@@ -5,19 +5,21 @@ import { useData } from '../../hooks/useData'
 import RecipesList from './RecipesList'
 import { useSearchParams } from 'react-router'
 
+const LIMIT = 4
+
 export default function Recipes() {
     const [searchParams] = useSearchParams()
     const page = Number(searchParams.get('_page')) || 1
 
     const { data: totalRecipes } = useData<Recipe[]>(`${endpoint}/recipes`)
 
-    const totalPages = Math.ceil((totalRecipes?.length || 0) / 10)
+    const totalPages = Math.ceil((totalRecipes?.length || 0) / LIMIT)
 
     const {
         data: recipes,
         error,
         loading,
-    } = useData<Recipe[]>(`${endpoint}/recipes?_page=${page}`)
+    } = useData<Recipe[]>(`${endpoint}/recipes?_page=${page}&_limit=${LIMIT}`)
 
     if (error) {
         return <div>Error: {error.message}</div>
