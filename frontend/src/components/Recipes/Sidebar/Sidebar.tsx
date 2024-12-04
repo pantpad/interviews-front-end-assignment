@@ -1,5 +1,5 @@
 import FiltersSection from './FiltersSection/FiltersSection'
-import SearchSections from './SearchSections/SearchSections'
+import SearchSections from './SearchSection/SearchSection'
 
 export default function RecipesSidebar() {
     return (
