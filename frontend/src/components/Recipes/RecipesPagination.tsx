@@ -13,7 +13,10 @@ export default function RecipesPagination({
 }: RecipesPaginationProps) {
     return (
         <nav className="flex items-center justify-center gap-2">
-            <Link to="/recipes" onClick={() => setPage(page - 1)}>
+            <Link
+                to={`/recipes?_page=${page - 1}`}
+                onClick={() => setPage(page - 1)}
+            >
                 <button
                     disabled={page === 1}
                     className={`flex h-8 items-center justify-center rounded-full px-3 ${
@@ -30,7 +33,10 @@ export default function RecipesPagination({
                 {page}
             </div>
 
-            <Link to="/recipes" onClick={() => setPage(page + 1)}>
+            <Link
+                to={`/recipes?_page=${page + 1}`}
+                onClick={() => setPage(page + 1)}
+            >
                 <button
                     disabled={page === totalPages}
                     className={`flex h-8 items-center justify-center rounded-full px-3 ${
