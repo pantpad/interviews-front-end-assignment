@@ -2,21 +2,16 @@ import { Link } from 'react-router'
 
 type RecipesPaginationProps = {
     page: number
-    setPage: (page: number) => void
     totalPages: number
 }
 
 export default function RecipesPagination({
     page,
-    setPage,
     totalPages,
 }: RecipesPaginationProps) {
     return (
         <nav className="flex items-center justify-center gap-2">
-            <Link
-                to={`/recipes?_page=${page - 1}`}
-                onClick={() => setPage(page - 1)}
-            >
+            <Link to={`/recipes?_page=${page - 1}`}>
                 <button
                     disabled={page === 1}
                     className={`flex h-8 items-center justify-center rounded-full px-3 ${
@@ -33,10 +28,7 @@ export default function RecipesPagination({
                 {page}
             </div>
 
-            <Link
-                to={`/recipes?_page=${page + 1}`}
-                onClick={() => setPage(page + 1)}
-            >
+            <Link to={`/recipes?_page=${page + 1}`}>
                 <button
                     disabled={page === totalPages}
                     className={`flex h-8 items-center justify-center rounded-full px-3 ${

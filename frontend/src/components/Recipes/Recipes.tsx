@@ -1,13 +1,14 @@
-import { useState } from 'react'
-
 import { RecipesPagination, RecipesHeader } from '.'
 import { Recipe, endpoint } from '../../api/recipe'
 
 import { useData } from '../../hooks/useData'
 import RecipesList from './RecipesList'
+import { useSearchParams } from 'react-router'
 
 export default function Recipes() {
-    const [page, setPage] = useState(1)
+    const [searchParams] = useSearchParams()
+    const page = Number(searchParams.get('_page')) || 1
+
     const { data: totalRecipes } = useData<Recipe[]>(`${endpoint}/recipes`)
 
     const totalPages = Math.ceil((totalRecipes?.length || 0) / 10)
@@ -34,11 +35,7 @@ export default function Recipes() {
         <section className="flex flex-col gap-4">
             <RecipesHeader />
             <RecipesList recipes={recipes} />
-            <RecipesPagination
-                page={page}
-                setPage={setPage}
-                totalPages={totalPages}
-            />
+            <RecipesPagination page={page} totalPages={totalPages} />
         </section>
     )
 }
