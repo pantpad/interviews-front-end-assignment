@@ -6,6 +6,7 @@ import { useData } from '../../hooks/useData'
 export default function RecipesList() {
     const [searchParams] = useSearchParams()
     const page = Number(searchParams.get('_page')) || 1
+
     const {
         data: recipes = [],
         error,

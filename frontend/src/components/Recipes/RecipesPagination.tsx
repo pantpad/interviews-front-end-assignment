@@ -1,14 +1,17 @@
-import { Link } from 'react-router'
+import { Link, useSearchParams } from 'react-router'
+import { Recipe } from '../../api/recipe'
+import { endpoint } from '../../api/recipe'
+import { LIMIT } from '../../api/recipe'
+import { useData } from '../../hooks/useData'
 
-type RecipesPaginationProps = {
-    page: number
-    totalPages: number
-}
+export default function RecipesPagination() {
+    const [searchParams] = useSearchParams()
+    const page = Number(searchParams.get('_page')) || 1
 
-export default function RecipesPagination({
-    page,
-    totalPages,
-}: RecipesPaginationProps) {
+    // Get total number of recipes
+    const { data: totalRecipes } = useData<Recipe[]>(`${endpoint}/recipes`, [])
+    const totalPages = Math.ceil((totalRecipes?.length || 0) / LIMIT)
+
     if (page > totalPages) {
         return (
             <nav className="flex items-center justify-center gap-2">
