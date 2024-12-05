@@ -18,7 +18,7 @@ export default function RecipesList() {
     )
 
     if (error) {
-        return <div>Error: {error.message}</div>
+        return <div>Error: {error}</div>
     }
 
     if (loading || recipes.length === 0) {
