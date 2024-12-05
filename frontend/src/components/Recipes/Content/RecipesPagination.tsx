@@ -1,19 +1,21 @@
 import { Link, useSearchParams } from 'react-router'
-import { Recipe } from '../../../api/recipe'
-import { endpoint } from '../../../api/recipe'
-import { LIMIT } from '../../../api/recipe'
+import { Recipe, endpoint, LIMIT } from '../../../api/recipe'
 import { useData } from '../../../hooks/useData'
+
+import { getQueryParamsString } from '../../../utils/searchParams'
 
 export default function RecipesPagination() {
     const [searchParams] = useSearchParams()
     const page = Number(searchParams.get('_page')) || 1
-    const term = searchParams.get('q') || undefined
-    const cuisineId = searchParams.get('cuisineId') || undefined
-    const dietId = searchParams.get('dietId') || undefined
+    const term = searchParams.get('q') || ''
+    const cuisineId = searchParams.get('cuisineId') || ''
+    const dietId = searchParams.get('dietId') || ''
+
+    const queryParamsString = getQueryParamsString(term, cuisineId, dietId)
 
     // Get total number of recipes
     const { data: totalRecipes } = useData<Recipe[]>(
-        `${endpoint}/recipes?q=${term}&cuisineId=${cuisineId}&dietId=${dietId}`,
+        `${endpoint}/recipes?${queryParamsString}`,
         []
     )
     const totalPages = Math.ceil((totalRecipes?.length || 0) / LIMIT)
@@ -34,7 +36,7 @@ export default function RecipesPagination() {
 
     return (
         <nav className="flex items-center justify-center gap-2">
-            <Link to={`/recipes?_page=${page - 1}`}>
+            <Link to={`/recipes?_page=${page - 1}&${queryParamsString}`}>
                 <button
                     disabled={page === 1}
                     className={`flex h-8 items-center justify-center rounded-full px-3 ${
@@ -51,7 +53,7 @@ export default function RecipesPagination() {
                 {page}
             </div>
 
-            <Link to={`/recipes?_page=${page + 1}`}>
+            <Link to={`/recipes?_page=${page + 1}&${queryParamsString}`}>
                 <button
                     disabled={page === totalPages}
                     className={`flex h-8 items-center justify-center rounded-full px-3 ${

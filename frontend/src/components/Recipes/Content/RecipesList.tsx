@@ -12,7 +12,6 @@ export default function RecipesList() {
     const dietId = searchParams.get('dietId') || ''
 
     const queryParamsString = getQueryParamsString(term, cuisineId, dietId)
-    console.log(queryParamsString)
 
     const {
         data: recipes = [],
