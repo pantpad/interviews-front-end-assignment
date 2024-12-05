@@ -14,8 +14,6 @@ export default function RecipesList() {
         difficultyId,
     })
 
-    console.log(queryParamsString)
-
     const {
         data: recipes = [],
         error,
