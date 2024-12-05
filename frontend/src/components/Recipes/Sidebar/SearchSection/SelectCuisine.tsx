@@ -1,3 +1,5 @@
+import useRecipeDetails from '../../../../hooks/useRecipeDetails'
+
 export default function SelectCuisine({
     value,
     onChange,
@@ -5,15 +7,26 @@ export default function SelectCuisine({
     value: string
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }) {
+    const { cuisines } = useRecipeDetails()
+
     return (
         <div>
-            <label className="mb-1 block text-sm">Select cuisine</label>
+            <label htmlFor="cuisines" className="mb-1 block text-sm">
+                Select cuisine
+            </label>
             <select
                 className="w-full rounded-md border p-2 text-gray-500"
                 value={value}
                 onChange={onChange}
+                id="cuisines"
+                name="cuisines"
             >
                 <option value="">Choose cuisine</option>
+                {Object.entries(cuisines).map(([id, name]) => (
+                    <option key={id} value={name}>
+                        {name}
+                    </option>
+                ))}
             </select>
         </div>
     )
