@@ -4,13 +4,13 @@ import { useSearchParams } from 'react-router'
 
 const getNonEmptySearchParams = (
     name: string,
-    cuisine: string,
-    preference: string
+    cuisineId: string,
+    dietId: string
 ) => {
     const params = [
         ['q', name],
-        ['cuisine', cuisine],
-        ['preference', preference],
+        ['cuisineId', cuisineId],
+        ['dietId', dietId],
     ]
 
     const nonEmptyParams = params.filter(([_, value]) => value !== '')
@@ -20,13 +20,11 @@ const getNonEmptySearchParams = (
 export default function SearchSections() {
     const [_, setSearchParams] = useSearchParams()
     const [term, setTerm] = useState('')
-    const [cuisine, setCuisine] = useState('')
-    const [preference, setPreference] = useState('')
+    const [cuisineId, setCuisineId] = useState('')
+    const [dietId, setDietId] = useState('')
 
     const handleSearch = () => {
-        setSearchParams(
-            getNonEmptySearchParams(term, cuisine, preference)
-        )
+        setSearchParams(getNonEmptySearchParams(term, cuisineId, dietId))
     }
 
     return (
@@ -38,12 +36,12 @@ export default function SearchSections() {
                     onChange={(e) => setTerm(e.target.value)}
                 />
                 <SelectCuisine
-                    value={cuisine}
-                    onChange={(e) => setCuisine(e.target.value)}
+                    value={cuisineId}
+                    onChange={(e) => setCuisineId(e.target.value)}
                 />
                 <SelectPreference
-                    value={preference}
-                    onChange={(e) => setPreference(e.target.value)}
+                    value={dietId}
+                    onChange={(e) => setDietId(e.target.value)}
                 />
                 <button
                     className="w-full rounded-md bg-red-500 py-2 text-white hover:bg-red-600"

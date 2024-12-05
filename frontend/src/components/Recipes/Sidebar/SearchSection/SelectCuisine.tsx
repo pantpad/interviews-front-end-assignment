@@ -23,7 +23,7 @@ export default function SelectCuisine({
             >
                 <option value="">Choose cuisine</option>
                 {Object.entries(cuisines).map(([id, name]) => (
-                    <option key={id} value={name}>
+                    <option key={id} value={id}>
                         {name}
                     </option>
                 ))}

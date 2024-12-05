@@ -23,7 +23,7 @@ export default function SelectPreference({
             >
                 <option value="">Choose preference</option>
                 {Object.entries(diets).map(([id, name]) => (
-                    <option key={id} value={name}>
+                    <option key={id} value={id}>
                         {name}
                     </option>
                 ))}
