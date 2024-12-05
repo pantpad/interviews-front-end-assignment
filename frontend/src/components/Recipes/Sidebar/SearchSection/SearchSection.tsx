@@ -2,16 +2,24 @@ import { useState } from 'react'
 import { SearchTerm, SelectCuisine, SelectPreference } from '.'
 import { useSearchParams } from 'react-router'
 
-import { getNonEmptySearchParams } from '../../../../utils'
+import { getNonEmptySearchParams } from '../../../../utils/searchParams'
 
 export default function SearchSections() {
     const [_, setSearchParams] = useSearchParams()
+
     const [term, setTerm] = useState('')
     const [cuisineId, setCuisineId] = useState('')
     const [dietId, setDietId] = useState('')
 
     const handleSearch = () => {
-        setSearchParams(getNonEmptySearchParams(term, cuisineId, dietId))
+        setSearchParams(
+            getNonEmptySearchParams({
+                q: term,
+                cuisineId,
+                dietId,
+                difficultyId: '',
+            })
+        )
     }
 
     return (

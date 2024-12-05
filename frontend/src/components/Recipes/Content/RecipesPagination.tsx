@@ -1,17 +1,19 @@
-import { Link, useSearchParams } from 'react-router'
+import { Link } from 'react-router'
 import { Recipe, endpoint, LIMIT } from '../../../api/recipe'
 import { useData } from '../../../hooks/useData'
 
 import { getQueryParamsString } from '../../../utils/searchParams'
+import useMySearchParams from '../../../hooks/useMySearchParams'
 
 export default function RecipesPagination() {
-    const [searchParams] = useSearchParams()
-    const page = Number(searchParams.get('_page')) || 1
-    const term = searchParams.get('q') || ''
-    const cuisineId = searchParams.get('cuisineId') || ''
-    const dietId = searchParams.get('dietId') || ''
+    const { q, cuisineId, dietId, difficultyId, page } = useMySearchParams()
 
-    const queryParamsString = getQueryParamsString(term, cuisineId, dietId)
+    const queryParamsString = getQueryParamsString({
+        q,
+        cuisineId,
+        dietId,
+        difficultyId,
+    })
 
     // Get total number of recipes
     const { data: totalRecipes } = useData<Recipe[]>(

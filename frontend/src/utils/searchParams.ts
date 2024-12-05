@@ -1,23 +1,25 @@
-export const getNonEmptySearchParams = (
-    q: string,
-    cuisineId: string,
+type SearchParams = {
+    q: string
+    cuisineId: string
     dietId: string
-) => {
-    const params = [
+    difficultyId: string
+}
+
+export const getNonEmptySearchParams = (params: SearchParams) => {
+    const { q, cuisineId, dietId, difficultyId } = params
+
+    const paramsArray = [
         ['q', q],
         ['cuisineId', cuisineId],
         ['dietId', dietId],
+        ['difficultyId', difficultyId],
     ]
 
-    const nonEmptyParams = params.filter(([_, value]) => value !== '')
+    const nonEmptyParams = paramsArray.filter(([_, value]) => value !== '')
     return Object.fromEntries(nonEmptyParams)
 }
 
-export const getQueryParamsString = (
-    q: string,
-    cuisineId: string,
-    dietId: string
-) => {
-    const nonEmptyParams = getNonEmptySearchParams(q, cuisineId, dietId)
+export const getQueryParamsString = (params: SearchParams) => {
+    const nonEmptyParams = getNonEmptySearchParams(params)
     return new URLSearchParams(nonEmptyParams).toString()
 }

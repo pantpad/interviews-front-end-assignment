@@ -1,17 +1,20 @@
-import { useSearchParams } from 'react-router'
 import { RecipeCard } from '..'
 import { endpoint, LIMIT, Recipe } from '../../../api/recipe'
 import { useData } from '../../../hooks/useData'
 import { getQueryParamsString } from '../../../utils/searchParams'
+import useMySearchParams from '../../../hooks/useMySearchParams'
 
 export default function RecipesList() {
-    const [searchParams] = useSearchParams()
-    const page = Number(searchParams.get('_page')) || 1
-    const term = searchParams.get('q') || ''
-    const cuisineId = searchParams.get('cuisineId') || ''
-    const dietId = searchParams.get('dietId') || ''
+    const { q, cuisineId, dietId, difficultyId, page } = useMySearchParams()
 
-    const queryParamsString = getQueryParamsString(term, cuisineId, dietId)
+    const queryParamsString = getQueryParamsString({
+        q,
+        cuisineId,
+        dietId,
+        difficultyId,
+    })
+
+    console.log(queryParamsString)
 
     const {
         data: recipes = [],
