@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router'
 import { getNonEmptySearchParams } from '../../../../utils/searchParams'
 
 export default function SearchSections() {
-    const [_, setSearchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams()
 
     const [term, setTerm] = useState('')
     const [cuisineId, setCuisineId] = useState('')
@@ -17,7 +17,7 @@ export default function SearchSections() {
                 q: term,
                 cuisineId,
                 dietId,
-                difficultyId: '',
+                difficultyId: searchParams.get('difficultyId') || '',
             })
         )
     }
