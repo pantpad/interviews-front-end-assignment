@@ -17,6 +17,7 @@ export default function RecipeDifficulty() {
         }
 
         setSearchParams((prev) => {
+            prev.set('_page', '1')
             prev.set('difficultyId', difficulty)
             return prev
         })
