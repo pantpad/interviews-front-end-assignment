@@ -2,6 +2,7 @@ import { useSearchParams } from 'react-router'
 import { RecipeCard } from '..'
 import { endpoint, LIMIT, Recipe } from '../../../api/recipe'
 import { useData } from '../../../hooks/useData'
+import { getQueryParamsString } from '../../../utils/searchParams'
 
 export default function RecipesList() {
     const [searchParams] = useSearchParams()
@@ -10,12 +11,15 @@ export default function RecipesList() {
     const cuisineId = searchParams.get('cuisineId') || ''
     const dietId = searchParams.get('dietId') || ''
 
+    const queryParamsString = getQueryParamsString(term, cuisineId, dietId)
+    console.log(queryParamsString)
+
     const {
         data: recipes = [],
         error,
         loading,
     } = useData<Recipe[]>(
-        `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}&q=${term}&cuisineId=${cuisineId}&dietId=${dietId}&_expand=difficulty`,
+        `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}&${queryParamsString}`,
         []
     )
 
