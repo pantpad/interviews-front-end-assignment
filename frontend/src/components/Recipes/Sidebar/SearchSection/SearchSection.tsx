@@ -7,9 +7,11 @@ import { getNonEmptySearchParams } from '../../../../utils/searchParams'
 export default function SearchSections() {
     const [searchParams, setSearchParams] = useSearchParams()
 
-    const [term, setTerm] = useState('')
-    const [cuisineId, setCuisineId] = useState('')
-    const [dietId, setDietId] = useState('')
+    const [term, setTerm] = useState(searchParams.get('q') || '')
+    const [cuisineId, setCuisineId] = useState(
+        searchParams.get('cuisineId') || ''
+    )
+    const [dietId, setDietId] = useState(searchParams.get('dietId') || '')
 
     const handleSearch = () => {
         setSearchParams(
