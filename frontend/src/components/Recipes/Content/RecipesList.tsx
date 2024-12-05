@@ -7,13 +7,15 @@ export default function RecipesList() {
     const [searchParams] = useSearchParams()
     const page = Number(searchParams.get('_page')) || 1
     const term = searchParams.get('q') || ''
+    const cuisineId = searchParams.get('cuisineId') || ''
+    const dietId = searchParams.get('dietId') || ''
 
     const {
         data: recipes = [],
         error,
         loading,
     } = useData<Recipe[]>(
-        `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}&q=${term}&_expand=difficulty`,
+        `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}&q=${term}&cuisineId=${cuisineId}&dietId=${dietId}&_expand=difficulty`,
         []
     )
 

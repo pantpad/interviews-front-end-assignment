@@ -7,11 +7,13 @@ import { useData } from '../../../hooks/useData'
 export default function RecipesPagination() {
     const [searchParams] = useSearchParams()
     const page = Number(searchParams.get('_page')) || 1
-    const term = searchParams.get('q') || ''
+    const term = searchParams.get('q') || undefined
+    const cuisineId = searchParams.get('cuisineId') || undefined
+    const dietId = searchParams.get('dietId') || undefined
 
     // Get total number of recipes
     const { data: totalRecipes } = useData<Recipe[]>(
-        `${endpoint}/recipes?q=${term}`,
+        `${endpoint}/recipes?q=${term}&cuisineId=${cuisineId}&dietId=${dietId}`,
         []
     )
     const totalPages = Math.ceil((totalRecipes?.length || 0) / LIMIT)
