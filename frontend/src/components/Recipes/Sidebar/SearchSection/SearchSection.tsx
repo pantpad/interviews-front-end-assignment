@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SearchTerm, SelectCuisine, SelectPreference } from '.'
 import { useSearchParams } from 'react-router'
 
@@ -23,6 +23,12 @@ export default function SearchSections() {
             })
         )
     }
+
+    useEffect(() => {
+        setTerm(searchParams.get('q') || '')
+        setCuisineId(searchParams.get('cuisineId') || '')
+        setDietId(searchParams.get('dietId') || '')
+    }, [searchParams])
 
     return (
         <div className="mb-6">

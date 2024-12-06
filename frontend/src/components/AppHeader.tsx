@@ -1,4 +1,4 @@
-import { Link } from 'react-router'
+import { Link, useSearchParams } from 'react-router'
 
 const links = [
     { to: '/recipes', label: 'Recipes' },
@@ -7,6 +7,8 @@ const links = [
 ]
 
 export default function AppHeader() {
+    const [_, setSearchParams] = useSearchParams()
+
     return (
         <header className="border-b border-zinc-200 bg-white">
             <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
@@ -20,6 +22,7 @@ export default function AppHeader() {
                                 key={link.label}
                                 to={link.to}
                                 className="text-sm text-zinc-600 hover:text-zinc-900 [&.active]:text-zinc-900"
+                                onClick={() => setSearchParams({})}
                             >
                                 {link.label}
                             </Link>
@@ -28,7 +31,7 @@ export default function AppHeader() {
                 </div>
                 <div className="flex items-center gap-3">
                     <Link
-                        to="/about"
+                        to="/recipes"
                         className="rounded-full border border-zinc-300 px-6 py-2 text-sm hover:bg-zinc-50"
                     >
                         Add
