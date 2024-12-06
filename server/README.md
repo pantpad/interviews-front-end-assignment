@@ -28,6 +28,8 @@ To start the server, run the following command:
 npm start
 ```
 
+The backend is configured to run on port 8080, if that's not to your liking, you can modify it inside the main.js file by looking for the line `const port = 8080;`.
+
 The server will start on `http://localhost:8080`.
 
 ## API Specification
