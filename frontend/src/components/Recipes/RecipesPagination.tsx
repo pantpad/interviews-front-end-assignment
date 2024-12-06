@@ -1,19 +1,38 @@
-import { Link } from 'react-router'
-import { useState } from 'react'
+import { Link, useSearchParams } from 'react-router'
+import { Recipe } from '../../api/recipe'
+import { endpoint } from '../../api/recipe'
+import { LIMIT } from '../../api/recipe'
+import { useData } from '../../hooks/useData'
 
 export default function RecipesPagination() {
-    const [currentPage, setCurrentPage] = useState(1)
-    const totalPages: number = 25
+    const [searchParams] = useSearchParams()
+    const page = Number(searchParams.get('_page')) || 1
+
+    // Get total number of recipes
+    const { data: totalRecipes } = useData<Recipe[]>(`${endpoint}/recipes`, [])
+    const totalPages = Math.ceil((totalRecipes?.length || 0) / LIMIT)
+
+    if (page > totalPages) {
+        return (
+            <nav className="flex items-center justify-center gap-2">
+                <Link to={`/recipes?_page=1`}>
+                    <div
+                        className={`flex h-8 min-w-[32px] items-center justify-center rounded-full bg-red-500 px-3 text-white`}
+                    >
+                        Go to first page
+                    </div>
+                </Link>
+            </nav>
+        )
+    }
 
     return (
         <nav className="flex items-center justify-center gap-2">
-            <Link to="/recipes" onClick={() => setCurrentPage(currentPage - 1)}>
+            <Link to={`/recipes?_page=${page - 1}`}>
                 <button
-                    disabled={currentPage === 1}
+                    disabled={page === 1}
                     className={`flex h-8 items-center justify-center rounded-full px-3 ${
-                        currentPage === 1
-                            ? 'text-gray-300'
-                            : 'hover:bg-gray-100'
+                        page === 1 ? 'text-gray-300' : 'hover:bg-gray-100'
                     } `}
                 >
                     ←
@@ -23,14 +42,14 @@ export default function RecipesPagination() {
             <div
                 className={`flex h-8 min-w-[32px] items-center justify-center rounded-full bg-red-500 px-3 text-white`}
             >
-                {currentPage}
+                {page}
             </div>
 
-            <Link to="/recipes" onClick={() => setCurrentPage(currentPage + 1)}>
+            <Link to={`/recipes?_page=${page + 1}`}>
                 <button
-                    disabled={currentPage === totalPages}
+                    disabled={page === totalPages}
                     className={`flex h-8 items-center justify-center rounded-full px-3 ${
-                        currentPage === totalPages
+                        page === totalPages
                             ? 'text-gray-300'
                             : 'hover:bg-gray-100'
                     } `}

@@ -11,6 +11,8 @@ export type Recipe = {
     image: string
 }
 
+export const LIMIT = 4
+
 export const getRecipes = async (page: number): Promise<Recipe[]> => {
     const response = await fetch(`${endpoint}/recipes?_page=${page}`)
     return response.json()
