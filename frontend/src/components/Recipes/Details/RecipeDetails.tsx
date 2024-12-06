@@ -3,6 +3,7 @@ import { RecipeCard } from '..'
 import { Recipe } from '../../../api/recipe'
 import { endpoint } from '../../../api/recipe'
 import { useData } from '../../../hooks/useData'
+import SkeletonCard from '../SkeletonCard'
 
 export default function RecipeDetails() {
     const { recipeId } = useParams()
@@ -18,7 +19,7 @@ export default function RecipeDetails() {
     }
 
     if (loading) {
-        return <div>Loading...</div>
+        return <SkeletonCard />
     }
 
     if (!recipe) {
