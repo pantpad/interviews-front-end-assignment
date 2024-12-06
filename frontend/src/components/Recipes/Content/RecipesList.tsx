@@ -3,6 +3,7 @@ import { endpoint, LIMIT, Recipe } from '../../../api/recipe'
 import { useData } from '../../../hooks/useData'
 import { getQueryParamsString } from '../../../utils/searchParams'
 import useMySearchParams from '../../../hooks/useMySearchParams'
+import SkeletonCard from '../SkeletonCard'
 
 export default function RecipesList() {
     const { q, cuisineId, dietId, difficultyId, page } = useMySearchParams()
@@ -30,7 +31,9 @@ export default function RecipesList() {
     }
 
     if (loading) {
-        return <div>Loading...</div>
+        return Array.from({ length: LIMIT }).map((_, index) => (
+            <SkeletonCard key={index} />
+        ))
     }
 
     if (recipes.length === 0) {
