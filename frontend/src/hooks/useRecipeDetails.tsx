@@ -2,6 +2,8 @@ import { useData } from './useData'
 import { endpoint } from '../api/recipe'
 import { DetailsType } from '../api/recipe'
 
+// I want to introduce a cache mechanism to store the cuisines, diets, and difficulties.
+
 export default function useRecipeDetails() {
     const {
         data: cuisines = [],

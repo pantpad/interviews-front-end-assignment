@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
 
+// Stale time = 5 minutes, after that we refetch.
+const STALE_TIME = 1000 * 60 * 5
+
+type Cache<T> = Record<string, { data: T; timestamp: number }>
+
+let cache: Cache<any> = {}
+
 export function useData<T>(url: string, initialData: T) {
     const [data, setData] = useState<T>(initialData)
     const [error, setError] = useState<string | null>(null)
@@ -21,6 +28,10 @@ export function useData<T>(url: string, initialData: T) {
                 }
                 const json = await response.json()
                 setData(json)
+                ;(cache as Cache<T>)[url] = {
+                    data: json,
+                    timestamp: Date.now(),
+                }
                 setLoading(false)
             } catch (error) {
                 if (error instanceof Error && error.name === 'AbortError') {
@@ -35,7 +46,11 @@ export function useData<T>(url: string, initialData: T) {
             }
         }
 
-        fetchData()
+        if (cache[url] && cache[url].timestamp + STALE_TIME > Date.now()) {
+            setData((cache as Cache<T>)[url].data)
+        } else {
+            fetchData()
+        }
 
         return () => {
             abortController.abort()
