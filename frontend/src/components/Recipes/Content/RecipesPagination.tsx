@@ -16,10 +16,13 @@ export default function RecipesPagination() {
     })
 
     // Get total number of recipes
-    const { data: totalRecipes } = useData<Recipe[]>(
+    const { data: totalRecipes, loading } = useData<Recipe[]>(
         `${endpoint}/recipes?${queryParamsString}`,
         []
     )
+
+    if (loading) return null
+
     const totalPages = Math.ceil((totalRecipes?.length || 0) / LIMIT)
 
     if (page > totalPages) {
