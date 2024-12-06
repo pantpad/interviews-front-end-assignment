@@ -7,8 +7,8 @@ import './index.css'
 
 import App from './App'
 import Home from './components/Home'
-import Recipes from './components/Recipes/Recipes'
-import RecipeDetails from './components/Recipes/RecipeDetails'
+import Recipes from './components/Recipes/RecipesLayout'
+import RecipeDetails from './components/Recipes/Details/RecipeDetails'
 import RecipesIndex from './components/Recipes/RecipesIndex'
 
 const rootElement = document.getElementById('root')!

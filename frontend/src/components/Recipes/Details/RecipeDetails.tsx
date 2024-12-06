@@ -1,8 +1,9 @@
 import { useParams } from 'react-router'
-import { RecipeCard } from '.'
-import { Recipe } from '../../api/recipe'
-import { endpoint } from '../../api/recipe'
-import { useData } from '../../hooks/useData'
+import { RecipeCard } from '..'
+import { Recipe } from '../../../api/recipe'
+import { endpoint } from '../../../api/recipe'
+import { useData } from '../../../hooks/useData'
+import SkeletonCard from '../SkeletonCard'
 
 export default function RecipeDetails() {
     const { recipeId } = useParams()
@@ -11,14 +12,14 @@ export default function RecipeDetails() {
         data: recipe,
         error,
         loading,
-    } = useData<Recipe>(`${endpoint}/recipes/${recipeId}`)
+    } = useData<Recipe>(`${endpoint}/recipes/${recipeId}`, {} as Recipe)
 
     if (error) {
-        return <div>Error: {error.message}</div>
+        return <div>Error: {error}</div>
     }
 
     if (loading) {
-        return <div>Loading...</div>
+        return <SkeletonCard />
     }
 
     if (!recipe) {
