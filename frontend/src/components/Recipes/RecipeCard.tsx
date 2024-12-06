@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
 import { Recipe } from '../../api/recipe'
 import { useRecipesContext } from '../../context/recipes-context'
-
+import { Image } from '../ui/Image'
 type RecipeCardProps = {
     recipe: Recipe
     noLink?: boolean
@@ -11,15 +11,19 @@ export default function RecipeCard({ recipe, noLink }: RecipeCardProps) {
     const { name, image, cuisineId, dietId, difficultyId, id } = recipe
     const { cuisines, diets, difficulties } = useRecipesContext()
 
+    console.log(image)
+
+    const fullImageUrl = `http://localhost:8080${image}`
+    const thumbnailUrl = `${fullImageUrl}?tr=w-64,h-64`
+
     return (
         <Link to={`/recipes/${id}`}>
             <article className="flex flex-wrap overflow-hidden rounded-lg bg-white p-2 shadow transition hover:shadow-md">
                 <figure className="relative h-full w-full sm:max-w-64">
-                    <img
-                        src={`http://localhost:8080${image}`}
+                    <Image
+                        src={fullImageUrl}
+                        thumbnailSrc={thumbnailUrl}
                         alt={name}
-                        height={64}
-                        width={64}
                         className="aspect-square h-full w-full rounded-md object-cover"
                     />
                 </figure>
