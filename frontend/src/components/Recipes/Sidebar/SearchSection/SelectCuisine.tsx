@@ -8,6 +8,7 @@ export default function SelectCuisine({
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }) {
     const { cuisines } = useRecipeDetails()
+    const hasOptions = Object.keys(cuisines).length > 0
 
     return (
         <div>
@@ -21,7 +22,7 @@ export default function SelectCuisine({
                 id="cuisines"
                 name="cuisines"
             >
-                <option value="">Choose cuisine</option>
+                <option value="">{hasOptions ? 'Choose cuisine' : ''}</option>
                 {Object.entries(cuisines).map(([id, name]) => (
                     <option key={id} value={id}>
                         {name}
