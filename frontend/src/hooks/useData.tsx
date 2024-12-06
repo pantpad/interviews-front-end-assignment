@@ -21,6 +21,7 @@ export function useData<T>(url: string, initialData: T) {
                 }
                 const json = await response.json()
                 setData(json)
+                setLoading(false)
             } catch (error) {
                 if (error instanceof Error && error.name === 'AbortError') {
                     return
@@ -30,7 +31,6 @@ export function useData<T>(url: string, initialData: T) {
                 } else {
                     setError(String(error))
                 }
-            } finally {
                 setLoading(false)
             }
         }

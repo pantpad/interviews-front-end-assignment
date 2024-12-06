@@ -15,13 +15,15 @@ export default function RecipesList() {
     })
 
     const {
-        data: recipes = [],
+        data: recipes,
         error,
         loading,
     } = useData<Recipe[]>(
         `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}&${queryParamsString}`,
         []
     )
+
+    console.log('loading', loading)
 
     if (error) {
         return <div>Error: {error}</div>
