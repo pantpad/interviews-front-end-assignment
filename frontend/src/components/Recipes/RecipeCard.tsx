@@ -21,7 +21,10 @@ export default function RecipeCard({ recipe, noLink }: RecipeCardProps) {
 
     return (
         <Link to={`/recipes/${id}`}>
-            <article className="flex flex-wrap overflow-hidden rounded-lg bg-white p-2 shadow transition hover:shadow-md">
+            <article
+                data-clickable={!noLink}
+                className="flex select-text flex-wrap overflow-hidden rounded-lg bg-white p-2 shadow transition hover:shadow-md data-[clickable=true]:hover:scale-[1.01] data-[clickable=true]:hover:opacity-80"
+            >
                 <figure className="relative h-full w-full sm:max-w-64">
                     <>
                         {loadingImage}
@@ -43,11 +46,6 @@ export default function RecipeCard({ recipe, noLink }: RecipeCardProps) {
                         <p>Diet: {diets[Number(dietId)]}</p>
                         <p>Difficulty: {difficulties[Number(difficultyId)]}</p>
                     </section>
-                    {!noLink ? (
-                        <button className="mt-4 w-full rounded-md bg-red-500 py-2 text-white">
-                            View Options
-                        </button>
-                    ) : null}
                 </div>
             </article>
         </Link>
