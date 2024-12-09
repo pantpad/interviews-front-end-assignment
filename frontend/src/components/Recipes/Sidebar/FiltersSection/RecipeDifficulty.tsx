@@ -7,6 +7,7 @@ export default function RecipeDifficulty() {
     const handleDifficultyChange = (difficulty: string) => {
         if (difficulty === '0') {
             searchParams.delete('difficultyId')
+            searchParams.delete('_page')
             return setSearchParams(searchParams)
         }
 

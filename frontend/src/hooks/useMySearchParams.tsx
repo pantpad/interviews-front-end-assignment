@@ -1,5 +1,27 @@
 import { useSearchParams } from 'react-router'
 
+type SearchParams = {
+    q: string
+    cuisineId: string
+    dietId: string
+    difficultyId: string
+}
+
+export const getNonEmptySearchParams = (params: SearchParams) => {
+    const paramsArray = Object.entries(params)
+    const nonEmptyParams = paramsArray.filter(([_, value]) => value !== '')
+
+    return Object.fromEntries(nonEmptyParams)
+}
+
+const getQueryParamsString = (params: SearchParams) => {
+    const nonEmptyParams = getNonEmptySearchParams(params)
+    const queryParamsString = new URLSearchParams(nonEmptyParams).toString()
+    return queryParamsString.length > 0 ? `&${queryParamsString}` : ''
+}
+
+let queryParamsString = ''
+
 export default function useMySearchParams() {
     const [searchParams] = useSearchParams()
 
@@ -9,5 +31,12 @@ export default function useMySearchParams() {
     const difficultyId = searchParams.get('difficultyId') || ''
     const page = Number(searchParams.get('_page')) || 1
 
-    return { q, cuisineId, dietId, difficultyId, page }
+    queryParamsString = getQueryParamsString({
+        q,
+        cuisineId,
+        dietId,
+        difficultyId,
+    })
+
+    return { q, cuisineId, dietId, difficultyId, page, queryParamsString }
 }

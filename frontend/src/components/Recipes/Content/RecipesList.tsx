@@ -1,19 +1,13 @@
-import { RecipeCard } from '..'
 import { endpoint, LIMIT, Recipe } from '../../../api/recipe'
 import { useData } from '../../../hooks/useData'
-import { getQueryParamsString } from '../../../utils/searchParams'
+
 import useMySearchParams from '../../../hooks/useMySearchParams'
+
+import { RecipeCard } from '..'
 import SkeletonCard from '../SkeletonCard'
 
 export default function RecipesList() {
-    const { q, cuisineId, dietId, difficultyId, page } = useMySearchParams()
-
-    const queryParamsString = getQueryParamsString({
-        q,
-        cuisineId,
-        dietId,
-        difficultyId,
-    })
+    const { page, queryParamsString } = useMySearchParams()
 
     const {
         data: recipes,

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { SearchTerm, SelectCuisine, SelectPreference } from '.'
 import { useSearchParams } from 'react-router'
 
-import { getNonEmptySearchParams } from '../../../../utils/searchParams'
+import { getNonEmptySearchParams } from '../../../../hooks/useMySearchParams'
 
 export default function SearchSections() {
     const [searchParams, setSearchParams] = useSearchParams()
