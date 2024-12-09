@@ -6,16 +6,9 @@ type SearchParams = {
 }
 
 export const getNonEmptySearchParams = (params: SearchParams) => {
-    const { q, cuisineId, dietId, difficultyId } = params
-
-    const paramsArray = [
-        ['q', q],
-        ['cuisineId', cuisineId],
-        ['dietId', dietId],
-        ['difficultyId', difficultyId],
-    ]
-
+    const paramsArray = Object.entries(params)
     const nonEmptyParams = paramsArray.filter(([_, value]) => value !== '')
+
     return Object.fromEntries(nonEmptyParams)
 }
 
