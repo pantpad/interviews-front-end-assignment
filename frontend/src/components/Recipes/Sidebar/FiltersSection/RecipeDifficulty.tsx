@@ -1,22 +1,11 @@
-import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
 
 export default function RecipeDifficulty() {
     const [searchParams, setSearchParams] = useSearchParams()
     const difficultyId = searchParams.get('difficultyId') || ''
 
-    const [difficulty, setDifficulty] = useState(difficultyId)
-
     const handleDifficultyChange = (difficulty: string) => {
         if (difficulty === '0') {
-            setDifficulty('0')
-            return
-        }
-        setDifficulty(difficulty)
-    }
-
-    useEffect(() => {
-        if (difficulty === '' || difficulty === '0') {
             searchParams.delete('difficultyId')
             return setSearchParams(searchParams)
         }
@@ -26,7 +15,9 @@ export default function RecipeDifficulty() {
             prev.set('difficultyId', difficulty)
             return prev
         })
-    }, [difficulty])
+    }
+
+    let noDifficultyClass = 'text-white bg-zinc-500'
 
     return (
         <div>
@@ -34,10 +25,10 @@ export default function RecipeDifficulty() {
             <div className="flex flex-wrap gap-2">
                 {['All', 'Easy', 'Medium', 'Hard'].map((level, index) => (
                     <button
-                        aria-selected={difficulty === String(index)}
+                        aria-selected={difficultyId === String(index)}
                         aria-label={level}
                         key={level}
-                        className="rounded-full border border-gray-300 px-3 py-1 text-sm transition-colors hover:bg-gray-100 aria-[selected=true]:aria-[label=All]:bg-zinc-500 aria-[selected=true]:aria-[label=Easy]:bg-green-500 aria-[selected=true]:aria-[label=Hard]:bg-red-500 aria-[selected=true]:aria-[label=Medium]:bg-yellow-500 aria-[selected=true]:aria-[label=All]:text-white aria-[selected=true]:text-zinc-50"
+                        className={`rounded-full border border-gray-300 px-3 py-1 text-sm transition-colors hover:bg-gray-100 aria-[selected=true]:aria-[label=All]:bg-zinc-500 aria-[selected=true]:aria-[label=Easy]:bg-green-500 aria-[selected=true]:aria-[label=Hard]:bg-red-500 aria-[selected=true]:aria-[label=Medium]:bg-yellow-500 aria-[selected=true]:aria-[label=All]:text-white aria-[selected=true]:text-zinc-50 ${level === 'All' && difficultyId === '' ? noDifficultyClass : ''}`}
                         onClick={() => handleDifficultyChange(String(index))}
                     >
                         {level}
