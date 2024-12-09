@@ -16,8 +16,7 @@ export const getNonEmptySearchParams = (params: SearchParams) => {
 
 const getQueryParamsString = (params: SearchParams) => {
     const nonEmptyParams = getNonEmptySearchParams(params)
-    const queryParamsString = new URLSearchParams(nonEmptyParams).toString()
-    return queryParamsString.length > 0 ? `&${queryParamsString}` : ''
+    return new URLSearchParams(nonEmptyParams).toString()
 }
 
 let queryParamsString = ''
