@@ -1,5 +1,4 @@
 import { Link } from 'react-router'
-import chef from '../assets/chef.png'
 
 const Home: React.FC = () => {
     return (
@@ -8,7 +7,7 @@ const Home: React.FC = () => {
                 <img
                     height={64}
                     width={64}
-                    src={chef}
+                    src={'/assets/chef.png'}
                     alt="placeholder"
                     className="w-full max-w-96 object-contain"
                 />

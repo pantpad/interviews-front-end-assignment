@@ -28,7 +28,7 @@ export default function AppHeader() {
                 </div>
                 <div className="flex items-center gap-3">
                     <Link
-                        to="/about"
+                        to="/recipes"
                         className="rounded-full border border-zinc-300 px-6 py-2 text-sm hover:bg-zinc-50"
                     >
                         Add

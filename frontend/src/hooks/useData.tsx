@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 export function useData<T>(url: string, initialData: T) {
     const [data, setData] = useState<T>(initialData)
-    const [error, setError] = useState<Error | null>(null)
+    const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -21,11 +21,16 @@ export function useData<T>(url: string, initialData: T) {
                 }
                 const json = await response.json()
                 setData(json)
+                setLoading(false)
             } catch (error) {
-                if (error instanceof Error && error.name !== 'AbortError') {
-                    setError(error)
+                if (error instanceof Error && error.name === 'AbortError') {
+                    return
                 }
-            } finally {
+                if (error instanceof Error) {
+                    setError(error.message)
+                } else {
+                    setError(String(error))
+                }
                 setLoading(false)
             }
         }

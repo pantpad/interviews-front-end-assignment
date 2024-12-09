@@ -3,16 +3,22 @@ import { endpoint } from '../api/recipe'
 import { DetailsType } from '../api/recipe'
 
 export default function useRecipeDetails() {
-    const { data: cuisines = [], error: cuisinesError } = useData<
-        DetailsType[]
-    >(`${endpoint}/cuisines`)
+    const {
+        data: cuisines = [],
+        loading: cuisinesLoading,
+        error: cuisinesError,
+    } = useData<DetailsType[]>(`${endpoint}/cuisines`, [])
 
-    const { data: diets = [], error: dietsError } = useData<DetailsType[]>(
-        `${endpoint}/diets`
-    )
-    const { data: difficulties = [], error: difficultiesError } = useData<
-        DetailsType[]
-    >(`${endpoint}/difficulties`)
+    const {
+        data: diets = [],
+        loading: dietsLoading,
+        error: dietsError,
+    } = useData<DetailsType[]>(`${endpoint}/diets`, [])
+    const {
+        data: difficulties = [],
+        loading: difficultiesLoading,
+        error: difficultiesError,
+    } = useData<DetailsType[]>(`${endpoint}/difficulties`, [])
 
     if (cuisinesError || dietsError || difficultiesError) {
         throw new Error('Failed to fetch recipe details')
@@ -34,5 +40,8 @@ export default function useRecipeDetails() {
         cuisines: cuisinesMap,
         diets: dietsMap,
         difficulties: difficultiesMap,
+        cuisinesLoading,
+        dietsLoading,
+        difficultiesLoading,
     }
 }
