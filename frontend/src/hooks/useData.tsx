@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+const MIN_LOADING_TIME = 250
+
 export function useData<T>(url: string, initialData: T) {
     const [data, setData] = useState<T>(initialData)
     const [error, setError] = useState<string | null>(null)
@@ -21,7 +23,9 @@ export function useData<T>(url: string, initialData: T) {
                 }
                 const json = await response.json()
                 setData(json)
-                setLoading(false)
+                setTimeout(() => {
+                    setLoading(false)
+                }, MIN_LOADING_TIME)
             } catch (error) {
                 if (error instanceof Error && error.name === 'AbortError') {
                     return
@@ -31,7 +35,9 @@ export function useData<T>(url: string, initialData: T) {
                 } else {
                     setError(String(error))
                 }
-                setLoading(false)
+                setTimeout(() => {
+                    setLoading(false)
+                }, MIN_LOADING_TIME)
             }
         }
 
