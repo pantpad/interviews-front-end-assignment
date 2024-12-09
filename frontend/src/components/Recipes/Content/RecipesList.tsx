@@ -20,7 +20,7 @@ export default function RecipesList() {
         error,
         loading,
     } = useData<Recipe[]>(
-        `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}&${queryParamsString}`,
+        `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}${queryParamsString}`,
         []
     )
 
