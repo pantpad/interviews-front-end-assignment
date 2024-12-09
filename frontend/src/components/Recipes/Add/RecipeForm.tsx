@@ -1,7 +1,14 @@
+import { endpoint } from '../../../api/recipe'
+
 export default function RecipeForm() {
     return (
         <>
-            <form className="flex flex-col gap-4">
+            <form
+                className="flex flex-col gap-4"
+                action={`${endpoint}/recipes`}
+                method="POST"
+                encType="multipart/form-data"
+            >
                 <div className="[&>*]:block">
                     <label htmlFor="name">Name</label>
                     <input type="text" id="name" name="name" />
@@ -16,15 +23,15 @@ export default function RecipeForm() {
                 </div>
                 <div className="[&>*]:block">
                     <label htmlFor="cuisine">Cuisine</label>
-                    <input type="number" id="cuisine" name="cuisine" />
+                    <input type="number" id="cuisine" name="cuisineId" />
                 </div>
                 <div className="[&>*]:block">
                     <label htmlFor="dietary">Dietary</label>
-                    <input type="number" id="dietary" name="dietary" />
+                    <input type="number" id="dietary" name="dietaryId" />
                 </div>
                 <div className="[&>*]:block">
                     <label htmlFor="difficulty">Difficulty</label>
-                    <input type="number" id="difficulty" name="difficulty" />
+                    <input type="number" id="difficulty" name="difficultyId" />
                 </div>
                 <div className="[&>*]:block">
                     <label htmlFor="image">Image</label>
@@ -35,10 +42,10 @@ export default function RecipeForm() {
                         type="submit"
                         className="rounded-md bg-blue-500 px-4 py-2 text-white"
                     >
-                        Add
+                        Add new recipe
                     </button>
                     <button
-                        type="button"
+                        type="reset"
                         className="rounded-md bg-gray-500 px-4 py-2 text-white"
                     >
                         Clear
