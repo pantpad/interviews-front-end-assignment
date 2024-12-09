@@ -13,7 +13,7 @@ export default function RecipeCard({ recipe, noLink }: RecipeCardProps) {
     const { cuisines, diets, difficulties } = useRecipesContext()
     const [isLoading, setIsLoading] = useState(true)
 
-    const fullImageUrl = `http://localhost:8080${image}`
+    const fullImageUrl = `${import.meta.env.VITE_API_ENDPOINT}${image}`
 
     const loadingImage = isLoading ? (
         <div className="absolute inset-0 aspect-square h-full w-full animate-pulse rounded-md bg-gray-200" />
