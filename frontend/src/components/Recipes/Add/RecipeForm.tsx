@@ -1,6 +1,85 @@
+import { useState } from 'react'
 import { endpoint } from '../../../api/recipe'
 
+type FormInputTypes = {
+    name: string
+    ingredients: string
+    instructions: string
+    cuisineId: number
+    dietId: number
+    difficultyId: number
+    image: string
+}
+
+const formInputs = [
+    {
+        id: 'name',
+        name: 'name',
+        type: 'text',
+        label: 'Name',
+        placeholder: 'Insert recipe name',
+    },
+    {
+        id: 'ingredients',
+        name: 'ingredients',
+        type: 'text',
+        label: 'Ingredients',
+        placeholder: 'Insert ingredients',
+    },
+    {
+        id: 'instructions',
+        name: 'instructions',
+        type: 'text',
+        label: 'Instructions',
+        placeholder: 'Insert instructions',
+    },
+    {
+        id: 'cuisineId',
+        name: 'cuisineId',
+        type: 'number',
+        label: 'Cuisine',
+        placeholder: 'Insert cuisine',
+    },
+    {
+        id: 'dietId',
+        name: 'dietId',
+        type: 'number',
+        label: 'Dietary',
+        placeholder: 'Insert dietary',
+    },
+    {
+        id: 'difficultyId',
+        name: 'difficultyId',
+        type: 'number',
+        label: 'Difficulty',
+        placeholder: 'Insert difficulty',
+    },
+    {
+        id: 'image',
+        name: 'image',
+        type: 'file',
+        label: 'Image',
+        placeholder: 'Insert image',
+    },
+]
+
 export default function RecipeForm() {
+    const [values, setValues] = useState<FormInputTypes>({
+        name: '',
+        ingredients: '',
+        instructions: '',
+        cuisineId: 0,
+        dietId: 0,
+        difficultyId: 0,
+        image: '',
+    })
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setValues({ ...values, [e.target.name]: e.target.value })
+    }
+
+    console.log(values)
+
     return (
         <>
             <form
@@ -9,34 +88,16 @@ export default function RecipeForm() {
                 method="POST"
                 encType="multipart/form-data"
             >
-                <div className="[&>*]:block">
-                    <label htmlFor="name">Name</label>
-                    <input type="text" id="name" name="name" />
-                </div>
-                <div className="[&>*]:block">
-                    <label htmlFor="ingredients">Ingredients</label>
-                    <input type="text" id="ingredients" name="ingredients" />
-                </div>
-                <div className="[&>*]:block">
-                    <label htmlFor="instructions">Instructions</label>
-                    <textarea id="instructions" name="instructions" />
-                </div>
-                <div className="[&>*]:block">
-                    <label htmlFor="cuisine">Cuisine</label>
-                    <input type="number" id="cuisine" name="cuisineId" />
-                </div>
-                <div className="[&>*]:block">
-                    <label htmlFor="dietary">Dietary</label>
-                    <input type="number" id="dietary" name="dietaryId" />
-                </div>
-                <div className="[&>*]:block">
-                    <label htmlFor="difficulty">Difficulty</label>
-                    <input type="number" id="difficulty" name="difficultyId" />
-                </div>
-                <div className="[&>*]:block">
-                    <label htmlFor="image">Image</label>
-                    <input type="file" id="image" name="image" />
-                </div>
+                {formInputs.map((input) => (
+                    <div className="[&>*]:block" key={input.id}>
+                        <label htmlFor={input.name}>{input.label}</label>
+                        <input
+                            {...input}
+                            onChange={handleChange}
+                            value={values[input.name as keyof typeof values]}
+                        />
+                    </div>
+                ))}
                 <div className="flex gap-4">
                     <button
                         type="submit"
