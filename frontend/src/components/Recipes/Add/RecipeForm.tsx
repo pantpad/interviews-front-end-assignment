@@ -78,15 +78,38 @@ export default function RecipeForm() {
         setValues({ ...values, [e.target.name]: e.target.value })
     }
 
-    console.log(values)
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+        console.log(values)
+
+        const form = new FormData(e.currentTarget)
+        const formData = Object.fromEntries(form.entries())
+        console.log(formData)
+
+        const sendData = await fetch(`${endpoint}/recipes`, {
+            method: 'POST',
+            headers: {
+                enctype: 'multipart/form-data',
+            },
+            body: form,
+        })
+
+        const response = await sendData.json()
+        console.log(response)
+
+        if (sendData.ok) {
+            console.log('Recipe added successfully')
+        } else {
+            console.log('Error adding recipe')
+        }
+    }
 
     return (
         <>
             <form
                 className="flex flex-col gap-4"
                 action={`${endpoint}/recipes`}
-                method="POST"
-                encType="multipart/form-data"
+                onSubmit={handleSubmit}
             >
                 {formInputs.map((input) => (
                     <div className="[&>*]:block" key={input.id}>
