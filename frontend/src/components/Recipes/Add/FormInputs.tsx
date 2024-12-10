@@ -1,8 +1,11 @@
-import { FormSelectType } from './FormSelect'
-
 import FormInput from './FormInput'
 import FormSelect from './FormSelect'
-import { formInputs, useFormContext } from '../../../context/form-context'
+import { useFormContext } from '../../../context/form-context'
+import {
+    recipeFormInputs as formInputs,
+    FormInputType,
+    FormSelectType,
+} from '../../../utils/recipeFormInputs'
 
 export default function FormInputs() {
     const { values, errorVisibility } = useFormContext()
@@ -14,12 +17,12 @@ export default function FormInputs() {
                     <label htmlFor={input.name}>{input.label}</label>
                     {'options' in input ? (
                         <FormSelect
-                            input={input as FormSelectType['input']}
+                            input={input as FormSelectType}
                             value={values[input.name as keyof typeof values]}
                         />
                     ) : (
                         <FormInput
-                            input={input}
+                            input={input as FormInputType}
                             value={values[input.name as keyof typeof values]}
                             errorVisibility={errorVisibility}
                         />

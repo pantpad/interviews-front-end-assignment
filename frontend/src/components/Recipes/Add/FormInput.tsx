@@ -1,30 +1,16 @@
 import { useFormContext } from '../../../context/form-context'
-
-export type FormInputType = {
-    input: {
-        id: string
-        name: string
-        type: string
-        label: string
-        placeholder: string
-        required: boolean
-        pattern?: string
-        errorMessage: string
-        min?: number
-        max?: number
-        accept?: string
-    }
+import { FormInputType, ErrorVisibility } from '../../../utils/recipeFormInputs'
+type InputProps = {
+    input: FormInputType
     value: string | number
-    errorVisibility: {
-        [key: string]: boolean
-    }
+    errorVisibility: ErrorVisibility
 }
 
 export default function FormInput({
     input,
     value,
     errorVisibility,
-}: FormInputType) {
+}: InputProps) {
     const { handleChange, showError } = useFormContext()
     const { errorMessage, ...inputProps } = input
 

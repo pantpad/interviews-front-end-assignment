@@ -1,16 +1,11 @@
 import { useFormContext } from '../../../context/form-context'
-
-export type FormSelectType = {
-    input: {
-        id: string
-        name: string
-        label: string
-        options: { value: number; label: string }[]
-    }
+import { FormSelectType } from '../../../utils/recipeFormInputs'
+export type SelectProps = {
+    input: FormSelectType
     value: string | number
 }
 
-export default function FormSelect({ input, value }: FormSelectType) {
+export default function FormSelect({ input, value }: SelectProps) {
     const { handleChange } = useFormContext()
 
     return (
