@@ -1,26 +1,31 @@
-import { useFormContext } from '../../../context/form-context'
-import { FormInputType, ErrorVisibility } from '../../../utils/recipeFormInputs'
+import {
+    handleChange,
+    handleShowError,
+    useFormContext,
+} from '../../../context/form-context'
+import { FormInputType } from '../../../utils/recipeFormInputs'
 type InputProps = {
     input: FormInputType
     value: string | number
-    errorVisibility: ErrorVisibility
 }
 
-export default function FormInput({
-    input,
-    value,
-    errorVisibility,
-}: InputProps) {
-    const { handleChange, showError } = useFormContext()
+export default function FormInput({ input, value }: InputProps) {
+    const {
+        dispatch,
+        state: { errorVisibility },
+    } = useFormContext()
     const { errorMessage, ...inputProps } = input
 
     return (
         <div>
             <input
-                onChange={handleChange}
+                onChange={(e) => {
+                    console.log('value', e.target.value)
+                    handleChange(dispatch, input.name, e.target.value)
+                }}
                 value={value}
                 className="peer w-64 rounded-md border border-gray-300 p-2"
-                onBlur={() => showError(input)}
+                onBlur={() => handleShowError(dispatch, input.name)}
                 {...inputProps}
             />
             <div className="my-2 h-4 peer-invalid:[&>span]:block">
