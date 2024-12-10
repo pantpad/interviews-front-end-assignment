@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { endpoint } from '../../../api/recipe'
+import FormInput from './FormInput'
+import FormSelect, { FormSelectType } from './FormSelect'
 
-type FormInputTypes = {
+type FormValues = {
     name: string
     ingredients: string
     instructions: string
@@ -69,13 +71,12 @@ const formInputs = [
     {
         id: 'difficultyId',
         name: 'difficultyId',
-        type: 'number',
         label: 'Difficulty',
-        placeholder: 'Insert difficulty',
-        required: true,
-        min: 1,
-        max: 3,
-        errorMessage: 'Difficulty must be a number between 1 and 3',
+        options: [
+            { value: 1, label: 'Easy' },
+            { value: 2, label: 'Medium' },
+            { value: 3, label: 'Hard' },
+        ],
     },
     {
         id: 'image',
@@ -105,17 +106,18 @@ const initialErrorVisibility = {
     instructions: false,
     cuisineId: false,
     dietId: false,
-    difficultyId: false,
     image: false,
 }
 
 export default function RecipeForm() {
-    const [values, setValues] = useState<FormInputTypes>(initialValues)
+    const [values, setValues] = useState<FormValues>(initialValues)
     const [errorVisibility, setErrorVisibility] = useState(
         initialErrorVisibility
     )
 
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleChange(
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) {
         setValues({ ...values, [e.target.name]: e.target.value })
     }
 
@@ -151,34 +153,26 @@ export default function RecipeForm() {
                 onSubmit={handleSubmit}
                 onReset={handleReset}
             >
-                {formInputs.map((input) => {
-                    const { errorMessage, ...inputProps } = input
-
-                    return (
-                        <div className="[&>label]:block" key={input.id}>
-                            <label htmlFor={input.name}>{input.label}</label>
-                            <input
-                                onChange={handleChange}
-                                value={
-                                    values[input.name as keyof typeof values]
-                                }
-                                className="peer w-64 rounded-md border border-gray-300 p-2"
-                                onBlur={() => {
-                                    setErrorVisibility({
-                                        ...errorVisibility,
-                                        [input.name]: true,
-                                    })
-                                }}
-                                {...inputProps}
+                {formInputs.map((input) => (
+                    <div className="[&>label]:block" key={input.id}>
+                        <label htmlFor={input.name}>{input.label}</label>
+                        {'options' in input ? (
+                            <FormSelect
+                                input={input as FormSelectType['input']}
+                                values={values}
+                                handleChange={handleChange}
                             />
-                            <span className="hidden h-4 text-red-500 peer-invalid:block">
-                                {errorVisibility[
-                                    input.name as keyof typeof errorVisibility
-                                ] && errorMessage}
-                            </span>
-                        </div>
-                    )
-                })}
+                        ) : (
+                            <FormInput
+                                input={input}
+                                values={values}
+                                errorVisibility={errorVisibility}
+                                setErrorVisibility={setErrorVisibility}
+                                handleChange={handleChange}
+                            />
+                        )}
+                    </div>
+                ))}
                 <div className="flex gap-4">
                     <button
                         type="submit"
