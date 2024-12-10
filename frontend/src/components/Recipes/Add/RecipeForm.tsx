@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { endpoint } from '../../../api/recipe'
 import FormInput from './FormInput'
 import FormSelect, { FormSelectType } from './FormSelect'
+import FormButtons from './FormButtons'
 
 type FormValues = {
     name: string
@@ -173,20 +174,7 @@ export default function RecipeForm() {
                         )}
                     </div>
                 ))}
-                <div className="flex gap-4">
-                    <button
-                        type="submit"
-                        className="rounded-md bg-blue-500 px-4 py-2 text-white"
-                    >
-                        Add new recipe
-                    </button>
-                    <button
-                        type="reset"
-                        className="rounded-md bg-gray-500 px-4 py-2 text-white"
-                    >
-                        Clear
-                    </button>
-                </div>
+                <FormButtons />
             </form>
         </>
     )
