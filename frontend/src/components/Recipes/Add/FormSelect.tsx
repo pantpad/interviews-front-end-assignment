@@ -1,3 +1,5 @@
+import { useFormContext } from '../../../context/form-context'
+
 export type FormSelectType = {
     input: {
         id: string
@@ -5,28 +7,23 @@ export type FormSelectType = {
         label: string
         options: { value: number; label: string }[]
     }
-    values: {
-        [key: string]: string | number
-    }
-    handleChange: (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-    ) => void
+    value: string | number
 }
 
-export default function FormSelect({
-    input,
-    values,
-    handleChange,
-}: FormSelectType) {
+export default function FormSelect({ input, value }: FormSelectType) {
+    const { handleChange } = useFormContext()
+
     return (
         <select
             onChange={handleChange}
-            value={values[input.name as keyof typeof values]}
+            value={value}
             className="peer w-64 rounded-md border border-gray-300 p-2"
             {...input}
         >
             {input.options?.map((option) => (
-                <option value={option.value}>{option.label}</option>
+                <option key={option.value} value={option.value}>
+                    {option.label}
+                </option>
             ))}
         </select>
     )

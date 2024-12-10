@@ -1,3 +1,5 @@
+import { useFormContext } from '../../../context/form-context'
+
 export type FormInputType = {
     input: {
         id: string
@@ -12,54 +14,36 @@ export type FormInputType = {
         max?: number
         accept?: string
     }
-    values: {
-        [key: string]: string | number
-    }
+    value: string | number
     errorVisibility: {
         [key: string]: boolean
     }
-    setErrorVisibility: React.Dispatch<
-        React.SetStateAction<{
-            name: boolean
-            ingredients: boolean
-            instructions: boolean
-            cuisineId: boolean
-            dietId: boolean
-            image: boolean
-        }>
-    >
-    handleChange: (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-    ) => void
 }
 
 export default function FormInput({
     input,
-    values,
+    value,
     errorVisibility,
-    setErrorVisibility,
-    handleChange,
 }: FormInputType) {
+    const { handleChange, showError } = useFormContext()
     const { errorMessage, ...inputProps } = input
 
     return (
-        <>
+        <div>
             <input
                 onChange={handleChange}
-                value={values[input.name as keyof typeof values]}
+                value={value}
                 className="peer w-64 rounded-md border border-gray-300 p-2"
-                onBlur={() => {
-                    setErrorVisibility((prev) => ({
-                        ...prev,
-                        [input.name]: true,
-                    }))
-                }}
+                onBlur={() => showError(input)}
                 {...inputProps}
             />
-            <span className="hidden h-4 text-red-500 peer-invalid:block">
-                {errorVisibility[input.name as keyof typeof errorVisibility] &&
-                    errorMessage}
-            </span>
-        </>
+            <div className="my-2 h-4 peer-invalid:[&>span]:block">
+                <span className="hidden text-red-500">
+                    {errorVisibility[
+                        input.name as keyof typeof errorVisibility
+                    ] && errorMessage}
+                </span>
+            </div>
+        </div>
     )
 }

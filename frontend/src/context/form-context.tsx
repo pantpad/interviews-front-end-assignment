@@ -1,4 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
+import { endpoint } from '../api/recipe'
 
 type FormContextType = {
     values: FormValues
@@ -6,6 +7,11 @@ type FormContextType = {
     errorVisibility: ErrorVisibility
     setErrorVisibility: React.Dispatch<React.SetStateAction<ErrorVisibility>>
     handleReset: () => void
+    handleChange: (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) => void
+    showError: (input: FormInputType | FormSelectType) => void
+    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
 }
 
 const FormContext = createContext<FormContextType | null>(null)
@@ -104,7 +110,7 @@ export const formInputs: (FormInputType | FormSelectType)[] = [
         placeholder: 'Insert image',
         required: true,
         accept: 'image/png, image/jpeg, image/jpg',
-        errorMessage: 'Image must be a png, jpeg or jpg',
+        errorMessage: '',
     },
 ]
 
@@ -157,6 +163,41 @@ export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
         setErrorVisibility(initialErrorVisibility)
     }
 
+    function handleChange(
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) {
+        setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    }
+
+    function showError(input: FormInputType | FormSelectType) {
+        setErrorVisibility((prev) => ({
+            ...prev,
+            [input.name]: true,
+        }))
+    }
+
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+
+        const form = new FormData(e.currentTarget)
+
+        const sendData = await fetch(`${endpoint}/recipes`, {
+            method: 'POST',
+            headers: {
+                enctype: 'multipart/form-data',
+            },
+            body: form,
+        })
+
+        if (sendData.ok) {
+            console.log('Recipe added successfully')
+            alert('Recipe added successfully')
+        } else {
+            console.log('Error adding recipe')
+            alert('Error adding recipe')
+        }
+    }
+
     return (
         <FormContext.Provider
             value={{
@@ -165,6 +206,9 @@ export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
                 errorVisibility,
                 setErrorVisibility,
                 handleReset,
+                handleChange,
+                showError,
+                handleSubmit,
             }}
         >
             {children}
