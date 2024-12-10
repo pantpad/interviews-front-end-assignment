@@ -8,7 +8,9 @@ import {
 } from '../../../utils/recipeFormInputs'
 
 export default function FormInputs() {
-    const { values, errorVisibility } = useFormContext()
+    const {
+        state: { values },
+    } = useFormContext()
 
     return (
         <div>
@@ -24,7 +26,6 @@ export default function FormInputs() {
                         <FormInput
                             input={input as FormInputType}
                             value={values[input.name as keyof typeof values]}
-                            errorVisibility={errorVisibility}
                         />
                     )}
                 </div>

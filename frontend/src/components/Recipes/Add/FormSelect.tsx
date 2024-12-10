@@ -1,4 +1,4 @@
-import { useFormContext } from '../../../context/form-context'
+import { handleChange, useFormContext } from '../../../context/form-context'
 import { FormSelectType } from '../../../utils/recipeFormInputs'
 export type SelectProps = {
     input: FormSelectType
@@ -6,11 +6,14 @@ export type SelectProps = {
 }
 
 export default function FormSelect({ input, value }: SelectProps) {
-    const { handleChange } = useFormContext()
+    const { dispatch } = useFormContext()
 
     return (
         <select
-            onChange={handleChange}
+            onChange={(e) => {
+                console.log('value', e.target.value)
+                handleChange(dispatch, input.name, e.target.value)
+            }}
             value={value}
             className="peer w-64 rounded-md border border-gray-300 p-2"
             {...input}

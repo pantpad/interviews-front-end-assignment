@@ -1,52 +1,65 @@
-import { createContext, PropsWithChildren, useContext, useState } from 'react'
 import { endpoint } from '../api/recipe'
+import { createContext, PropsWithChildren, useContext, useReducer } from 'react'
+
 import {
-    FormInputType,
-    FormSelectType,
     FormValues,
     ErrorVisibility,
     initialFormValues,
     initialErrorVisibility,
 } from '../utils/recipeFormInputs'
 
-type FormContextType = {
+type FormState = {
     values: FormValues
-    setValues: React.Dispatch<React.SetStateAction<FormValues>>
     errorVisibility: ErrorVisibility
-    setErrorVisibility: React.Dispatch<React.SetStateAction<ErrorVisibility>>
-    handleReset: () => void
-    handleChange: (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-    ) => void
-    showError: (input: FormInputType | FormSelectType) => void
+}
+
+type Action =
+    | { type: 'reset' }
+    | { type: 'change'; name: string; value: string | number }
+    | { type: 'showError'; name: string }
+
+type FormContextType = {
+    state: FormState
+    dispatch: React.Dispatch<Action>
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
 }
 
 const FormContext = createContext<FormContextType | null>(null)
 
+function formReducer(state: FormState, action: Action): FormState {
+    switch (action.type) {
+        case 'reset': {
+            return {
+                values: initialFormValues,
+                errorVisibility: initialErrorVisibility,
+            }
+        }
+        case 'change': {
+            return {
+                ...state,
+                values: { ...state.values, [action.name]: action.value },
+            }
+        }
+        case 'showError': {
+            return {
+                ...state,
+                errorVisibility: {
+                    ...state.errorVisibility,
+                    [action.name]: true,
+                },
+            }
+        }
+        default: {
+            return state
+        }
+    }
+}
+
 export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
-    const [values, setValues] = useState(initialFormValues)
-    const [errorVisibility, setErrorVisibility] = useState(
-        initialErrorVisibility
-    )
-
-    function handleReset() {
-        setValues(initialFormValues)
-        setErrorVisibility(initialErrorVisibility)
-    }
-
-    function handleChange(
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-    ) {
-        setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-    }
-
-    function showError(input: FormInputType | FormSelectType) {
-        setErrorVisibility((prev) => ({
-            ...prev,
-            [input.name]: true,
-        }))
-    }
+    const [state, dispatch] = useReducer(formReducer, {
+        values: initialFormValues,
+        errorVisibility: initialErrorVisibility,
+    })
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -73,13 +86,8 @@ export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
     return (
         <FormContext.Provider
             value={{
-                values,
-                setValues,
-                errorVisibility,
-                setErrorVisibility,
-                handleReset,
-                handleChange,
-                showError,
+                state,
+                dispatch,
                 handleSubmit,
             }}
         >
@@ -95,5 +103,19 @@ export const useFormContext = () => {
     }
     return context
 }
+
+export const handleReset = (dispatch: React.Dispatch<Action>) =>
+    dispatch({ type: 'reset' })
+
+export const handleChange = (
+    dispatch: React.Dispatch<Action>,
+    name: string,
+    value: string | number
+) => dispatch({ type: 'change', name, value })
+
+export const handleShowError = (
+    dispatch: React.Dispatch<Action>,
+    name: string
+) => dispatch({ type: 'showError', name })
 
 export default FormContext
