@@ -19,10 +19,9 @@ export default function FormInput({ input, value }: InputProps) {
     return (
         <div>
             <input
-                onChange={(e) => {
-                    console.log('value', e.target.value)
+                onChange={(e) =>
                     handleChange(dispatch, input.name, e.target.value)
-                }}
+                }
                 value={value}
                 className="peer w-64 rounded-md border border-gray-300 p-2"
                 onBlur={() => handleShowError(dispatch, input.name)}

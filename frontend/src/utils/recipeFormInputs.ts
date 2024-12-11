@@ -1,6 +1,6 @@
 export type FormInputType = {
     id: string
-    name: string
+    name: keyof FormValues
     type: string
     label: string
     placeholder: string
@@ -14,7 +14,7 @@ export type FormInputType = {
 
 export type FormSelectType = {
     id: string
-    name: string
+    name: keyof FormValues
     label: string
     options: { value: number; label: string }[]
 }

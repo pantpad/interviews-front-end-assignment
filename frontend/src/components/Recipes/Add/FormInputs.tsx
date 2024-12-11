@@ -7,6 +7,12 @@ import {
     FormSelectType,
 } from '../../../utils/recipeFormInputs'
 
+function isFormSelect(
+    input: FormInputType | FormSelectType
+): input is FormSelectType {
+    return 'options' in input
+}
+
 export default function FormInputs() {
     const {
         state: { values },
@@ -17,16 +23,10 @@ export default function FormInputs() {
             {formInputs.map((input) => (
                 <div className="[&>label]:block" key={input.id}>
                     <label htmlFor={input.name}>{input.label}</label>
-                    {'options' in input ? (
-                        <FormSelect
-                            input={input as FormSelectType}
-                            value={values[input.name as keyof typeof values]}
-                        />
+                    {isFormSelect(input) ? (
+                        <FormSelect input={input} value={values[input.name]} />
                     ) : (
-                        <FormInput
-                            input={input as FormInputType}
-                            value={values[input.name as keyof typeof values]}
-                        />
+                        <FormInput input={input} value={values[input.name]} />
                     )}
                 </div>
             ))}
