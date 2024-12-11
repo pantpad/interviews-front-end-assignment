@@ -16,7 +16,7 @@ export type FormSelectType = {
     id: string
     name: keyof FormValues
     label: string
-    options: { value: number; label: string }[]
+    options: 'cuisines' | 'diets' | 'difficulties'
 }
 
 export type FormValues = {
@@ -75,34 +75,20 @@ export const recipeFormInputs: (FormInputType | FormSelectType)[] = [
     {
         id: 'cuisineId',
         name: 'cuisineId',
-        type: 'number',
         label: 'Cuisine',
-        placeholder: 'Insert cuisine',
-        required: true,
-        min: 1,
-        max: 3,
-        errorMessage: 'Cuisine must be a number between 1 and 3',
+        options: 'cuisines',
     },
     {
         id: 'dietId',
         name: 'dietId',
-        type: 'number',
         label: 'Dietary',
-        placeholder: 'Insert dietary',
-        required: true,
-        min: 1,
-        max: 3,
-        errorMessage: 'Dietary must be a number between 1 and 3',
+        options: 'diets',
     },
     {
         id: 'difficultyId',
         name: 'difficultyId',
         label: 'Difficulty',
-        options: [
-            { value: 1, label: 'Easy' },
-            { value: 2, label: 'Medium' },
-            { value: 3, label: 'Hard' },
-        ],
+        options: 'difficulties',
     },
     {
         id: 'image',

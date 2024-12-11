@@ -1,4 +1,5 @@
 import { handleChange, useFormContext } from '../../../context/form-context'
+import useRecipeDetails from '../../../hooks/useRecipeDetails'
 import { FormSelectType } from '../../../utils/recipeFormInputs'
 export type SelectProps = {
     input: FormSelectType
@@ -7,6 +8,9 @@ export type SelectProps = {
 
 export default function FormSelect({ input, value }: SelectProps) {
     const { dispatch } = useFormContext()
+    const { getOptionArray } = useRecipeDetails()
+
+    const options = getOptionArray(input.options)
 
     return (
         <select
@@ -17,9 +21,9 @@ export default function FormSelect({ input, value }: SelectProps) {
             className="peer w-64 rounded-md border border-gray-300 p-2"
             {...input}
         >
-            {input.options?.map((option) => (
-                <option key={option.value} value={option.value}>
-                    {option.label}
+            {options?.map((option) => (
+                <option key={option.id} value={option.id}>
+                    {option.name}
                 </option>
             ))}
         </select>
