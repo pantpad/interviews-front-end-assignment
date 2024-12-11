@@ -1,22 +1,15 @@
 import { submitRecipe } from '../api/recipe'
 import { createContext, PropsWithChildren, useContext, useReducer } from 'react'
 
-import {
-    FormValues,
-    ErrorVisibility,
-    initialFormValues,
-    initialErrorVisibility,
-} from '../utils/recipeFormInputs'
+import { FormValues, initialFormValues } from '../utils/recipeFormInputs'
 
 type FormState = {
     values: FormValues
-    errorVisibility: ErrorVisibility
 }
 
 type Action =
     | { type: 'reset' }
     | { type: 'change'; name: string; value: string | number }
-    | { type: 'showError'; name: string }
 
 type FormContextType = {
     state: FormState
@@ -31,22 +24,12 @@ function formReducer(state: FormState, action: Action): FormState {
         case 'reset': {
             return {
                 values: initialFormValues,
-                errorVisibility: initialErrorVisibility,
             }
         }
         case 'change': {
             return {
                 ...state,
                 values: { ...state.values, [action.name]: action.value },
-            }
-        }
-        case 'showError': {
-            return {
-                ...state,
-                errorVisibility: {
-                    ...state.errorVisibility,
-                    [action.name]: true,
-                },
             }
         }
         default: {
@@ -58,7 +41,6 @@ function formReducer(state: FormState, action: Action): FormState {
 export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [state, dispatch] = useReducer(formReducer, {
         values: initialFormValues,
-        errorVisibility: initialErrorVisibility,
     })
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -105,10 +87,5 @@ export const handleChange = (
     name: string,
     value: string | number
 ) => dispatch({ type: 'change', name, value })
-
-export const handleShowError = (
-    dispatch: React.Dispatch<Action>,
-    name: string
-) => dispatch({ type: 'showError', name })
 
 export default FormContext

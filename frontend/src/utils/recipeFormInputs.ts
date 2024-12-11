@@ -29,15 +29,6 @@ export type FormValues = {
     image: string
 }
 
-export type ErrorVisibility = {
-    name: boolean
-    ingredients: boolean
-    instructions: boolean
-    cuisineId: boolean
-    dietId: boolean
-    image: boolean
-}
-
 export const initialFormValues: FormValues = {
     name: '',
     ingredients: '',
@@ -46,15 +37,6 @@ export const initialFormValues: FormValues = {
     dietId: 1,
     difficultyId: 1,
     image: '',
-}
-
-export const initialErrorVisibility: ErrorVisibility = {
-    name: false,
-    ingredients: false,
-    instructions: false,
-    cuisineId: false,
-    dietId: false,
-    image: false,
 }
 
 export const recipeFormInputs: (FormInputType | FormSelectType)[] = [

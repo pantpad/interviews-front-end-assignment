@@ -1,8 +1,5 @@
-import {
-    handleChange,
-    handleShowError,
-    useFormContext,
-} from '../../../context/form-context'
+import { useState } from 'react'
+import { handleChange, useFormContext } from '../../../context/form-context'
 import { FormInputType } from '../../../utils/recipeFormInputs'
 type InputProps = {
     input: FormInputType
@@ -10,11 +7,10 @@ type InputProps = {
 }
 
 export default function FormInput({ input, value }: InputProps) {
-    const {
-        dispatch,
-        state: { errorVisibility },
-    } = useFormContext()
+    const { dispatch } = useFormContext()
     const { errorMessage, ...inputProps } = input
+
+    const [error, setError] = useState(false)
 
     return (
         <div>
@@ -24,14 +20,12 @@ export default function FormInput({ input, value }: InputProps) {
                 }
                 value={value}
                 className="peer w-64 rounded-md border border-gray-300 p-2"
-                onBlur={() => handleShowError(dispatch, input.name)}
+                onBlur={() => setError(true)}
                 {...inputProps}
             />
             <div className="my-2 h-4 peer-invalid:[&>span]:block">
                 <span className="hidden text-red-500">
-                    {errorVisibility[
-                        input.name as keyof typeof errorVisibility
-                    ] && errorMessage}
+                    {error && value && errorMessage}
                 </span>
             </div>
         </div>
