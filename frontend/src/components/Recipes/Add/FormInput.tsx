@@ -1,17 +1,21 @@
+import { FormValues } from './RecipeForm'
+
 export type FormInputType = {
-    input: {
-        id: string
-        name: string
-        type: string
-        label: string
-        placeholder: string
-        required: boolean
-        pattern?: string
-        errorMessage: string
-        min?: number
-        max?: number
-        accept?: string
-    }
+    id: string
+    name: keyof FormValues
+    type: string
+    label: string
+    placeholder: string
+    required: boolean
+    pattern?: string
+    errorMessage: string
+    min?: number
+    max?: number
+    accept?: string
+}
+
+type FormInputProps = {
+    input: FormInputType
     values: {
         [key: string]: string | number
     }
@@ -39,14 +43,14 @@ export default function FormInput({
     errorVisibility,
     setErrorVisibility,
     handleChange,
-}: FormInputType) {
+}: FormInputProps) {
     const { errorMessage, ...inputProps } = input
 
     return (
         <>
             <input
                 onChange={handleChange}
-                value={values[input.name as keyof typeof values]}
+                value={values[input.name]}
                 className="peer w-64 rounded-md border border-gray-300 p-2"
                 onBlur={() => {
                     setErrorVisibility((prev) => ({
@@ -57,8 +61,7 @@ export default function FormInput({
                 {...inputProps}
             />
             <span className="hidden h-4 text-red-500 peer-invalid:block">
-                {errorVisibility[input.name as keyof typeof errorVisibility] &&
-                    errorMessage}
+                {errorVisibility[input.name] && errorMessage}
             </span>
         </>
     )

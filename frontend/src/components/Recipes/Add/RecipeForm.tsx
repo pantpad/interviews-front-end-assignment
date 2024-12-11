@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { submitRecipe } from '../../../api/recipe'
-import FormInput from './FormInput'
+import FormInput, { FormInputType } from './FormInput'
 import FormSelect, { FormSelectType } from './FormSelect'
 import FormButtons from './FormButtons'
 
-type FormValues = {
+export type FormValues = {
     name: string
     ingredients: string
     instructions: string
@@ -14,7 +14,7 @@ type FormValues = {
     image: string
 }
 
-const formInputs = [
+const formInputs: (FormInputType | FormSelectType)[] = [
     {
         id: 'name',
         name: 'name',
@@ -110,6 +110,12 @@ const initialErrorVisibility = {
     image: false,
 }
 
+function isFormSelect(
+    input: FormInputType | FormSelectType
+): input is FormSelectType {
+    return 'options' in input
+}
+
 export default function RecipeForm() {
     const [values, setValues] = useState<FormValues>(initialValues)
     const [errorVisibility, setErrorVisibility] = useState(
@@ -152,9 +158,9 @@ export default function RecipeForm() {
                 {formInputs.map((input) => (
                     <div className="[&>label]:block" key={input.id}>
                         <label htmlFor={input.name}>{input.label}</label>
-                        {'options' in input ? (
+                        {isFormSelect(input) ? (
                             <FormSelect
-                                input={input as FormSelectType['input']}
+                                input={input}
                                 values={values}
                                 handleChange={handleChange}
                             />

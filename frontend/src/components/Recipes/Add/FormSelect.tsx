@@ -1,10 +1,12 @@
 export type FormSelectType = {
-    input: {
-        id: string
-        name: string
-        label: string
-        options: { value: number; label: string }[]
-    }
+    id: string
+    name: string
+    label: string
+    options: { value: number; label: string }[]
+}
+
+type FormSelectProps = {
+    input: FormSelectType
     values: {
         [key: string]: string | number
     }
@@ -17,11 +19,11 @@ export default function FormSelect({
     input,
     values,
     handleChange,
-}: FormSelectType) {
+}: FormSelectProps) {
     return (
         <select
             onChange={handleChange}
-            value={values[input.name as keyof typeof values]}
+            value={values[input.name]}
             className="peer w-64 rounded-md border border-gray-300 p-2"
             {...input}
         >
