@@ -1,4 +1,4 @@
-import { endpoint } from '../api/recipe'
+import { submitRecipe } from '../api/recipe'
 import { createContext, PropsWithChildren, useContext, useReducer } from 'react'
 
 import {
@@ -65,16 +65,9 @@ export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
         e.preventDefault()
 
         const form = new FormData(e.currentTarget)
+        const response = await submitRecipe(form)
 
-        const sendData = await fetch(`${endpoint}/recipes`, {
-            method: 'POST',
-            headers: {
-                enctype: 'multipart/form-data',
-            },
-            body: form,
-        })
-
-        if (sendData.ok) {
+        if (response.ok) {
             console.log('Recipe added successfully')
             alert('Recipe added successfully')
         } else {
