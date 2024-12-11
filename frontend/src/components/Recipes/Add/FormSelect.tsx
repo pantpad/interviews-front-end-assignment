@@ -11,7 +11,6 @@ export default function FormSelect({ input, value }: SelectProps) {
     return (
         <select
             onChange={(e) => {
-                console.log('value', e.target.value)
                 handleChange(dispatch, input.name, e.target.value)
             }}
             value={value}
