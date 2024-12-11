@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { endpoint } from '../../../api/recipe'
+import { submitRecipe } from '../../../api/recipe'
 import FormInput from './FormInput'
 import FormSelect, { FormSelectType } from './FormSelect'
 import FormButtons from './FormButtons'
@@ -126,19 +126,14 @@ export default function RecipeForm() {
         e.preventDefault()
 
         const form = new FormData(e.currentTarget)
+        const response = await submitRecipe(form)
 
-        const sendData = await fetch(`${endpoint}/recipes`, {
-            method: 'POST',
-            headers: {
-                enctype: 'multipart/form-data',
-            },
-            body: form,
-        })
-
-        if (sendData.ok) {
+        if (response.ok) {
             console.log('Recipe added successfully')
+            alert('Recipe added successfully')
         } else {
             console.log('Error adding recipe')
+            alert('Error adding recipe')
         }
     }
 
