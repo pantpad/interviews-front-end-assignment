@@ -1,27 +1,32 @@
-import { handleChange, useFormContext } from '../../../context/form-context'
+import { SelectHTMLAttributes } from 'react'
 import useRecipeDetails from '../../../hooks/useRecipeDetails'
-import { FormSelectType } from '../../../utils/recipeFormInputs'
+
 export type SelectProps = {
-    input: FormSelectType
+    options: 'cuisines' | 'diets' | 'difficulties'
+    name: string
     value: string | number
-}
+} & SelectHTMLAttributes<HTMLSelectElement>
 
-export default function FormSelect({ input, value }: SelectProps) {
-    const { dispatch } = useFormContext()
+export function FormSelect({
+    options,
+    value,
+    name,
+    onChange,
+    ...select
+}: SelectProps) {
     const { getOptionArray } = useRecipeDetails()
-
-    const options = getOptionArray(input.options)
+    const optionsValues = getOptionArray(options)
 
     return (
         <select
-            onChange={(e) => {
-                handleChange(dispatch, input.name, e.target.value)
-            }}
+            onChange={onChange}
             value={value}
-            className="peer w-64 rounded-md border border-gray-300 p-2"
-            {...input}
+            name={name}
+            className="peer mb-6 w-64 rounded-md border border-gray-300 p-2"
+            {...select}
         >
-            {options?.map((option) => (
+            <option value="">{optionsValues ? `Choose ${options}` : ''}</option>
+            {optionsValues?.map((option) => (
                 <option key={option.id} value={option.id}>
                     {option.name}
                 </option>

@@ -46,7 +46,7 @@ export const submitRecipe = async (formData: FormData) => {
         },
         body: formData,
     })
-    return response.json()
+    return response
 }
 
 export type DetailsType = Record<'id' | 'name', string>

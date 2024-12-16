@@ -1,7 +1,25 @@
 import { submitRecipe } from '../api/recipe'
 import { createContext, PropsWithChildren, useContext, useReducer } from 'react'
 
-import { FormValues, initialFormValues } from '../utils/recipeFormInputs'
+type FormValues = {
+    name: string | undefined
+    ingredients: string | undefined
+    instructions: string | undefined
+    cuisineId: number
+    dietId: number
+    difficultyId: number
+    image: string | undefined
+}
+
+const initialFormValues: FormValues = {
+    name: '',
+    ingredients: '',
+    instructions: '',
+    cuisineId: 0,
+    dietId: 0,
+    difficultyId: 0,
+    image: '',
+}
 
 type FormState = {
     values: FormValues
@@ -51,9 +69,11 @@ export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
         if (response.ok) {
             console.log('Recipe added successfully')
+            console.log(response.statusText)
             alert('Recipe added successfully')
         } else {
             console.log('Error adding recipe')
+            console.log(response.statusText)
             alert('Error adding recipe')
         }
     }
