@@ -23,7 +23,7 @@ export default function FormInputs() {
                     pattern="^[a-zA-Z0-9\s]+$"
                     errorMessage="Name must contain only letters, numbers and spaces"
                     onChange={(e) =>
-                        handleChange(dispatch, e.target.name, e.target.value)
+                        handleChange(dispatch, 'name', e.target.value)
                     }
                 />
             </div>
@@ -39,7 +39,7 @@ export default function FormInputs() {
                     pattern="^[a-zA-Z0-9\s]+$"
                     errorMessage="Ingredients must contain only letters, numbers and spaces"
                     onChange={(e) =>
-                        handleChange(dispatch, e.target.name, e.target.value)
+                        handleChange(dispatch, 'ingredients', e.target.value)
                     }
                 />
             </div>
@@ -55,7 +55,7 @@ export default function FormInputs() {
                     pattern="^[a-zA-Z0-9\s]+$"
                     errorMessage="instructions must contain only letters, numbers and spaces"
                     onChange={(e) =>
-                        handleChange(dispatch, e.target.name, e.target.value)
+                        handleChange(dispatch, 'instructions', e.target.value)
                     }
                 />
             </div>
@@ -67,7 +67,7 @@ export default function FormInputs() {
                     name="cuisineId"
                     options="cuisines"
                     onChange={(e) =>
-                        handleChange(dispatch, e.target.name, e.target.value)
+                        handleChange(dispatch, 'cuisineId', e.target.value)
                     }
                 />
             </div>
@@ -79,7 +79,7 @@ export default function FormInputs() {
                     name="dietId"
                     options="diets"
                     onChange={(e) =>
-                        handleChange(dispatch, e.target.name, e.target.value)
+                        handleChange(dispatch, 'dietId', e.target.value)
                     }
                 />
             </div>
@@ -91,7 +91,7 @@ export default function FormInputs() {
                     name="difficultyId"
                     options="difficulties"
                     onChange={(e) =>
-                        handleChange(dispatch, e.target.name, e.target.value)
+                        handleChange(dispatch, 'difficultyId', e.target.value)
                     }
                 />
             </div>
@@ -106,7 +106,7 @@ export default function FormInputs() {
                     accept="image/png, image/jpeg, image/jpg"
                     errorMessage="An image is required to add a recipe"
                     onChange={(e) =>
-                        handleChange(dispatch, e.target.name, e.target.value)
+                        handleChange(dispatch, 'image', e.target.value)
                     }
                 />
             </div>

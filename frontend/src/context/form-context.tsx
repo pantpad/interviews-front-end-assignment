@@ -104,7 +104,7 @@ export const handleReset = (dispatch: React.Dispatch<Action>) =>
 
 export const handleChange = (
     dispatch: React.Dispatch<Action>,
-    name: string,
+    name: keyof FormValues,
     value: string | number
 ) => dispatch({ type: 'change', name, value })
 
