@@ -77,7 +77,8 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
                         minLength={10}
                         rows={4}
                         title="min character lenght is 10"
-                        className="w-full rounded shadow"
+                        className="w-full rounded p-4 shadow"
+                        placeholder="Add your review here..."
                     />
                 </div>
                 <div>
@@ -91,7 +92,8 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
                         min={1}
                         max={5}
                         required
-                        className="h-8 w-64"
+                        className="w-64 rounded p-2"
+                        placeholder="Add your rating"
                     />
                 </div>
                 <button
