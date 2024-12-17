@@ -18,8 +18,6 @@ export default function RecipesList() {
         []
     )
 
-    console.log('loading', loading)
-
     if (error) {
         return <div>Error: {error}</div>
     }

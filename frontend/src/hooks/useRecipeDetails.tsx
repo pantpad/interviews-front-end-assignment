@@ -1,6 +1,7 @@
 import { useData } from './useData'
 import { endpoint } from '../api/recipe'
 import { DetailsType } from '../api/recipe'
+import { useCallback } from 'react'
 
 export default function useRecipeDetails() {
     const {
@@ -36,6 +37,20 @@ export default function useRecipeDetails() {
         difficulties?.map((obj) => [obj.id, obj.name]) ?? []
     )
 
+    const getOptionArray = useCallback(
+        (optionName: string) => {
+            switch (optionName) {
+                case 'cuisines':
+                    return cuisines
+                case 'diets':
+                    return diets
+                case 'difficulties':
+                    return difficulties
+            }
+        },
+        [cuisines, diets, difficulties]
+    )
+
     return {
         cuisines: cuisinesMap,
         diets: dietsMap,
@@ -43,5 +58,6 @@ export default function useRecipeDetails() {
         cuisinesLoading,
         dietsLoading,
         difficultiesLoading,
+        getOptionArray,
     }
 }

@@ -38,4 +38,15 @@ export const getDiets = async (): Promise<DetailsType[]> => {
     return response.json()
 }
 
+export const submitRecipe = async (formData: FormData) => {
+    const response = await fetch(`${endpoint}/recipes`, {
+        method: 'POST',
+        headers: {
+            enctype: 'multipart/form-data',
+        },
+        body: formData,
+    })
+    return response
+}
+
 export type DetailsType = Record<'id' | 'name', string>
