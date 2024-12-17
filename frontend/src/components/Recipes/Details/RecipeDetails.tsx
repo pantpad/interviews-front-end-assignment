@@ -1,13 +1,15 @@
 import { useParams } from 'react-router'
-import { RecipeCard } from '..'
-import { Recipe } from '../../../api/recipe'
-import { endpoint } from '../../../api/recipe'
 import { useData } from '../../../hooks/useData'
+
+import { Recipe, endpoint } from '../../../api/recipe'
+
+import { RecipeCard } from '..'
 import SkeletonCard from '../SkeletonCard'
+import { RecipeComments } from './RecipeComments'
 
 export default function RecipeDetails() {
     const { recipeId } = useParams()
-    // start working on ex4
+
     const {
         data: recipe,
         error,
@@ -27,8 +29,24 @@ export default function RecipeDetails() {
     }
 
     return (
-        <div>
+        <div className="mb-8 flex flex-col gap-4">
             <RecipeCard recipe={recipe} noLink />
+            {/* Recipe Ingredients  */}
+            <section>
+                <h2 className="text-2xl font-bold">Ingredients</h2>
+                <ul>
+                    {recipe.ingredients?.map((ingredient, index) => (
+                        <li key={index}>{ingredient}</li>
+                    ))}
+                </ul>
+            </section>
+            {/* Recipe Instructions */}
+            <section>
+                <h2 className="text-2xl font-bold">Instructions</h2>
+                <p>{recipe.instructions}</p>
+            </section>
+            {/* Recipe Comments     */}
+            <RecipeComments recipeId={recipeId} />
         </div>
     )
 }

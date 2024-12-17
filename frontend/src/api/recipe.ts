@@ -11,6 +11,14 @@ export type Recipe = {
     image: string
 }
 
+export type RecipeComment = {
+    id: string
+    recipeId: string
+    comment: string
+    rating: number
+    date: Date
+}
+
 export const LIMIT = 4 as const
 
 export const getRecipes = async (page: number): Promise<Recipe[]> => {
