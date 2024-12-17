@@ -61,12 +61,15 @@ export const submitComment = async (
     formData: FormData,
     recipeId: string = ''
 ) => {
+    const formObject = Object.fromEntries(formData.entries())
+    const formWithData = Object.assign({}, formObject, { date: new Date() })
+
     const response = await fetch(`${endpoint}/recipes/${recipeId}/comments`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(Object.fromEntries(formData.entries())),
+        body: JSON.stringify(formWithData),
     })
     return response
 }

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { endpoint, RecipeComment, submitComment } from '../../../api/recipe'
 import { useData } from '../../../hooks/useData'
 import SkeletonCard from '../SkeletonCard'
@@ -13,6 +14,10 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
         loading,
     } = useData(
         `${endpoint}/recipes/${recipeId}/comments`,
+        [] as RecipeComment[]
+    )
+
+    const [recipeAddedComments, setRecipeAddedComments] = useState(
         [] as RecipeComment[]
     )
 
@@ -37,7 +42,8 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
         if (response.ok) {
             console.log('Comment added successfully')
             console.log(response.statusText)
-            alert('Comment added successfully')
+            const responseData = await response.json()
+            setRecipeAddedComments((prev) => [...prev, responseData])
         } else {
             console.log('Error adding Comment')
             console.log(response.statusText)
@@ -52,7 +58,34 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
                 return (
                     <div key={comment.id}>
                         <p>{comment.comment}</p>
-                        <p>{String(comment.date)}</p>
+                        <p>
+                            {new Date(comment.date).toLocaleDateString(
+                                'de-DE',
+                                {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric',
+                                }
+                            )}
+                        </p>
+                        <p className="font-semibold">{comment.rating}</p>
+                    </div>
+                )
+            })}
+            {recipeAddedComments.map((comment) => {
+                return (
+                    <div key={comment.id}>
+                        <p>{comment.comment}</p>
+                        <p>
+                            {new Date(comment.date).toLocaleDateString(
+                                'de-DE',
+                                {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric',
+                                }
+                            )}
+                        </p>
                         <p className="font-semibold">{comment.rating}</p>
                     </div>
                 )
@@ -84,18 +117,6 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
                         max={5}
                         required
                         className="h-8 w-64"
-                    />
-                </div>
-                <div>
-                    <label htmlFor="date" className="block">
-                        Date
-                    </label>
-                    <input
-                        id="date"
-                        name="date"
-                        type="date"
-                        className="h-8 w-64"
-                        required
                     />
                 </div>
                 <button
