@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { endpoint, RecipeCommentType, submitComment } from '../../../api/recipe'
 import { useData } from '../../../hooks/useData'
 
@@ -10,6 +10,8 @@ type RecipeCommentsProps = {
 }
 
 export function RecipeComments({ recipeId }: RecipeCommentsProps) {
+    const formRef = useRef<HTMLFormElement>(null)
+
     const {
         data: recipeComments,
         error,
@@ -46,6 +48,7 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
             console.log(response.statusText)
             const responseData = await response.json()
             setRecipeAddedComments((prev) => [...prev, responseData])
+            formRef.current?.reset()
         } else {
             console.log('Error adding Comment')
             console.log(response.statusText)
@@ -62,7 +65,7 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
             {recipeAddedComments.map((comment) => (
                 <RecipeComment key={comment.id} {...comment} />
             ))}
-            <form onSubmit={submitComments}>
+            <form onSubmit={submitComments} ref={formRef}>
                 <div>
                     <label htmlFor="comment" className="block">
                         Comment
