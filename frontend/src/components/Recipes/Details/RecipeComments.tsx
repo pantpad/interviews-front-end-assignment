@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import { endpoint, RecipeComment, submitComment } from '../../../api/recipe'
+import { endpoint, RecipeCommentType, submitComment } from '../../../api/recipe'
 import { useData } from '../../../hooks/useData'
+
+import { RecipeComment } from './RecipeComment'
 import SkeletonCard from '../SkeletonCard'
 
 type RecipeCommentsProps = {
@@ -14,11 +16,11 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
         loading,
     } = useData(
         `${endpoint}/recipes/${recipeId}/comments`,
-        [] as RecipeComment[]
+        [] as RecipeCommentType[]
     )
 
     const [recipeAddedComments, setRecipeAddedComments] = useState(
-        [] as RecipeComment[]
+        [] as RecipeCommentType[]
     )
 
     if (error) {
@@ -54,42 +56,12 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
     return (
         <section className="flex flex-col gap-4">
             <h2 className="text-2xl font-bold">User Reviews</h2>
-            {recipeComments.map((comment) => {
-                return (
-                    <div key={comment.id}>
-                        <p>{comment.comment}</p>
-                        <p>
-                            {new Date(comment.date).toLocaleDateString(
-                                'de-DE',
-                                {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: 'numeric',
-                                }
-                            )}
-                        </p>
-                        <p className="font-semibold">{comment.rating}</p>
-                    </div>
-                )
-            })}
-            {recipeAddedComments.map((comment) => {
-                return (
-                    <div key={comment.id}>
-                        <p>{comment.comment}</p>
-                        <p>
-                            {new Date(comment.date).toLocaleDateString(
-                                'de-DE',
-                                {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: 'numeric',
-                                }
-                            )}
-                        </p>
-                        <p className="font-semibold">{comment.rating}</p>
-                    </div>
-                )
-            })}
+            {recipeComments.map((comment) => (
+                <RecipeComment key={comment.id} {...comment} />
+            ))}
+            {recipeAddedComments.map((comment) => (
+                <RecipeComment key={comment.id} {...comment} />
+            ))}
             <form onSubmit={submitComments}>
                 <div>
                     <label htmlFor="comment" className="block">

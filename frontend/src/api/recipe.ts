@@ -11,7 +11,7 @@ export type Recipe = {
     image: string
 }
 
-export type RecipeComment = {
+export type RecipeCommentType = {
     id: string
     recipeId: string
     comment: string
