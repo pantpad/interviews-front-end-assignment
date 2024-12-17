@@ -27,7 +27,7 @@ type FormState = {
 
 type Action =
     | { type: 'reset' }
-    | { type: 'change'; name: string; value: string | number }
+    | { type: 'change'; name: keyof FormValues; value: string | number }
 
 type FormContextType = {
     state: FormState
