@@ -1,4 +1,4 @@
-import { endpoint, RecipeComment } from '../../../api/recipe'
+import { endpoint, RecipeComment, submitComment } from '../../../api/recipe'
 import { useData } from '../../../hooks/useData'
 import SkeletonCard from '../SkeletonCard'
 
@@ -28,7 +28,22 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
         return <div>No recipe comments found</div>
     }
 
-    console.log(recipeComments)
+    async function submitComments(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+
+        const formData = new FormData(e.currentTarget)
+        const response = await submitComment(formData, recipeId)
+
+        if (response.ok) {
+            console.log('Comment added successfully')
+            console.log(response.statusText)
+            alert('Comment added successfully')
+        } else {
+            console.log('Error adding Comment')
+            console.log(response.statusText)
+            alert('Error adding Comment')
+        }
+    }
 
     return (
         <section className="flex flex-col gap-4">
@@ -42,13 +57,13 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
                     </div>
                 )
             })}
-            <form
-                action={`${endpoint}/recipes/${recipeId}/comments`}
-                method="POST"
-            >
+            <form onSubmit={submitComments}>
                 <div>
-                    <label className="block">Comment</label>
+                    <label htmlFor="comment" className="block">
+                        Comment
+                    </label>
                     <textarea
+                        id="comment"
                         name="comment"
                         required
                         minLength={10}
@@ -58,10 +73,13 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
                     />
                 </div>
                 <div>
-                    <label className="block">Rating</label>
+                    <label htmlFor="rating" className="block">
+                        Rating
+                    </label>
                     <input
-                        type="number"
+                        id="rating"
                         name="rating"
+                        type="number"
                         min={1}
                         max={5}
                         required
@@ -69,8 +87,16 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
                     />
                 </div>
                 <div>
-                    <label className="block">Date</label>
-                    <input type="date" className="h-8 w-64" required />
+                    <label htmlFor="date" className="block">
+                        Date
+                    </label>
+                    <input
+                        id="date"
+                        name="date"
+                        type="date"
+                        className="h-8 w-64"
+                        required
+                    />
                 </div>
                 <button
                     type="submit"

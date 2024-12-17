@@ -57,4 +57,18 @@ export const submitRecipe = async (formData: FormData) => {
     return response
 }
 
+export const submitComment = async (
+    formData: FormData,
+    recipeId: string = ''
+) => {
+    const response = await fetch(`${endpoint}/recipes/${recipeId}/comments`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(Object.fromEntries(formData.entries())),
+    })
+    return response
+}
+
 export type DetailsType = Record<'id' | 'name', string>
