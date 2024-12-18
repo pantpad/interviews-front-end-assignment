@@ -11,6 +11,14 @@ export type Recipe = {
     image: string
 }
 
+export type RecipeCommentType = {
+    id: string
+    recipeId: string
+    comment: string
+    rating: number
+    date: Date
+}
+
 export const LIMIT = 4 as const
 
 export const getRecipes = async (page: number): Promise<Recipe[]> => {
@@ -45,6 +53,20 @@ export const submitRecipe = async (formData: FormData) => {
             enctype: 'multipart/form-data',
         },
         body: formData,
+    })
+    return response
+}
+
+export const submitComment = async (formData: FormData, recipeId: string) => {
+    const formObject = Object.fromEntries(formData.entries())
+    const formWithData = { ...formObject, date: new Date() }
+
+    const response = await fetch(`${endpoint}/recipes/${recipeId}/comments`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formWithData),
     })
     return response
 }
