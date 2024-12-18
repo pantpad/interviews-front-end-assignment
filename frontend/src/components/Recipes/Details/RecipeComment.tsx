@@ -6,7 +6,7 @@ const RecipeComment: FC<RecipeCommentType> = ({ comment, date, rating }) => {
         <div className="rounded border bg-white p-4 shadow">
             <p>{comment}</p>
             <p>
-                {new Date(date).toLocaleDateString('de-DE', {
+                {new Date(date).toLocaleDateString(undefined, {
                     day: '2-digit',
                     month: '2-digit',
                     year: 'numeric',

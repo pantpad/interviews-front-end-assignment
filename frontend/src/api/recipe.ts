@@ -57,12 +57,9 @@ export const submitRecipe = async (formData: FormData) => {
     return response
 }
 
-export const submitComment = async (
-    formData: FormData,
-    recipeId: string = ''
-) => {
+export const submitComment = async (formData: FormData, recipeId: string) => {
     const formObject = Object.fromEntries(formData.entries())
-    const formWithData = Object.assign({}, formObject, { date: new Date() })
+    const formWithData = { ...formObject, date: new Date() }
 
     const response = await fetch(`${endpoint}/recipes/${recipeId}/comments`, {
         method: 'POST',

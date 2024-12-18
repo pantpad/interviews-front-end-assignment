@@ -10,6 +10,8 @@ import { RecipeComments } from './RecipeComments'
 export default function RecipeDetails() {
     const { recipeId } = useParams()
 
+    if (!recipeId) throw new Error('RecipeId missing in url')
+
     const {
         data: recipe,
         error,

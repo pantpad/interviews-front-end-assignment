@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { endpoint, RecipeCommentType, submitComment } from '../../../api/recipe'
 import { useData } from '../../../hooks/useData'
 
@@ -6,24 +6,30 @@ import { RecipeComment } from './RecipeComment'
 import SkeletonCard from '../SkeletonCard'
 
 type RecipeCommentsProps = {
-    recipeId: string | undefined
+    recipeId: string
+}
+
+function sortByRecent(a: RecipeCommentType, b: RecipeCommentType) {
+    const dateA = new Date(a.date)
+    const dateB = new Date(b.date)
+
+    if (dateA.getTime() > dateB.getTime()) return -1
+    else return 1
 }
 
 export function RecipeComments({ recipeId }: RecipeCommentsProps) {
-    const formRef = useRef<HTMLFormElement>(null)
-
     const {
         data: recipeComments,
         error,
         loading,
-    } = useData(
+    } = useData<RecipeCommentType[]>(
         `${endpoint}/recipes/${recipeId}/comments`,
-        [] as RecipeCommentType[]
+        []
     )
 
-    const [recipeAddedComments, setRecipeAddedComments] = useState(
-        [] as RecipeCommentType[]
-    )
+    const [recipeAddedComments, setRecipeAddedComments] = useState<
+        RecipeCommentType[]
+    >([])
 
     if (error) {
         return <div>Error: {error}</div>
@@ -39,16 +45,18 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
 
     async function submitComments(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
+        // Capture the form element immediately to avoid using useRef
+        const formElement = e.currentTarget
 
-        const formData = new FormData(e.currentTarget)
+        const formData = new FormData(formElement)
         const response = await submitComment(formData, recipeId)
 
         if (response.ok) {
             console.log('Comment added successfully')
             console.log(response.statusText)
             const responseData = await response.json()
-            setRecipeAddedComments((prev) => [...prev, responseData])
-            formRef.current?.reset()
+            setRecipeAddedComments((prev) => [responseData, ...prev])
+            formElement.reset()
         } else {
             console.log('Error adding Comment')
             console.log(response.statusText)
@@ -59,13 +67,7 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
     return (
         <section className="flex flex-col gap-4">
             <h2 className="text-2xl font-bold">User Reviews</h2>
-            {recipeComments.map((comment) => (
-                <RecipeComment key={comment.id} {...comment} />
-            ))}
-            {recipeAddedComments.map((comment) => (
-                <RecipeComment key={comment.id} {...comment} />
-            ))}
-            <form onSubmit={submitComments} ref={formRef}>
+            <form onSubmit={submitComments}>
                 <div>
                     <label htmlFor="comment" className="block">
                         Comment
@@ -103,6 +105,12 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
                     Submit Review
                 </button>
             </form>
+            {recipeAddedComments.map((comment) => (
+                <RecipeComment key={comment.id} {...comment} />
+            ))}
+            {recipeComments.sort(sortByRecent).map((comment) => (
+                <RecipeComment key={comment.id} {...comment} />
+            ))}
         </section>
     )
 }
