@@ -1,10 +1,6 @@
 import { Link } from 'react-router'
 
-const links = [
-    { to: '/recipes', label: 'Recipes' },
-    { to: '/about', label: 'Cuisines' },
-    { to: '/about', label: 'Dietary' },
-]
+const links = [{ to: '/recipes', label: 'Recipes' }]
 
 export default function AppHeader() {
     return (
@@ -29,13 +25,10 @@ export default function AppHeader() {
                 <div className="flex items-center gap-3">
                     <Link
                         to="/recipes/add"
-                        className="rounded-full border border-zinc-300 px-6 py-2 text-sm hover:bg-zinc-50"
+                        className="rounded-full border border-green-400 bg-green-300 px-6 py-2 text-sm hover:bg-zinc-50"
                     >
                         Add
                     </Link>
-                    <button className="rounded-full bg-red-500 px-6 py-2 text-sm text-white hover:bg-red-600">
-                        Filter
-                    </button>
                 </div>
             </nav>
         </header>
