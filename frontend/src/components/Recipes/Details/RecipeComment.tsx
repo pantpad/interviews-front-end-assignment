@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { RecipeCommentType } from '../../../api/recipe'
+import { StarsRating } from './StarsRating.tsx'
 
 const RecipeComment: FC<RecipeCommentType> = ({ comment, date, rating }) => {
     return (
@@ -12,7 +13,7 @@ const RecipeComment: FC<RecipeCommentType> = ({ comment, date, rating }) => {
                     year: 'numeric',
                 })}
             </p>
-            <p className="font-semibold text-yellow-500">{rating}</p>
+            <StarsRating rating={rating} />
         </div>
     )
 }
