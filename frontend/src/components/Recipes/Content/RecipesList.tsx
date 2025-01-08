@@ -24,8 +24,6 @@ export default function RecipesList() {
         },
     })
 
-    // `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}${queryParamsString.length > 0 ? `&${queryParamsString}` : ''}`,
-
     if (isPending) {
         return Array.from({ length: LIMIT }).map((_, index) => (
             <SkeletonCard key={index} />

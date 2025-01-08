@@ -1,6 +1,6 @@
 import { Link } from 'react-router'
 import { Recipe, endpoint, LIMIT } from '../../../api/recipe'
-import { useData } from '../../../hooks/useData'
+import { useQuery } from '@tanstack/react-query'
 
 import useMySearchParams from '../../../hooks/useMySearchParams'
 
@@ -8,12 +8,19 @@ export default function RecipesPagination() {
     const { page, queryParamsString } = useMySearchParams()
 
     // Get total number of recipes
-    const { data: totalRecipes, loading } = useData<Recipe[]>(
-        `${endpoint}/recipes?${queryParamsString}`,
-        []
-    )
+    const { data: totalRecipes, isPending } = useQuery<Recipe[]>({
+        queryKey: ['totalRecipes', queryParamsString],
+        queryFn: async () => {
+            const response = await fetch(
+                `${endpoint}/recipes?${queryParamsString}`
+            )
+            return response.json()
+        },
+    })
 
-    if (loading) return null
+    //        `${endpoint}/recipes?${queryParamsString}`,
+
+    if (isPending) return null
 
     const totalPages = Math.ceil((totalRecipes?.length || 0) / LIMIT)
 
