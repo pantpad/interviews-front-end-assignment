@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client'
 
 import { BrowserRouter, Routes, Route } from 'react-router'
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
 import './index.css'
 
 import App from './App'
@@ -12,29 +14,33 @@ import RecipeDetails from './components/Recipes/Details/RecipeDetails'
 import RecipesIndex from './components/Recipes/RecipesIndex'
 import AddRecipe from './components/Recipes/Add/AddRecipe'
 
+const queryClient = new QueryClient()
+
 const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
     const root = ReactDOM.createRoot(rootElement)
     root.render(
         <StrictMode>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<App />}>
-                        <Route index element={<Home />} />
-                        <Route path="/recipes" element={<RecipesIndex />}>
-                            <Route index element={<Recipes />} />
-                            <Route
-                                path="/recipes/:recipeId"
-                                element={<RecipeDetails />}
-                            />
-                            <Route
-                                path="/recipes/add"
-                                element={<AddRecipe />}
-                            />
+            <QueryClientProvider client={queryClient}>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<App />}>
+                            <Route index element={<Home />} />
+                            <Route path="/recipes" element={<RecipesIndex />}>
+                                <Route index element={<Recipes />} />
+                                <Route
+                                    path="/recipes/:recipeId"
+                                    element={<RecipeDetails />}
+                                />
+                                <Route
+                                    path="/recipes/add"
+                                    element={<AddRecipe />}
+                                />
+                            </Route>
                         </Route>
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+                    </Routes>
+                </BrowserRouter>
+            </QueryClientProvider>
         </StrictMode>
     )
 }
