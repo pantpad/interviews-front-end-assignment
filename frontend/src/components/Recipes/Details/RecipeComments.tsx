@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { endpoint, RecipeCommentType, submitComment } from '../../../api/recipe'
-import { useData } from '../../../hooks/useData'
+import { useQuery } from '@tanstack/react-query'
 
 import { RecipeComment } from './RecipeComment'
 import SkeletonCard from '../SkeletonCard'
@@ -21,21 +21,27 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
     const {
         data: recipeComments,
         error,
-        loading,
-    } = useData<RecipeCommentType[]>(
-        `${endpoint}/recipes/${recipeId}/comments`,
-        []
-    )
+        isPending,
+        isError,
+    } = useQuery<RecipeCommentType[]>({
+        queryKey: ['recipeComments', recipeId],
+        queryFn: async () => {
+            const response = await fetch(
+                `${endpoint}/recipes/${recipeId}/comments`
+            )
+            return await response.json()
+        },
+    })
 
     const [recipeAddedComments, setRecipeAddedComments] = useState<
         RecipeCommentType[]
     >([])
 
-    if (error) {
-        return <div>Error: {error}</div>
+    if (isError) {
+        return <div>Error: {error.message}</div>
     }
 
-    if (loading) {
+    if (isPending) {
         return <SkeletonCard />
     }
 
