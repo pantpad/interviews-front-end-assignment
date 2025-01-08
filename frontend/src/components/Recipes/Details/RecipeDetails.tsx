@@ -1,5 +1,5 @@
 import { useParams } from 'react-router'
-import { useData } from '../../../hooks/useData'
+import { useQuery } from '@tanstack/react-query'
 
 import { Recipe, endpoint } from '../../../api/recipe'
 
@@ -15,15 +15,24 @@ export default function RecipeDetails() {
     const {
         data: recipe,
         error,
-        loading,
-    } = useData<Recipe>(`${endpoint}/recipes/${recipeId}`, {} as Recipe)
+        isPending,
+        isError,
+    } = useQuery<Recipe>({
+        queryKey: ['recipe', recipeId],
+        queryFn: async (): Promise<Recipe> => {
+            const response = await fetch(`${endpoint}/recipes/${recipeId}`)
+            return await response.json()
+        },
+    })
 
-    if (error) {
-        return <div>Error: {error}</div>
+    // `${endpoint}/recipes/${recipeId}`, {} as Recipe
+
+    if (isPending) {
+        return <SkeletonCard />
     }
 
-    if (loading) {
-        return <SkeletonCard />
+    if (isError) {
+        return <div>Error: {error.message}</div>
     }
 
     if (!recipe) {
