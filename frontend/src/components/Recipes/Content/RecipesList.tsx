@@ -1,5 +1,5 @@
 import { endpoint, LIMIT, Recipe } from '../../../api/recipe'
-import { useData } from '../../../hooks/useData'
+import { useQuery } from '@tanstack/react-query'
 
 import useMySearchParams from '../../../hooks/useMySearchParams'
 
@@ -12,20 +12,28 @@ export default function RecipesList() {
     const {
         data: recipes,
         error,
-        loading,
-    } = useData<Recipe[]>(
-        `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}${queryParamsString.length > 0 ? `&${queryParamsString}` : ''}`,
-        []
-    )
+        isPending,
+        isError,
+    } = useQuery<Recipe[]>({
+        queryKey: ['recipes', page, queryParamsString],
+        queryFn: async (): Promise<Recipe[]> => {
+            const response = await fetch(
+                `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}${queryParamsString.length > 0 ? `&${queryParamsString}` : ''}`
+            )
+            return await response.json()
+        },
+    })
 
-    if (error) {
-        return <div>Error: {error}</div>
-    }
+    // `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}${queryParamsString.length > 0 ? `&${queryParamsString}` : ''}`,
 
-    if (loading) {
+    if (isPending) {
         return Array.from({ length: LIMIT }).map((_, index) => (
             <SkeletonCard key={index} />
         ))
+    }
+
+    if (isError) {
+        return <div>Error: {error.message}</div>
     }
 
     if (recipes.length === 0) {
