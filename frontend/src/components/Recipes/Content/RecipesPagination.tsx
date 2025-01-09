@@ -8,17 +8,15 @@ export default function RecipesPagination() {
     const { page, queryParamsString } = useMySearchParams()
 
     // Get total number of recipes
-    const { data: totalRecipes, isPending } = useQuery<Recipe[]>({
-        queryKey: ['totalRecipes', queryParamsString],
-        queryFn: async () => {
+    const { data: totalRecipes = [], isPending } = useQuery<Recipe[]>({
+        queryKey: ['recipes', { queryParamsString }],
+        queryFn: async (): Promise<Recipe[]> => {
             const response = await fetch(
                 `${endpoint}/recipes?${queryParamsString}`
             )
             return response.json()
         },
     })
-
-    //        `${endpoint}/recipes?${queryParamsString}`,
 
     if (isPending) return null
 

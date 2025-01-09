@@ -18,14 +18,12 @@ export default function RecipeDetails() {
         isPending,
         isError,
     } = useQuery<Recipe>({
-        queryKey: ['recipe', recipeId],
+        queryKey: ['recipe', { recipeId }],
         queryFn: async (): Promise<Recipe> => {
             const response = await fetch(`${endpoint}/recipes/${recipeId}`)
             return await response.json()
         },
     })
-
-    // `${endpoint}/recipes/${recipeId}`, {} as Recipe
 
     if (isPending) {
         return <SkeletonCard />

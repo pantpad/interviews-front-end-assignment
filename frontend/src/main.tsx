@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import './index.css'
 
@@ -40,6 +41,7 @@ if (!rootElement.innerHTML) {
                         </Route>
                     </Routes>
                 </BrowserRouter>
+                <ReactQueryDevtools />
             </QueryClientProvider>
         </StrictMode>
     )

@@ -10,12 +10,12 @@ export default function RecipesList() {
     const { page, queryParamsString } = useMySearchParams()
 
     const {
-        data: recipes,
+        data: recipes = [],
         error,
         isPending,
         isError,
     } = useQuery<Recipe[]>({
-        queryKey: ['recipes', page, queryParamsString],
+        queryKey: ['recipes', { page, queryParamsString }],
         queryFn: async (): Promise<Recipe[]> => {
             const response = await fetch(
                 `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}${queryParamsString.length > 0 ? `&${queryParamsString}` : ''}`

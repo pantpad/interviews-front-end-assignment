@@ -19,7 +19,7 @@ function sortByRecent(a: RecipeCommentType, b: RecipeCommentType) {
 
 export function RecipeComments({ recipeId }: RecipeCommentsProps) {
     const {
-        data: recipeComments,
+        data: recipeComments = [],
         error,
         isPending,
         isError,
@@ -29,6 +29,9 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
             const response = await fetch(
                 `${endpoint}/recipes/${recipeId}/comments`
             )
+            if (!response.ok) {
+                throw new Error('An error has occurred')
+            }
             return await response.json()
         },
     })
