@@ -24,7 +24,7 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
         isPending,
         isError,
     } = useQuery({
-        queryKey: ['recipeComments', recipeId],
+        queryKey: ['recipeComments', { recipeId }],
         queryFn: async () => {
             const response = await fetch(
                 `${endpoint}/recipes/${recipeId}/comments`
