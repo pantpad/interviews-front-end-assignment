@@ -14,13 +14,13 @@ export default function RecipesList() {
         error,
         isPending,
         isError,
-    } = useQuery<Recipe[]>({
+    } = useQuery({
         queryKey: ['recipes', { page, queryParamsString }],
-        queryFn: async (): Promise<Recipe[]> => {
+        queryFn: async () => {
             const response = await fetch(
                 `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}${queryParamsString.length > 0 ? `&${queryParamsString}` : ''}`
             )
-            return await response.json()
+            return (await response.json()) as Recipe[]
         },
     })
 

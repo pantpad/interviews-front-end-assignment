@@ -23,7 +23,7 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
         error,
         isPending,
         isError,
-    } = useQuery<RecipeCommentType[]>({
+    } = useQuery({
         queryKey: ['recipeComments', recipeId],
         queryFn: async () => {
             const response = await fetch(
@@ -32,7 +32,7 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
             if (!response.ok) {
                 throw new Error('An error has occurred')
             }
-            return await response.json()
+            return (await response.json()) as RecipeCommentType[]
         },
     })
 

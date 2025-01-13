@@ -17,11 +17,11 @@ export default function RecipeDetails() {
         error,
         isPending,
         isError,
-    } = useQuery<Recipe>({
+    } = useQuery({
         queryKey: ['recipe', { recipeId }],
-        queryFn: async (): Promise<Recipe> => {
+        queryFn: async () => {
             const response = await fetch(`${endpoint}/recipes/${recipeId}`)
-            return await response.json()
+            return (await response.json()) as Recipe
         },
     })
 
