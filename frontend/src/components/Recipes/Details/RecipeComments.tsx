@@ -75,9 +75,9 @@ export function RecipeComments({ recipeId, query }: RecipeCommentsProps) {
                         id="comment"
                         name="comment"
                         required
-                        minLength={10}
                         rows={4}
-                        title="min character lenght is 10"
+                        minLength={3}
+                        title="min character lenght is 3"
                         className="w-full rounded p-4 shadow"
                         placeholder="Add your review here..."
                     />
