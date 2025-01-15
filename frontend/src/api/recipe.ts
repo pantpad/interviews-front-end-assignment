@@ -26,9 +26,14 @@ export const getRecipes = async (page: number): Promise<Recipe[]> => {
     return response.json()
 }
 
-export const getRecipe = async (recipeId: string): Promise<Recipe> => {
+export const getRecipe = async (recipeId: string) => {
     const response = await fetch(`${endpoint}/recipes/${recipeId}`)
-    return response.json()
+
+    if (!response.ok) {
+        throw new Error('Could not fetch recipe :(')
+    }
+
+    return (await response.json()) as Recipe
 }
 
 export const getCuisines = async (): Promise<DetailsType[]> => {

@@ -1,7 +1,7 @@
 import { useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 
-import { Recipe, endpoint } from '../../../api/recipe'
+import { getRecipe } from '../../../api/recipe'
 
 import { RecipeCard } from '..'
 import SkeletonCard from '../SkeletonCard'
@@ -19,10 +19,7 @@ export default function RecipeDetails() {
         isError,
     } = useQuery({
         queryKey: ['recipe', { recipeId }],
-        queryFn: async () => {
-            const response = await fetch(`${endpoint}/recipes/${recipeId}`)
-            return (await response.json()) as Recipe
-        },
+        queryFn: () => getRecipe(recipeId),
     })
 
     if (isPending) {
