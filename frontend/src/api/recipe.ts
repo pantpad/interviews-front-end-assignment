@@ -21,9 +21,31 @@ export type RecipeCommentType = {
 
 export const LIMIT = 4 as const
 
-export const getRecipes = async (page: number): Promise<Recipe[]> => {
-    const response = await fetch(`${endpoint}/recipes?_page=${page}`)
-    return response.json()
+export const getAllRecipes = async (queryParamsString?: string) => {
+    const response = await fetch(
+        `${endpoint}/recipes${queryParamsString ? '?' + queryParamsString : ''}`
+    )
+
+    if (!response.ok) {
+        throw new Error('Could not fetch recipe :(')
+    }
+
+    return (await response.json()) as Recipe[]
+}
+
+export const getPaginatedRecipes = async (
+    page: number,
+    queryParamsString?: string
+) => {
+    const response = await fetch(
+        `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}${queryParamsString ? `&${queryParamsString}` : ''}`
+    )
+
+    if (!response.ok) {
+        throw new Error('Could not fetch recipe :(')
+    }
+
+    return (await response.json()) as Recipe[]
 }
 
 export const getRecipe = async (recipeId: string) => {

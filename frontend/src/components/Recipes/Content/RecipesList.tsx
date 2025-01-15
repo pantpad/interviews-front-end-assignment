@@ -1,4 +1,4 @@
-import { endpoint, LIMIT, Recipe } from '../../../api/recipe'
+import { getPaginatedRecipes, LIMIT } from '../../../api/recipe'
 import { useQuery } from '@tanstack/react-query'
 
 import useMySearchParams from '../../../hooks/useMySearchParams'
@@ -10,18 +10,13 @@ export default function RecipesList() {
     const { page, queryParamsString } = useMySearchParams()
 
     const {
-        data: recipes = [],
+        data: recipes,
         error,
         isPending,
         isError,
     } = useQuery({
         queryKey: ['recipes', { page, queryParamsString }],
-        queryFn: async () => {
-            const response = await fetch(
-                `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}${queryParamsString.length > 0 ? `&${queryParamsString}` : ''}`
-            )
-            return (await response.json()) as Recipe[]
-        },
+        queryFn: () => getPaginatedRecipes(page, queryParamsString),
     })
 
     if (isPending) {
