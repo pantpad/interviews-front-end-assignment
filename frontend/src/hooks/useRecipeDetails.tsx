@@ -1,5 +1,5 @@
 import { getCuisines, getDiets, getDifficulties } from '../api/recipe'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useQueries } from '@tanstack/react-query'
 
 const cuisinesOption = {
@@ -27,16 +27,28 @@ export default function useRecipeDetails() {
         throw new Error('Failed to fetch recipe details')
     }
 
-    const cuisinesMap = Object.fromEntries(
-        cuisines.data?.map((obj) => [obj.id, obj.name]) ?? []
+    const cuisinesMap = useMemo(
+        () =>
+            Object.fromEntries(
+                cuisines.data?.map((obj) => [obj.id, obj.name]) ?? []
+            ),
+        [cuisines.data]
     )
 
-    const dietsMap = Object.fromEntries(
-        diets.data?.map((obj) => [obj.id, obj.name]) ?? []
+    const dietsMap = useMemo(
+        () =>
+            Object.fromEntries(
+                diets.data?.map((obj) => [obj.id, obj.name]) ?? []
+            ),
+        [diets.data]
     )
 
-    const difficultiesMap = Object.fromEntries(
-        difficulties.data?.map((obj) => [obj.id, obj.name]) ?? []
+    const difficultiesMap = useMemo(
+        () =>
+            Object.fromEntries(
+                difficulties.data?.map((obj) => [obj.id, obj.name]) ?? []
+            ),
+        [difficulties.data]
     )
 
     const getOptionArray = useCallback(
