@@ -58,19 +58,32 @@ export const getRecipe = async (recipeId: string) => {
     return (await response.json()) as Recipe
 }
 
-export const getCuisines = async (): Promise<DetailsType[]> => {
+export const getCuisines = async () => {
     const response = await fetch(`${endpoint}/cuisines`)
-    return response.json()
+
+    if (!response.ok) {
+        throw new Error('Could not fetch cuisines')
+    }
+
+    return (await response.json()) as Record<'id' | 'name', string>[]
 }
 
-export const getDifficulties = async (): Promise<DetailsType[]> => {
+export const getDifficulties = async () => {
     const response = await fetch(`${endpoint}/difficulties`)
-    return response.json()
+    if (!response.ok) {
+        throw new Error('Could not fetch difficulties')
+    }
+
+    return (await response.json()) as Record<'id' | 'name', string>[]
 }
 
-export const getDiets = async (): Promise<DetailsType[]> => {
+export const getDiets = async () => {
     const response = await fetch(`${endpoint}/diets`)
-    return response.json()
+    if (!response.ok) {
+        throw new Error('Could not fetch diets')
+    }
+
+    return (await response.json()) as Record<'id' | 'name', string>[]
 }
 
 export const submitRecipe = async (formData: FormData) => {

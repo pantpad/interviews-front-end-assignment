@@ -1,40 +1,39 @@
-import { useData } from './useData'
-import { endpoint } from '../api/recipe'
-import { DetailsType } from '../api/recipe'
+import { getCuisines, getDiets, getDifficulties } from '../api/recipe'
 import { useCallback } from 'react'
+import { useQueries } from '@tanstack/react-query'
+
+const cuisinesOption = {
+    queryKey: ['cuisines'],
+    queryFn: getCuisines,
+}
+const dietsOption = {
+    queryKey: ['diets'],
+    queryFn: getDiets,
+}
+const difficultiesOption = {
+    queryKey: ['difficulties'],
+    queryFn: getDifficulties,
+}
 
 export default function useRecipeDetails() {
-    const {
-        data: cuisines = [],
-        loading: cuisinesLoading,
-        error: cuisinesError,
-    } = useData<DetailsType[]>(`${endpoint}/cuisines`, [])
+    const [cuisines, diets, difficulties] = useQueries({
+        queries: [cuisinesOption, dietsOption, difficultiesOption],
+    })
 
-    const {
-        data: diets = [],
-        loading: dietsLoading,
-        error: dietsError,
-    } = useData<DetailsType[]>(`${endpoint}/diets`, [])
-    const {
-        data: difficulties = [],
-        loading: difficultiesLoading,
-        error: difficultiesError,
-    } = useData<DetailsType[]>(`${endpoint}/difficulties`, [])
-
-    if (cuisinesError || dietsError || difficultiesError) {
+    if (cuisines.error || diets.error || difficulties.error) {
         throw new Error('Failed to fetch recipe details')
     }
 
     const cuisinesMap = Object.fromEntries(
-        cuisines?.map((obj) => [obj.id, obj.name]) ?? []
+        cuisines.data?.map((obj) => [obj.id, obj.name]) ?? []
     )
 
     const dietsMap = Object.fromEntries(
-        diets?.map((obj) => [obj.id, obj.name]) ?? []
+        diets.data?.map((obj) => [obj.id, obj.name]) ?? []
     )
 
     const difficultiesMap = Object.fromEntries(
-        difficulties?.map((obj) => [obj.id, obj.name]) ?? []
+        difficulties.data?.map((obj) => [obj.id, obj.name]) ?? []
     )
 
     const getOptionArray = useCallback(
@@ -55,9 +54,6 @@ export default function useRecipeDetails() {
         cuisines: cuisinesMap,
         diets: dietsMap,
         difficulties: difficultiesMap,
-        cuisinesLoading,
-        dietsLoading,
-        difficultiesLoading,
         getOptionArray,
     }
 }
