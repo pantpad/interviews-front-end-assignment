@@ -1,10 +1,9 @@
 import { useParams } from 'react-router'
-import { useQuery } from '@tanstack/react-query'
-
-import { getRecipe } from '../../../api/recipe'
+import { useRecipe } from '../../../hooks/useRecipe'
 
 import { RecipeCard } from '..'
 import SkeletonCard from '../SkeletonCard'
+
 import { RecipeComments } from './RecipeComments'
 
 export default function RecipeDetails() {
@@ -12,15 +11,7 @@ export default function RecipeDetails() {
 
     if (!recipeId) throw new Error('RecipeId missing in url')
 
-    const {
-        data: recipe,
-        error,
-        isPending,
-        isError,
-    } = useQuery({
-        queryKey: ['recipe', { recipeId }],
-        queryFn: () => getRecipe(recipeId),
-    })
+    const { data: recipe, error, isPending, isError } = useRecipe(recipeId)
 
     if (isPending) {
         return <SkeletonCard />
