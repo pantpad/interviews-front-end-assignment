@@ -58,6 +58,14 @@ export const getRecipe = async (recipeId: string) => {
     return (await response.json()) as Recipe
 }
 
+export const getComments = async (recipeId: string) => {
+    const response = await fetch(`${endpoint}/recipes/${recipeId}/comments`)
+    if (!response.ok) {
+        throw new Error('Could not fetch recipe comments')
+    }
+    return (await response.json()) as RecipeCommentType[]
+}
+
 export const getCuisines = async () => {
     const response = await fetch(`${endpoint}/cuisines`)
 
