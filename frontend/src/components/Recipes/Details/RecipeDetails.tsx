@@ -2,9 +2,10 @@ import { useParams } from 'react-router'
 import { useRecipe } from '../../../hooks/useRecipe'
 
 import { RecipeCard } from '..'
-import SkeletonCard from '../SkeletonCard'
 
 import { RecipeComments } from './RecipeComments'
+import { useRecipeComments } from '../../../hooks/useRecipeComments'
+import { SkeletonDetails } from './SkeletonDetails'
 
 export default function RecipeDetails() {
     const { recipeId } = useParams()
@@ -12,9 +13,10 @@ export default function RecipeDetails() {
     if (!recipeId) throw new Error('RecipeId missing in url')
 
     const { data: recipe, error, isPending, isError } = useRecipe(recipeId)
+    const recipeComments = useRecipeComments(recipeId)
 
-    if (isPending) {
-        return <SkeletonCard />
+    if (isPending || recipeComments.isPending) {
+        return <SkeletonDetails />
     }
 
     if (isError) {

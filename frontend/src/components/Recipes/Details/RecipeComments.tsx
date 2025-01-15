@@ -6,10 +6,6 @@ import { useRecipeComments } from '../../../hooks/useRecipeComments'
 import { RecipeComment } from './RecipeComment'
 import SkeletonCard from '../SkeletonCard'
 
-type RecipeCommentsProps = {
-    recipeId: string
-}
-
 function sortByRecent(a: RecipeCommentType, b: RecipeCommentType) {
     const dateA = new Date(a.date)
     const dateB = new Date(b.date)
@@ -18,17 +14,17 @@ function sortByRecent(a: RecipeCommentType, b: RecipeCommentType) {
     else return 1
 }
 
-export function RecipeComments({ recipeId }: RecipeCommentsProps) {
+export function RecipeComments({ recipeId }: { recipeId: string }) {
+    const [recipeAddedComments, setRecipeAddedComments] = useState<
+        RecipeCommentType[]
+    >([])
+
     const {
-        data: recipeComments = [],
+        data: recipeComments,
         error,
         isPending,
         isError,
     } = useRecipeComments(recipeId)
-
-    const [recipeAddedComments, setRecipeAddedComments] = useState<
-        RecipeCommentType[]
-    >([])
 
     if (isError) {
         return <div>Error: {error.message}</div>
