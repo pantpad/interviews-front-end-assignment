@@ -15,7 +15,6 @@ export function SkeletonDetails() {
                 </div>
                 <div className="ml-auto h-8 w-32 animate-pulse rounded bg-gray-200" />
             </div>
-            <SkeletonCard />
         </div>
     )
 }
