@@ -5,14 +5,17 @@ import { useQueries } from '@tanstack/react-query'
 const cuisinesOption = {
     queryKey: ['cuisines'],
     queryFn: getCuisines,
+    staleTime: Infinity,
 }
 const dietsOption = {
     queryKey: ['diets'],
     queryFn: getDiets,
+    staleTime: Infinity,
 }
 const difficultiesOption = {
     queryKey: ['difficulties'],
     queryFn: getDifficulties,
+    staleTime: Infinity,
 }
 
 export default function useRecipeDetails() {

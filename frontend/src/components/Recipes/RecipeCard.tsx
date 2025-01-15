@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
 import { Recipe } from '../../api/recipe'
-import { useRecipesContext } from '../../context/recipes-context'
 import { useState } from 'react'
+import useRecipeDetails from '../../hooks/useRecipeDetails.tsx'
 
 type RecipeCardProps = {
     recipe: Recipe
@@ -10,7 +10,7 @@ type RecipeCardProps = {
 
 export default function RecipeCard({ recipe, noLink }: RecipeCardProps) {
     const { name, image, cuisineId, dietId, difficultyId, id } = recipe
-    const { cuisines, diets, difficulties } = useRecipesContext()
+    const { cuisines, diets, difficulties } = useRecipeDetails()
     const [isLoading, setIsLoading] = useState(true)
 
     const fullImageUrl = `${import.meta.env.VITE_API_ENDPOINT}${image}`
