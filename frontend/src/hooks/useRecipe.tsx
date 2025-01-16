@@ -1,9 +1,16 @@
-import { useQuery } from '@tanstack/react-query'
-import { getRecipe } from '../api/recipe'
-
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { getRecipe, Recipe } from '../api/recipe'
+import useMySearchParams from './useMySearchParams'
 export function useRecipe(recipeId: string) {
+    const queryClient = useQueryClient()
+    const { queryParamsString } = useMySearchParams()
     return useQuery({
         queryKey: ['recipe', { recipeId }],
         queryFn: () => getRecipe(recipeId),
+        placeholderData: () => {
+            return queryClient
+                .getQueryData<Recipe[]>(['recipes', { queryParamsString }])
+                ?.find((recipe: Recipe) => recipe.id === recipeId)
+        },
     })
 }
