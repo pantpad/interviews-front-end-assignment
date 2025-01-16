@@ -10,12 +10,14 @@ export const paginatedRecipesQueryOptions = (
     queryOptions({
         queryKey: ['recipes', { page, queryParamsString }],
         queryFn: () => getPaginatedRecipes(page, queryParamsString),
-        placeholderData: (query) => {
-            return query
-        },
     })
 
 export function usePaginatedRecipes() {
     const { page, queryParamsString } = useMySearchParams()
-    return useQuery(paginatedRecipesQueryOptions(page, queryParamsString))
+    return useQuery({
+        ...paginatedRecipesQueryOptions(page, queryParamsString),
+        placeholderData: (query) => {
+            return query
+        },
+    })
 }
