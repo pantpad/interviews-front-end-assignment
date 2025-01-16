@@ -35,10 +35,12 @@ export const getAllRecipes = async (queryParamsString?: string) => {
 
 export const getPaginatedRecipes = async (
     page: number,
-    queryParamsString?: string
+    queryParamsString?: string,
+    signal?: AbortSignal
 ) => {
     const response = await fetch(
-        `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}${queryParamsString ? `&${queryParamsString}` : ''}`
+        `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}${queryParamsString ? `&${queryParamsString}` : ''}`,
+        { signal }
     )
 
     if (!response.ok) {
