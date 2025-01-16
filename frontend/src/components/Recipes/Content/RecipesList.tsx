@@ -1,23 +1,17 @@
-import { getPaginatedRecipes, LIMIT } from '../../../api/recipe'
-import { useQuery } from '@tanstack/react-query'
-
-import useMySearchParams from '../../../hooks/useMySearchParams'
+import { LIMIT } from '../../../api/recipe'
 
 import { RecipeCard } from '..'
 import SkeletonCard from '../SkeletonCard'
+import { usePaginatedRecipes } from '../../../hooks/usePaginatedRecipes'
 
 export default function RecipesList() {
-    const { page, queryParamsString } = useMySearchParams()
-
     const {
         data: recipes,
         error,
         isPending,
+        isPlaceholderData,
         isError,
-    } = useQuery({
-        queryKey: ['recipes', { page, queryParamsString }],
-        queryFn: () => getPaginatedRecipes(page, queryParamsString),
-    })
+    } = usePaginatedRecipes()
 
     if (isPending) {
         return Array.from({ length: LIMIT }).map((_, index) => (
@@ -36,7 +30,13 @@ export default function RecipesList() {
     return (
         <div className="flex flex-col gap-4">
             {recipes.map((recipe) => {
-                return <RecipeCard key={recipe.id} recipe={recipe} />
+                return (
+                    <RecipeCard
+                        key={recipe.id}
+                        recipe={recipe}
+                        isDataChanging={isPlaceholderData}
+                    />
+                )
             })}
         </div>
     )

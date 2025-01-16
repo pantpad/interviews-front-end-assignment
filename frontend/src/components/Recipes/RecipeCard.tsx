@@ -6,10 +6,15 @@ import { useQueryClient } from '@tanstack/react-query'
 
 type RecipeCardProps = {
     recipe: Recipe
+    isDataChanging?: boolean
     noLink?: boolean
 }
 
-export default function RecipeCard({ recipe, noLink }: RecipeCardProps) {
+export default function RecipeCard({
+    recipe,
+    isDataChanging,
+    noLink,
+}: RecipeCardProps) {
     const { name, image, cuisineId, dietId, difficultyId, id } = recipe
     const { cuisines, diets, difficulties } = useRecipeDetails()
     const [isLoading, setIsLoading] = useState(true)
@@ -36,7 +41,8 @@ export default function RecipeCard({ recipe, noLink }: RecipeCardProps) {
         >
             <article
                 data-clickable={!noLink}
-                className="flex select-text flex-wrap overflow-hidden rounded-lg bg-white p-2 shadow transition hover:shadow-md data-[clickable=true]:hover:scale-[1.01] data-[clickable=true]:hover:opacity-80"
+                data-changing={isDataChanging}
+                className="flex select-text flex-wrap overflow-hidden rounded-lg bg-white p-2 shadow transition hover:shadow-md data-[changing=true]:animate-pulse data-[changing=true]:bg-gray-200 data-[clickable=true]:hover:scale-[1.01] data-[clickable=true]:hover:opacity-80"
             >
                 <figure className="relative h-full w-full sm:max-w-64">
                     <>
