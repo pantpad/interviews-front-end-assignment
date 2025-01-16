@@ -2,19 +2,13 @@ import { Link } from 'react-router'
 import { LIMIT } from '../../../api/recipe'
 
 import useMySearchParams from '../../../hooks/useMySearchParams'
-import { useRecipes } from '../../../hooks/useRecipes'
+import { usePaginatedRecipes } from '../../../hooks/usePaginatedRecipes'
 
 export default function RecipesPagination() {
     const { page, queryParamsString } = useMySearchParams()
+    const { data = [], isPlaceholderData } = usePaginatedRecipes()
 
-    // Get total number of recipes
-    const { data: totalRecipes = [], isPending } = useRecipes()
-
-    if (isPending) return null
-
-    const totalPages = Math.ceil((totalRecipes?.length || 0) / LIMIT)
-
-    if (page > totalPages) {
+    if (data?.length === 0) {
         return (
             <nav className="flex items-center justify-center gap-2">
                 <Link to={`/recipes`}>
@@ -32,7 +26,7 @@ export default function RecipesPagination() {
         <nav className="flex items-center justify-center gap-2">
             <Link to={`/recipes?_page=${page - 1}&${queryParamsString}`}>
                 <button
-                    disabled={page === 1}
+                    disabled={isPlaceholderData || page === 1}
                     className={`flex h-8 items-center justify-center rounded-full px-3 ${
                         page === 1 ? 'text-gray-300' : 'hover:bg-gray-100'
                     } `}
@@ -49,9 +43,9 @@ export default function RecipesPagination() {
 
             <Link to={`/recipes?_page=${page + 1}&${queryParamsString}`}>
                 <button
-                    disabled={page === totalPages}
+                    disabled={isPlaceholderData || data?.length < LIMIT}
                     className={`flex h-8 items-center justify-center rounded-full px-3 ${
-                        page === totalPages
+                        data?.length < LIMIT
                             ? 'text-gray-300'
                             : 'hover:bg-gray-100'
                     } `}
