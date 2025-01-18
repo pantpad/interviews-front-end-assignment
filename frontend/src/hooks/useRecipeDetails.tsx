@@ -55,11 +55,11 @@ export default function useRecipeDetails() {
         (optionName: string) => {
             switch (optionName) {
                 case 'cuisines':
-                    return cuisines
+                    return cuisines.data
                 case 'diets':
-                    return diets
+                    return diets.data
                 case 'difficulties':
-                    return difficulties
+                    return difficulties.data
             }
         },
         [cuisines, diets, difficulties]
