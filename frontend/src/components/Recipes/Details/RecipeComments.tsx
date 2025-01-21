@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { RecipeCommentType } from '../../../api/recipe'
 
 import { RecipeComment } from './RecipeComment'
@@ -20,19 +19,13 @@ type RecipeCommentsProps = {
 }
 
 export function RecipeComments({ recipeId }: RecipeCommentsProps) {
-    const [recipeAddedComments, setRecipeAddedComments] = useState<
-        RecipeCommentType[]
-    >([])
-
     const { mutate, isPending: isPendingSubmitComment } = useSubmitComment()
 
     const {
         data: recipeComments,
         error,
-        isFetchedAfterMount,
         isPending,
         isError,
-        isRefetching,
     } = useRecipeComments(recipeId)
 
     if (isError) {
@@ -49,10 +42,6 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
         return <div>No recipe comments found</div>
     }
 
-    if (isRefetching && recipeAddedComments.length > 0) {
-        if (isFetchedAfterMount) setRecipeAddedComments([])
-    }
-
     async function handleSubmitComment(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         // Capture the form element immediately to avoid using useRef
@@ -62,9 +51,7 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
         mutate(
             { formData, recipeId },
             {
-                onSuccess: (responseData) => {
-                    console.log('responseData', responseData)
-                    setRecipeAddedComments((prev) => [responseData, ...prev])
+                onSuccess: () => {
                     formElement.reset()
                 },
             }
@@ -115,9 +102,6 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
                     Submit Review
                 </button>
             </form>
-            {recipeAddedComments.map((comment) => (
-                <RecipeComment key={comment.id} {...comment} />
-            ))}
             {recipeComments.sort(sortByRecent).map((comment) => (
                 <RecipeComment key={comment.id} {...comment} />
             ))}
