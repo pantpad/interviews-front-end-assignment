@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { RecipeCommentType, submitComment } from '../../../api/recipe'
+import { RecipeCommentType } from '../../../api/recipe'
 import { UseQueryResult } from '@tanstack/react-query'
 
 import { RecipeComment } from './RecipeComment'
+import { useSubmitComment } from '../../../hooks/useSubmitComment'
 
 function sortByRecent(a: RecipeCommentType, b: RecipeCommentType) {
     const dateA = new Date(a.date)
@@ -21,6 +22,8 @@ export function RecipeComments({ recipeId, query }: RecipeCommentsProps) {
     const [recipeAddedComments, setRecipeAddedComments] = useState<
         RecipeCommentType[]
     >([])
+
+    const { mutate } = useSubmitComment()
 
     const {
         isRefetching,
@@ -42,31 +45,28 @@ export function RecipeComments({ recipeId, query }: RecipeCommentsProps) {
         if (isFetchedAfterMount) setRecipeAddedComments([])
     }
 
-    async function submitComments(e: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmitComment(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         // Capture the form element immediately to avoid using useRef
         const formElement = e.currentTarget
 
         const formData = new FormData(formElement)
-        const response = await submitComment(formData, recipeId)
-
-        if (response.ok) {
-            console.log('Comment added successfully')
-            console.log(response.statusText)
-            const responseData = await response.json()
-            setRecipeAddedComments((prev) => [responseData, ...prev])
-            formElement.reset()
-        } else {
-            console.log('Error adding Comment')
-            console.log(response.statusText)
-            alert('Error adding Comment')
-        }
+        mutate(
+            { formData, recipeId },
+            {
+                onSuccess: (responseData) => {
+                    console.log('responseData', responseData)
+                    setRecipeAddedComments((prev) => [responseData, ...prev])
+                    formElement.reset()
+                },
+            }
+        )
     }
 
     return (
         <section className="flex flex-col gap-4">
             <h2 className="text-2xl font-bold">User Reviews</h2>
-            <form onSubmit={submitComments}>
+            <form onSubmit={handleSubmitComment}>
                 <div>
                     <label htmlFor="comment" className="block">
                         Comment
