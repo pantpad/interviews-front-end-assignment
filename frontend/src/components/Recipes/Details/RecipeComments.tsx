@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { RecipeCommentType, submitComment } from '../../../api/recipe'
-import { UseQueryResult } from '@tanstack/react-query'
 
 import { RecipeComment } from './RecipeComment'
+import { useRecipeComments } from '../../../hooks/useRecipeComments'
+
+import SkeletonCard from '../SkeletonCard'
 
 function sortByRecent(a: RecipeCommentType, b: RecipeCommentType) {
     const dateA = new Date(a.date)
@@ -14,24 +16,30 @@ function sortByRecent(a: RecipeCommentType, b: RecipeCommentType) {
 
 type RecipeCommentsProps = {
     recipeId: string
-    query: UseQueryResult<RecipeCommentType[], Error>
 }
 
-export function RecipeComments({ recipeId, query }: RecipeCommentsProps) {
+export function RecipeComments({ recipeId }: RecipeCommentsProps) {
     const [recipeAddedComments, setRecipeAddedComments] = useState<
         RecipeCommentType[]
     >([])
 
     const {
-        isRefetching,
         data: recipeComments,
-        isError,
         error,
         isFetchedAfterMount,
-    } = query
+        isPending,
+        isError,
+        isRefetching,
+    } = useRecipeComments(recipeId)
 
     if (isError) {
         return <div>{error?.message}</div>
+    }
+
+    if (isPending) {
+        return Array.from({ length: 1 }).map((_, index) => (
+            <SkeletonCard key={index} />
+        ))
     }
 
     if (!recipeComments) {
