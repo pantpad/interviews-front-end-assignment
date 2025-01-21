@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { RecipeCommentType } from '../../../api/recipe'
-import { UseQueryResult } from '@tanstack/react-query'
 
 import { RecipeComment } from './RecipeComment'
 import { useSubmitComment } from '../../../hooks/useSubmitComment'
+import { useRecipeComments } from '../../../hooks/useRecipeComments'
+
+import SkeletonCard from '../SkeletonCard'
 
 function sortByRecent(a: RecipeCommentType, b: RecipeCommentType) {
     const dateA = new Date(a.date)
@@ -15,26 +17,32 @@ function sortByRecent(a: RecipeCommentType, b: RecipeCommentType) {
 
 type RecipeCommentsProps = {
     recipeId: string
-    query: UseQueryResult<RecipeCommentType[], Error>
 }
 
-export function RecipeComments({ recipeId, query }: RecipeCommentsProps) {
+export function RecipeComments({ recipeId }: RecipeCommentsProps) {
     const [recipeAddedComments, setRecipeAddedComments] = useState<
         RecipeCommentType[]
     >([])
 
-    const { mutate, isPending } = useSubmitComment()
+    const { mutate, isPending: isPendingSubmitComment } = useSubmitComment()
 
     const {
-        isRefetching,
         data: recipeComments,
-        isError,
         error,
         isFetchedAfterMount,
-    } = query
+        isPending,
+        isError,
+        isRefetching,
+    } = useRecipeComments(recipeId)
 
     if (isError) {
         return <div>{error?.message}</div>
+    }
+
+    if (isPending) {
+        return Array.from({ length: 1 }).map((_, index) => (
+            <SkeletonCard key={index} />
+        ))
     }
 
     if (!recipeComments) {
@@ -100,9 +108,9 @@ export function RecipeComments({ recipeId, query }: RecipeCommentsProps) {
                 <button
                     type="submit"
                     className={`ml-auto mt-4 block rounded bg-red-500 px-2 py-1 text-white ${
-                        isPending ? 'opacity-50' : ''
+                        isPendingSubmitComment ? 'opacity-50' : ''
                     }`}
-                    disabled={isPending}
+                    disabled={isPendingSubmitComment}
                 >
                     Submit Review
                 </button>

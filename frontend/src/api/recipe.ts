@@ -19,6 +19,11 @@ export type RecipeCommentType = {
     date: Date
 }
 
+export type DetailsType = {
+    id: string
+    name: string
+}
+
 export const LIMIT = 4 as const
 
 export const getAllRecipes = async (queryParamsString?: string) => {
@@ -75,7 +80,7 @@ export const getCuisines = async () => {
         throw new Error('Could not fetch cuisines')
     }
 
-    return (await response.json()) as Record<'id' | 'name', string>[]
+    return (await response.json()) as DetailsType[]
 }
 
 export const getDifficulties = async () => {
@@ -84,7 +89,7 @@ export const getDifficulties = async () => {
         throw new Error('Could not fetch difficulties')
     }
 
-    return (await response.json()) as Record<'id' | 'name', string>[]
+    return (await response.json()) as DetailsType[]
 }
 
 export const getDiets = async () => {
@@ -93,7 +98,7 @@ export const getDiets = async () => {
         throw new Error('Could not fetch diets')
     }
 
-    return (await response.json()) as Record<'id' | 'name', string>[]
+    return (await response.json()) as DetailsType[]
 }
 
 export const submitRecipe = async (formData: FormData) => {
@@ -140,5 +145,3 @@ export const submitComment = async ({
 
     return (await response.json()) as RecipeCommentType
 }
-
-export type DetailsType = Record<'id' | 'name', string>
