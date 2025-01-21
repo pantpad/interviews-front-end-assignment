@@ -10,7 +10,7 @@ const RecipeComment: FC<RecipeCommentType> = ({ comment, date, rating }) => {
     return (
         <div
             className={`rounded border bg-white p-4 shadow ${
-                isPending ? 'animate-pulse bg-black/10' : ''
+                isPending ? 'animate-pulse opacity-50' : ''
             }`}
         >
             <p>{comment}</p>
