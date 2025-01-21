@@ -23,7 +23,7 @@ export function RecipeComments({ recipeId, query }: RecipeCommentsProps) {
         RecipeCommentType[]
     >([])
 
-    const { mutate } = useSubmitComment()
+    const { mutate, isPending } = useSubmitComment()
 
     const {
         isRefetching,
@@ -99,7 +99,10 @@ export function RecipeComments({ recipeId, query }: RecipeCommentsProps) {
                 </div>
                 <button
                     type="submit"
-                    className="ml-auto mt-4 block rounded bg-red-500 px-2 py-1 text-white"
+                    className={`ml-auto mt-4 block rounded bg-red-500 px-2 py-1 text-white ${
+                        isPending ? 'opacity-50' : ''
+                    }`}
+                    disabled={isPending}
                 >
                     Submit Review
                 </button>
