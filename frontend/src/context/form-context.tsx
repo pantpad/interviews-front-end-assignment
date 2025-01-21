@@ -66,9 +66,12 @@ export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
 
-        const form = new FormData(e.currentTarget)
+        const formElement = e.currentTarget
+        const form = new FormData(formElement)
+
         mutate(form, {
             onSuccess: () => {
+                formElement.reset()
                 handleReset(dispatch)
             },
         })

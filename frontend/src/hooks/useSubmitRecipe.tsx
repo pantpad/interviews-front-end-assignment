@@ -10,8 +10,8 @@ export default function useSubmitRecipe() {
             console.log('Recipe added successfully')
             queryClient.invalidateQueries({ queryKey: ['recipes'] })
         },
-        onError: () => {
-            alert('Error adding recipe')
+        onError: (error) => {
+            console.log('Error adding recipe', error)
         },
     })
 }
