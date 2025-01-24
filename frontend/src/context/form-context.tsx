@@ -1,5 +1,5 @@
-import { submitRecipe } from '../api/recipe'
 import { createContext, PropsWithChildren, useContext, useReducer } from 'react'
+import useSubmitRecipe from '../hooks/useSubmitRecipe'
 
 type FormValues = {
     name: string | undefined
@@ -61,21 +61,20 @@ export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
         values: initialFormValues,
     })
 
+    const { mutate } = useSubmitRecipe()
+
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
 
-        const form = new FormData(e.currentTarget)
-        const response = await submitRecipe(form)
+        const formElement = e.currentTarget
+        const form = new FormData(formElement)
 
-        if (response.ok) {
-            console.log('Recipe added successfully')
-            console.log(response.statusText)
-            alert('Recipe added successfully')
-        } else {
-            console.log('Error adding recipe')
-            console.log(response.statusText)
-            alert('Error adding recipe')
-        }
+        mutate(form, {
+            onSuccess: () => {
+                formElement.reset()
+                handleReset(dispatch)
+            },
+        })
     }
 
     return (

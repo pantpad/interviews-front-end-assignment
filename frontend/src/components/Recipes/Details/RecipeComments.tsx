@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import { RecipeCommentType, submitComment } from '../../../api/recipe'
+import { RecipeCommentType } from '../../../api/recipe'
 
 import { RecipeComment } from './RecipeComment'
+import { useSubmitComment } from '../../../hooks/useSubmitComment'
 import { useRecipeComments } from '../../../hooks/useRecipeComments'
 
 import SkeletonCard from '../SkeletonCard'
@@ -19,17 +19,13 @@ type RecipeCommentsProps = {
 }
 
 export function RecipeComments({ recipeId }: RecipeCommentsProps) {
-    const [recipeAddedComments, setRecipeAddedComments] = useState<
-        RecipeCommentType[]
-    >([])
+    const { mutate, isPending: isPendingSubmitComment } = useSubmitComment()
 
     const {
         data: recipeComments,
         error,
-        isFetchedAfterMount,
         isPending,
         isError,
-        isRefetching,
     } = useRecipeComments(recipeId)
 
     if (isError) {
@@ -46,35 +42,26 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
         return <div>No recipe comments found</div>
     }
 
-    if (isRefetching && recipeAddedComments.length > 0) {
-        if (isFetchedAfterMount) setRecipeAddedComments([])
-    }
-
-    async function submitComments(e: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmitComment(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         // Capture the form element immediately to avoid using useRef
         const formElement = e.currentTarget
 
         const formData = new FormData(formElement)
-        const response = await submitComment(formData, recipeId)
-
-        if (response.ok) {
-            console.log('Comment added successfully')
-            console.log(response.statusText)
-            const responseData = await response.json()
-            setRecipeAddedComments((prev) => [responseData, ...prev])
-            formElement.reset()
-        } else {
-            console.log('Error adding Comment')
-            console.log(response.statusText)
-            alert('Error adding Comment')
-        }
+        mutate(
+            { formData, recipeId },
+            {
+                onSuccess: () => {
+                    formElement.reset()
+                },
+            }
+        )
     }
 
     return (
         <section className="flex flex-col gap-4">
             <h2 className="text-2xl font-bold">User Reviews</h2>
-            <form onSubmit={submitComments}>
+            <form onSubmit={handleSubmitComment}>
                 <div>
                     <label htmlFor="comment" className="block">
                         Comment
@@ -107,14 +94,14 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
                 </div>
                 <button
                     type="submit"
-                    className="ml-auto mt-4 block rounded bg-red-500 px-2 py-1 text-white"
+                    className={`ml-auto mt-4 block rounded bg-red-500 px-2 py-1 text-white ${
+                        isPendingSubmitComment ? 'opacity-50' : ''
+                    }`}
+                    disabled={isPendingSubmitComment}
                 >
                     Submit Review
                 </button>
             </form>
-            {recipeAddedComments.map((comment) => (
-                <RecipeComment key={comment.id} {...comment} />
-            ))}
             {recipeComments.sort(sortByRecent).map((comment) => (
                 <RecipeComment key={comment.id} {...comment} />
             ))}

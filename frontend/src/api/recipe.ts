@@ -109,10 +109,21 @@ export const submitRecipe = async (formData: FormData) => {
         },
         body: formData,
     })
-    return response
+
+    if (!response.ok) {
+        throw new Error('Could not add recipe')
+    }
+
+    return (await response.json()) as Recipe
 }
 
-export const submitComment = async (formData: FormData, recipeId: string) => {
+export const submitComment = async ({
+    formData,
+    recipeId,
+}: {
+    formData: FormData
+    recipeId: string
+}) => {
     const formObject = Object.fromEntries(formData.entries())
     const formWithData = {
         ...formObject,
@@ -127,5 +138,10 @@ export const submitComment = async (formData: FormData, recipeId: string) => {
         },
         body: JSON.stringify(formWithData),
     })
-    return response
+
+    if (!response.ok) {
+        throw new Error('Could not add comment')
+    }
+
+    return (await response.json()) as RecipeCommentType
 }
