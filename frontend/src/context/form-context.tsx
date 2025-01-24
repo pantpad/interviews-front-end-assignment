@@ -1,14 +1,14 @@
 import { createContext, PropsWithChildren, useContext, useReducer } from 'react'
 import useSubmitRecipe from '../hooks/useSubmitRecipe'
 
-type FormValues = {
+export type FormValues = {
     name: string | undefined
     ingredients: string | undefined
     instructions: string | undefined
     cuisineId: number
     dietId: number
     difficultyId: number
-    image: string | undefined
+    image: File | null
 }
 
 const initialFormValues: FormValues = {
@@ -18,7 +18,7 @@ const initialFormValues: FormValues = {
     cuisineId: 0,
     dietId: 0,
     difficultyId: 0,
-    image: '',
+    image: null,
 }
 
 type FormState = {
@@ -27,12 +27,12 @@ type FormState = {
 
 type Action =
     | { type: 'reset' }
-    | { type: 'change'; name: keyof FormValues; value: string | number }
+    | { type: 'change'; name: keyof FormValues; value: string | number | File }
 
 type FormContextType = {
     state: FormState
     dispatch: React.Dispatch<Action>
-    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+    handleSubmit: () => void
 }
 
 const FormContext = createContext<FormContextType | null>(null)
@@ -63,15 +63,9 @@ export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     const { mutate } = useSubmitRecipe()
 
-    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-
-        const formElement = e.currentTarget
-        const form = new FormData(formElement)
-
-        mutate(form, {
+    async function handleSubmit() {
+        mutate(state.values, {
             onSuccess: () => {
-                formElement.reset()
                 handleReset(dispatch)
             },
         })
@@ -104,7 +98,7 @@ export const handleReset = (dispatch: React.Dispatch<Action>) =>
 export const handleChange = (
     dispatch: React.Dispatch<Action>,
     name: keyof FormValues,
-    value: string | number
+    value: string | number | File
 ) => dispatch({ type: 'change', name, value })
 
 export default FormContext
