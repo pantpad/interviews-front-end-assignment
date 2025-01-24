@@ -1,13 +1,10 @@
 import { useState } from 'react'
-import { endpoint, RecipeCommentType, submitComment } from '../../../api/recipe'
-import { useData } from '../../../hooks/useData'
+import { RecipeCommentType, submitComment } from '../../../api/recipe'
 
 import { RecipeComment } from './RecipeComment'
-import SkeletonCard from '../SkeletonCard'
+import { useRecipeComments } from '../../../hooks/useRecipeComments'
 
-type RecipeCommentsProps = {
-    recipeId: string
-}
+import SkeletonCard from '../SkeletonCard'
 
 function sortByRecent(a: RecipeCommentType, b: RecipeCommentType) {
     const dateA = new Date(a.date)
@@ -17,30 +14,40 @@ function sortByRecent(a: RecipeCommentType, b: RecipeCommentType) {
     else return 1
 }
 
-export function RecipeComments({ recipeId }: RecipeCommentsProps) {
-    const {
-        data: recipeComments,
-        error,
-        loading,
-    } = useData<RecipeCommentType[]>(
-        `${endpoint}/recipes/${recipeId}/comments`,
-        []
-    )
+type RecipeCommentsProps = {
+    recipeId: string
+}
 
+export function RecipeComments({ recipeId }: RecipeCommentsProps) {
     const [recipeAddedComments, setRecipeAddedComments] = useState<
         RecipeCommentType[]
     >([])
 
-    if (error) {
-        return <div>Error: {error}</div>
+    const {
+        data: recipeComments,
+        error,
+        isFetchedAfterMount,
+        isPending,
+        isError,
+        isRefetching,
+    } = useRecipeComments(recipeId)
+
+    if (isError) {
+        return <div>{error?.message}</div>
     }
 
-    if (loading) {
-        return <SkeletonCard />
+    if (isPending) {
+        return Array.from({ length: 1 }).map((_, index) => (
+            <SkeletonCard key={index} />
+        ))
     }
 
     if (!recipeComments) {
         return <div>No recipe comments found</div>
+    }
+
+    if (isRefetching && recipeAddedComments.length > 0) {
+        if (isFetchedAfterMount) setRecipeAddedComments([])
     }
 
     async function submitComments(e: React.FormEvent<HTMLFormElement>) {
@@ -76,9 +83,9 @@ export function RecipeComments({ recipeId }: RecipeCommentsProps) {
                         id="comment"
                         name="comment"
                         required
-                        minLength={10}
                         rows={4}
-                        title="min character lenght is 10"
+                        minLength={3}
+                        title="min character lenght is 3"
                         className="w-full rounded p-4 shadow"
                         placeholder="Add your review here..."
                     />
