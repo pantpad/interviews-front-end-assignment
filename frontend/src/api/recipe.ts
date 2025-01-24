@@ -1,3 +1,5 @@
+import { FormValues } from '../context/form-context'
+
 export const endpoint = import.meta.env.VITE_API_ENDPOINT
 
 export type Recipe = {
@@ -101,13 +103,31 @@ export const getDiets = async () => {
     return (await response.json()) as DetailsType[]
 }
 
-export const submitRecipe = async (formData: FormData) => {
+export const submitRecipe = async (formData: FormValues) => {
+    const form = new FormData()
+
+    const file = formData.image
+    if (!file) {
+        return
+    }
+    const blob = new Blob([await file.arrayBuffer()])
+
+    Object.entries(formData).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+            if (key === 'image') {
+                form.append(key, blob)
+            } else {
+                form.append(key, value as string)
+            }
+        }
+    })
+
     const response = await fetch(`${endpoint}/recipes`, {
         method: 'POST',
         headers: {
             enctype: 'multipart/form-data',
         },
-        body: formData,
+        body: form,
     })
 
     if (!response.ok) {
