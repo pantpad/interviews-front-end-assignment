@@ -105,9 +105,14 @@ export default function FormInputs() {
                     required
                     accept="image/png, image/jpeg, image/jpg"
                     errorMessage="An image is required to add a recipe"
-                    onChange={(e) =>
-                        handleChange(dispatch, 'image', e.target.value)
-                    }
+                    onChange={(e) => {
+                        const file = e.target.files?.[0] || null
+                        if (!file) {
+                            alert('file type not supported')
+                            return
+                        }
+                        handleChange(dispatch, 'image', file)
+                    }}
                 />
             </div>
         </div>

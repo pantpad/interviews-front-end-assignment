@@ -1,3 +1,5 @@
+import { FormValues } from '../context/form-context'
+
 export const endpoint = import.meta.env.VITE_API_ENDPOINT
 
 export type Recipe = {
@@ -19,47 +21,135 @@ export type RecipeCommentType = {
     date: Date
 }
 
+export type DetailsType = {
+    id: string
+    name: string
+}
+
 export const LIMIT = 4 as const
 
-export const getRecipes = async (page: number): Promise<Recipe[]> => {
-    const response = await fetch(`${endpoint}/recipes?_page=${page}`)
-    return response.json()
+export const getAllRecipes = async (queryParamsString?: string) => {
+    const response = await fetch(
+        `${endpoint}/recipes${queryParamsString ? '?' + queryParamsString : ''}`
+    )
+
+    if (!response.ok) {
+        throw new Error('Could not fetch recipe :(')
+    }
+
+    return (await response.json()) as Recipe[]
 }
 
-export const getRecipe = async (recipeId: string): Promise<Recipe> => {
+export const getPaginatedRecipes = async (
+    page: number,
+    queryParamsString?: string,
+    signal?: AbortSignal
+) => {
+    const response = await fetch(
+        `${endpoint}/recipes?_page=${page}&_limit=${LIMIT}${queryParamsString ? `&${queryParamsString}` : ''}`,
+        { signal }
+    )
+
+    if (!response.ok) {
+        throw new Error('Could not fetch recipe :(')
+    }
+
+    return (await response.json()) as Recipe[]
+}
+
+export const getRecipe = async (recipeId: string) => {
     const response = await fetch(`${endpoint}/recipes/${recipeId}`)
-    return response.json()
+
+    if (!response.ok) {
+        throw new Error('Could not fetch recipe :(')
+    }
+
+    return (await response.json()) as Recipe
 }
 
-export const getCuisines = async (): Promise<DetailsType[]> => {
+export const getComments = async (recipeId: string) => {
+    const response = await fetch(`${endpoint}/recipes/${recipeId}/comments`)
+    if (!response.ok) {
+        throw new Error('Could not fetch recipe comments')
+    }
+    return (await response.json()) as RecipeCommentType[]
+}
+
+export const getCuisines = async () => {
     const response = await fetch(`${endpoint}/cuisines`)
-    return response.json()
+
+    if (!response.ok) {
+        throw new Error('Could not fetch cuisines')
+    }
+
+    return (await response.json()) as DetailsType[]
 }
 
-export const getDifficulties = async (): Promise<DetailsType[]> => {
+export const getDifficulties = async () => {
     const response = await fetch(`${endpoint}/difficulties`)
-    return response.json()
+    if (!response.ok) {
+        throw new Error('Could not fetch difficulties')
+    }
+
+    return (await response.json()) as DetailsType[]
 }
 
-export const getDiets = async (): Promise<DetailsType[]> => {
+export const getDiets = async () => {
     const response = await fetch(`${endpoint}/diets`)
-    return response.json()
+    if (!response.ok) {
+        throw new Error('Could not fetch diets')
+    }
+
+    return (await response.json()) as DetailsType[]
 }
 
-export const submitRecipe = async (formData: FormData) => {
+export const submitRecipe = async (formData: FormValues) => {
+    const form = new FormData()
+
+    const file = formData.image
+    if (!file) {
+        return
+    }
+    const blob = new Blob([await file.arrayBuffer()])
+
+    Object.entries(formData).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+            if (key === 'image') {
+                form.append(key, blob)
+            } else {
+                form.append(key, value as string)
+            }
+        }
+    })
+
     const response = await fetch(`${endpoint}/recipes`, {
         method: 'POST',
         headers: {
             enctype: 'multipart/form-data',
         },
-        body: formData,
+        body: form,
     })
-    return response
+
+    if (!response.ok) {
+        throw new Error('Could not add recipe')
+    }
+
+    return (await response.json()) as Recipe
 }
 
-export const submitComment = async (formData: FormData, recipeId: string) => {
+export const submitComment = async ({
+    formData,
+    recipeId,
+}: {
+    formData: FormData
+    recipeId: string
+}) => {
     const formObject = Object.fromEntries(formData.entries())
-    const formWithData = { ...formObject, date: new Date() }
+    const formWithData = {
+        ...formObject,
+        rating: Number(formObject.rating),
+        date: new Date(),
+    }
 
     const response = await fetch(`${endpoint}/recipes/${recipeId}/comments`, {
         method: 'POST',
@@ -68,7 +158,10 @@ export const submitComment = async (formData: FormData, recipeId: string) => {
         },
         body: JSON.stringify(formWithData),
     })
-    return response
-}
 
-export type DetailsType = Record<'id' | 'name', string>
+    if (!response.ok) {
+        throw new Error('Could not add comment')
+    }
+
+    return (await response.json()) as RecipeCommentType
+}

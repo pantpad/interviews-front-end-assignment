@@ -1,51 +1,65 @@
-import { useData } from './useData'
-import { endpoint } from '../api/recipe'
-import { DetailsType } from '../api/recipe'
-import { useCallback } from 'react'
+import { getCuisines, getDiets, getDifficulties } from '../api/recipe'
+import { useCallback, useMemo } from 'react'
+import { useQueries } from '@tanstack/react-query'
+
+const cuisinesOption = {
+    queryKey: ['cuisines'],
+    queryFn: getCuisines,
+    staleTime: Infinity,
+}
+const dietsOption = {
+    queryKey: ['diets'],
+    queryFn: getDiets,
+    staleTime: Infinity,
+}
+const difficultiesOption = {
+    queryKey: ['difficulties'],
+    queryFn: getDifficulties,
+    staleTime: Infinity,
+}
 
 export default function useRecipeDetails() {
-    const {
-        data: cuisines = [],
-        loading: cuisinesLoading,
-        error: cuisinesError,
-    } = useData<DetailsType[]>(`${endpoint}/cuisines`, [])
+    const [cuisines, diets, difficulties] = useQueries({
+        queries: [cuisinesOption, dietsOption, difficultiesOption],
+    })
 
-    const {
-        data: diets = [],
-        loading: dietsLoading,
-        error: dietsError,
-    } = useData<DetailsType[]>(`${endpoint}/diets`, [])
-    const {
-        data: difficulties = [],
-        loading: difficultiesLoading,
-        error: difficultiesError,
-    } = useData<DetailsType[]>(`${endpoint}/difficulties`, [])
-
-    if (cuisinesError || dietsError || difficultiesError) {
+    if (cuisines.error || diets.error || difficulties.error) {
         throw new Error('Failed to fetch recipe details')
     }
 
-    const cuisinesMap = Object.fromEntries(
-        cuisines?.map((obj) => [obj.id, obj.name]) ?? []
+    const cuisinesMap = useMemo(
+        () =>
+            Object.fromEntries(
+                cuisines.data?.map((obj) => [obj.id, obj.name]) ?? []
+            ),
+        [cuisines.data]
     )
 
-    const dietsMap = Object.fromEntries(
-        diets?.map((obj) => [obj.id, obj.name]) ?? []
+    const dietsMap = useMemo(
+        () =>
+            Object.fromEntries(
+                diets.data?.map((obj) => [obj.id, obj.name]) ?? []
+            ),
+        [diets.data]
     )
 
-    const difficultiesMap = Object.fromEntries(
-        difficulties?.map((obj) => [obj.id, obj.name]) ?? []
+    const difficultiesMap = useMemo(
+        () =>
+            Object.fromEntries(
+                difficulties.data?.map((obj) => [obj.id, obj.name]) ?? []
+            ),
+        [difficulties.data]
     )
 
     const getOptionArray = useCallback(
         (optionName: string) => {
             switch (optionName) {
                 case 'cuisines':
-                    return cuisines
+                    return cuisines.data
                 case 'diets':
-                    return diets
+                    return diets.data
                 case 'difficulties':
-                    return difficulties
+                    return difficulties.data
             }
         },
         [cuisines, diets, difficulties]
@@ -55,9 +69,6 @@ export default function useRecipeDetails() {
         cuisines: cuisinesMap,
         diets: dietsMap,
         difficulties: difficultiesMap,
-        cuisinesLoading,
-        dietsLoading,
-        difficultiesLoading,
         getOptionArray,
     }
 }

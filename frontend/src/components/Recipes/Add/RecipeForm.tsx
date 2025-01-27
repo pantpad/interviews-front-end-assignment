@@ -9,7 +9,10 @@ export default function RecipeForm() {
         <>
             <form
                 className="flex flex-col gap-4"
-                onSubmit={handleSubmit}
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    handleSubmit()
+                }}
                 onReset={() => handleReset(dispatch)}
             >
                 <FormInputs />
