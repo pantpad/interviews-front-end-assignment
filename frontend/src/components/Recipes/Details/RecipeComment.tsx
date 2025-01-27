@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { RecipeCommentType } from '../../../api/recipe'
+import { StarsRating } from './StarsRating.tsx'
 import { useMutationState } from '@tanstack/react-query'
 import { mutationKey } from '../../../hooks/useSubmitComment'
 
@@ -21,7 +22,7 @@ const RecipeComment: FC<RecipeCommentType> = ({ comment, date, rating }) => {
                     year: 'numeric',
                 })}
             </p>
-            <p className="font-semibold text-yellow-500">{rating}</p>
+            <StarsRating rating={rating} />
         </div>
     )
 }

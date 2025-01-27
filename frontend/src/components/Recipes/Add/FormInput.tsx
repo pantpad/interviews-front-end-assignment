@@ -20,7 +20,7 @@ export function FormInput({
                 onChange={onChange}
                 value={value}
                 name={name}
-                className="peer w-64 rounded-md border border-gray-300 p-2"
+                className="peer w-full rounded-md border border-gray-300 p-2"
                 onBlur={() => setError(true)}
                 {...input}
             />

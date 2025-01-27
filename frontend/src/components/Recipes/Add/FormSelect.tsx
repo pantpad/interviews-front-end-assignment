@@ -22,7 +22,7 @@ export function FormSelect({
             onChange={onChange}
             value={value}
             name={name}
-            className="peer mb-6 w-64 rounded-md border border-gray-300 p-2"
+            className="peer mb-6 w-full rounded-md border border-gray-300 p-2"
             {...select}
         >
             <option value="">{optionsValues ? `Choose ${options}` : ''}</option>
