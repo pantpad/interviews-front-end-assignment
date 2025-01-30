@@ -1,0 +1,24 @@
+name: Check for console.logs
+
+on:
+  pull_request:
+    branches: [main] # Use your default branch name
+
+jobs:
+  check-console-logs:
+    name: Check for console statements
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for console.log
+        run: |
+          if grep -r --include=*.{js,jsx,ts,tsx} \
+              --exclude-dir=node_modules \
+              --exclude-dir=dist \
+              --exclude-dir=build \
+              'console.log' frontend/src; then
+            echo "❌ Found console.log statements! Please remove them before merging."
+            exit 1
+          fi
