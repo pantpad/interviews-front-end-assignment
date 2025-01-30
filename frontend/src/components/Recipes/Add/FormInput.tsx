@@ -1,8 +1,10 @@
 import { InputHTMLAttributes, useState } from 'react'
+import { FormValidationSchema } from '../../../context/form-context'
+import { z } from 'zod'
 
 type InputProps = {
     errorMessage: string
-    name: string
+    name: keyof typeof FormValidationSchema.shape
 } & InputHTMLAttributes<HTMLInputElement>
 
 export function FormInput({
@@ -13,6 +15,7 @@ export function FormInput({
     ...input
 }: InputProps) {
     const [error, setError] = useState(false)
+    const [zodError, setZodError] = useState('')
 
     return (
         <div>
@@ -21,13 +24,26 @@ export function FormInput({
                 value={value}
                 name={name}
                 className="peer w-full rounded-md border border-gray-300 p-2"
-                onBlur={() => setError(true)}
+                onBlur={() => {
+                    setError(true)
+                    try {
+                        FormValidationSchema.shape[name].parse(value)
+                        setZodError('')
+                    } catch (error) {
+                        if (error instanceof z.ZodError) {
+                            setZodError(error.issues[0].message)
+                        }
+                    }
+                }}
                 {...input}
             />
-            <div className="my-2 h-4 peer-invalid:[&>span]:block">
+            <div className="my-2 h-4 [&>span]:block">
                 <span className="hidden text-red-500">
-                    {error && value && errorMessage}
+                    {error && value && !errorMessage && zodError}
                 </span>
+                {errorMessage && (
+                    <span className="hidden text-red-500">{errorMessage}</span>
+                )}
             </div>
         </div>
     )

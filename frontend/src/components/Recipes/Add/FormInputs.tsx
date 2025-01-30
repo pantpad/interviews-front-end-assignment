@@ -5,9 +5,11 @@ import { useFormContext, handleChange } from '../../../context/form-context'
 
 export default function FormInputs() {
     const {
-        state: { values },
+        state: { values, errors },
         dispatch,
     } = useFormContext()
+
+    console.log('errors', errors)
 
     return (
         <div>
@@ -19,92 +21,88 @@ export default function FormInputs() {
                     type="text"
                     value={values['name'] ?? ''}
                     placeholder="Insert recipe name"
-                    required
-                    pattern="^[a-zA-Z0-9\s]+$"
-                    errorMessage="Name must contain only letters, numbers and spaces"
-                    onChange={(e) =>
+                    errorMessage={errors.name}
+                    onChange={(e) => {
                         handleChange(dispatch, 'name', e.target.value)
-                    }
+                    }}
                 />
             </div>
             <div className="[&>label]:block">
-                <label htmlFor="name">Ingredients</label>
+                <label htmlFor="ingredients">Ingredients</label>
                 <FormInput
                     id="ingredients"
                     name="ingredients"
                     type="text"
                     value={values['ingredients']}
                     placeholder="Insert ingredients"
-                    required
-                    pattern="^[a-zA-Z0-9\s]+$"
-                    errorMessage="Ingredients must contain only letters, numbers and spaces"
+                    errorMessage={errors.ingredients}
                     onChange={(e) =>
                         handleChange(dispatch, 'ingredients', e.target.value)
                     }
                 />
             </div>
             <div className="[&>label]:block">
-                <label htmlFor="name">Instructions</label>
+                <label htmlFor="instructions">Instructions</label>
                 <FormInput
                     id="instructions"
                     name="instructions"
                     type="text"
                     value={values['instructions']}
                     placeholder="Insert instructions"
-                    required
-                    pattern="^[a-zA-Z0-9\s]+$"
-                    errorMessage="instructions must contain only letters, numbers and spaces"
+                    errorMessage={errors.instructions}
                     onChange={(e) =>
                         handleChange(dispatch, 'instructions', e.target.value)
                     }
                 />
             </div>
             <div className="[&>label]:block">
-                <label htmlFor="name">Cuisines</label>
+                <label htmlFor="cuisineId">Cuisines</label>
                 <FormSelect
                     id="cuisineId"
                     value={values['cuisineId']}
                     name="cuisineId"
                     options="cuisines"
+                    errorMessage={errors.cuisineId}
                     onChange={(e) =>
                         handleChange(dispatch, 'cuisineId', e.target.value)
                     }
                 />
             </div>
             <div className="[&>label]:block">
-                <label htmlFor="name">Diets</label>
+                <label htmlFor="dietId">Diets</label>
                 <FormSelect
                     id="dietId"
                     value={values['dietId']}
                     name="dietId"
                     options="diets"
+                    errorMessage={errors.dietId}
                     onChange={(e) =>
                         handleChange(dispatch, 'dietId', e.target.value)
                     }
                 />
             </div>
             <div className="[&>label]:block">
-                <label htmlFor="name">Difficulties</label>
+                <label htmlFor="difficultyId">Difficulties</label>
                 <FormSelect
                     id="difficultyId"
                     value={values['difficultyId']}
                     name="difficultyId"
                     options="difficulties"
+                    errorMessage={errors.difficultyId}
                     onChange={(e) =>
                         handleChange(dispatch, 'difficultyId', e.target.value)
                     }
                 />
             </div>
             <div className="[&>label]:block">
-                <label htmlFor="name">Image</label>
+                <label htmlFor="image">Image</label>
                 <FormInput
                     id="image"
                     name="image"
                     type="file"
                     placeholder="Insert Image"
-                    required
                     accept="image/png, image/jpeg, image/jpg"
-                    errorMessage="An image is required to add a recipe"
+                    errorMessage={errors.image}
                     onChange={(e) => {
                         const file = e.target.files?.[0] || null
                         if (!file) {

@@ -4,7 +4,10 @@ import { z } from 'zod'
 import useSubmitRecipe from '../hooks/useSubmitRecipe'
 
 export const FormValidationSchema = z.object({
-    name: z.string().min(2, 'Name must be at least 2 characters'),
+    name: z
+        .string()
+        .min(2, 'Name must be at least 2 characters')
+        .regex(/^[a-zA-Z0-9\s]*$/, 'Only letters and numbers are allowed'),
     ingredients: z.string().min(1, 'Ingredients cannot be empty'),
     instructions: z
         .string()
@@ -43,11 +46,18 @@ const initialFormValues: FormValues = {
 
 type FormState = {
     values: FormValues
+    errors: Record<keyof FormValues, string>
 }
 
 type Action =
     | { type: 'reset' }
     | { type: 'change'; name: keyof FormValues; value: string | number | File }
+    | { type: 'setErrors'; errors: Partial<Record<keyof FormValues, string>> }
+
+const initialFormState: FormState = {
+    values: initialFormValues,
+    errors: {} as Record<keyof FormValues, string>,
+}
 
 type FormContextType = {
     state: FormState
@@ -60,16 +70,20 @@ const FormContext = createContext<FormContextType | null>(null)
 function formReducer(state: FormState, action: Action): FormState {
     switch (action.type) {
         case 'reset': {
-            return {
-                values: initialFormValues,
-            }
+            return initialFormState
         }
         case 'change': {
             return {
                 ...state,
                 values: { ...state.values, [action.name]: action.value },
+                errors: { ...state.errors, [action.name]: '' },
             }
         }
+        case 'setErrors':
+            return {
+                ...state,
+                errors: { ...state.errors, ...action.errors },
+            }
         default: {
             return state
         }
@@ -77,9 +91,7 @@ function formReducer(state: FormState, action: Action): FormState {
 }
 
 export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
-    const [state, dispatch] = useReducer(formReducer, {
-        values: initialFormValues,
-    })
+    const [state, dispatch] = useReducer(formReducer, initialFormState)
 
     const { mutate } = useSubmitRecipe()
 
@@ -87,6 +99,21 @@ export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
         mutate(state.values, {
             onSuccess: () => {
                 handleReset(dispatch)
+            },
+            onError: (error) => {
+                if (error instanceof z.ZodError) {
+                    const errors = error.issues.reduce(
+                        (acc, issue) => {
+                            const fieldName = issue.path[0] as keyof FormValues
+                            acc[fieldName] = issue.message
+                            return acc
+                        },
+                        {} as Record<keyof FormValues, string>
+                    )
+
+                    dispatch({ type: 'setErrors', errors })
+                }
+                console.log('error while submitting recipe', error)
             },
         })
     }
@@ -120,5 +147,10 @@ export const handleChange = (
     name: keyof FormValues,
     value: string | number | File
 ) => dispatch({ type: 'change', name, value })
+
+export const handleSetErrors = (
+    dispatch: React.Dispatch<Action>,
+    errors: Partial<Record<keyof FormValues, string>>
+) => dispatch({ type: 'setErrors', errors })
 
 export default FormContext
