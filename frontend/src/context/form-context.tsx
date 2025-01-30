@@ -1,13 +1,33 @@
 import { createContext, PropsWithChildren, useContext, useReducer } from 'react'
+import { z } from 'zod'
+
 import useSubmitRecipe from '../hooks/useSubmitRecipe'
+
+export const FormValidationSchema = z.object({
+    name: z.string().min(2, 'Name must be at least 2 characters'),
+    ingredients: z.string().min(1, 'Ingredients cannot be empty'),
+    instructions: z
+        .string()
+        .min(3, 'Instructions must be at least 3 characters'),
+    cuisineId: z.string().min(1, 'Cuisine is required'),
+    dietId: z.string().min(1, 'Diet is required'),
+    difficultyId: z.string().min(1, 'Difficulty is required'),
+    image: z
+        .instanceof(File, { message: 'Image is required' })
+        .refine((file) => file.size > 0, 'File cannot be empty')
+        .refine(
+            (file) => file.type.startsWith('image/'),
+            'Must be an image file'
+        ),
+})
 
 export type FormValues = {
     name: string | undefined
     ingredients: string | undefined
     instructions: string | undefined
-    cuisineId: number
-    dietId: number
-    difficultyId: number
+    cuisineId: string
+    dietId: string
+    difficultyId: string
     image: File | null
 }
 
@@ -15,9 +35,9 @@ const initialFormValues: FormValues = {
     name: '',
     ingredients: '',
     instructions: '',
-    cuisineId: 0,
-    dietId: 0,
-    difficultyId: 0,
+    cuisineId: '',
+    dietId: '',
+    difficultyId: '',
     image: null,
 }
 
