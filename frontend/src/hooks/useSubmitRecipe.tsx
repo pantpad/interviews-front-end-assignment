@@ -7,17 +7,16 @@ export default function useSubmitRecipe() {
 
     return useMutation({
         mutationFn: async (formValues: FormValues) => {
-            console.log('formValues', formValues)
             const validatedFormValues = FormValidationSchema.parse(formValues)
             const response = await submitRecipe(validatedFormValues)
             return response
         },
         onSuccess: () => {
-            console.log('Recipe added successfully')
+            console.info('Recipe added successfully')
             queryClient.invalidateQueries({ queryKey: ['recipes'] })
         },
         onError: (error) => {
-            console.log('Error adding recipe', error)
+            console.info('Error adding recipe', error)
         },
     })
 }

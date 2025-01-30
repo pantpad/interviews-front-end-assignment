@@ -49,7 +49,7 @@ export function useSubmitComment() {
             }
         },
         onError: (error, _, rollback) => {
-            console.log('Error adding comment', error)
+            console.info('Error adding comment', error)
             alert('Error adding comment')
             rollback?.()
         },

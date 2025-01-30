@@ -113,7 +113,6 @@ export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
                     dispatch({ type: 'setErrors', errors })
                 }
-                console.log('error while submitting recipe', error)
             },
         })
     }

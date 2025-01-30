@@ -9,8 +9,6 @@ export default function FormInputs() {
         dispatch,
     } = useFormContext()
 
-    console.log('errors', errors)
-
     return (
         <div>
             <div className="[&>label]:block">
