@@ -20,7 +20,7 @@ export const ResponseRecipeCommentSchema = z.object({
     recipeId: z.string(),
     comment: z.string(),
     rating: z.number().min(1).max(5),
-    date: z.date(),
+    date: z.string().transform((str) => new Date(str)),
 })
 export type ResponseRecipeComment = z.infer<typeof ResponseRecipeCommentSchema>
 

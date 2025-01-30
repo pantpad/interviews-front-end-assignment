@@ -6,7 +6,7 @@ export function StarsRating({ rating }: { rating: number }) {
                 if (index < rating) {
                     starPath = '/assets/star.svg'
                 }
-                return <img src={starPath} alt={'star'} />
+                return <img key={index} src={starPath} alt={'star'} />
             })}
         </div>
     )
