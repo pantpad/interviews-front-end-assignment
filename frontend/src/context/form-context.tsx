@@ -96,23 +96,30 @@ export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const { mutate } = useSubmitRecipe()
 
     async function handleSubmit() {
+        try {
+            FormValidationSchema.parse(state.values)
+        } catch (error) {
+            if (error instanceof z.ZodError) {
+                const errors = error.issues.reduce(
+                    (acc, issue) => {
+                        const fieldName = issue.path[0] as keyof FormValues
+                        acc[fieldName] = issue.message
+                        return acc
+                    },
+                    {} as Record<keyof FormValues, string>
+                )
+
+                dispatch({ type: 'setErrors', errors })
+            }
+            return
+        }
+
         mutate(state.values, {
             onSuccess: () => {
                 handleReset(dispatch)
             },
             onError: (error) => {
-                if (error instanceof z.ZodError) {
-                    const errors = error.issues.reduce(
-                        (acc, issue) => {
-                            const fieldName = issue.path[0] as keyof FormValues
-                            acc[fieldName] = issue.message
-                            return acc
-                        },
-                        {} as Record<keyof FormValues, string>
-                    )
-
-                    dispatch({ type: 'setErrors', errors })
-                }
+                console.info(error)
             },
         })
     }

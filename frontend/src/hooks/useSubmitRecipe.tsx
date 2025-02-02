@@ -1,15 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { submitRecipe } from '../api/recipe'
-import { FormValidationSchema, FormValues } from '../context/form-context'
+import { FormValues } from '../context/form-context'
 
 export default function useSubmitRecipe() {
     const queryClient = useQueryClient()
 
     return useMutation({
         mutationFn: async (formValues: FormValues) => {
-            const validatedFormValues = FormValidationSchema.parse(formValues)
-            const response = await submitRecipe(validatedFormValues)
-            return response
+            return await submitRecipe(formValues)
         },
         onSuccess: () => {
             console.info('Recipe added successfully')
