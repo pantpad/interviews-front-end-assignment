@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 export const endpoint = import.meta.env.VITE_API_ENDPOINT
 
-export const ResponseRecipeSchema = z.object({
+export const responseRecipeSchema = z.object({
     id: z.string(),
     name: z.string(),
     ingredients: z.array(z.string()),
@@ -13,22 +13,22 @@ export const ResponseRecipeSchema = z.object({
     difficultyId: z.string(),
     image: z.string(),
 })
-export type ResponseRecipe = z.infer<typeof ResponseRecipeSchema>
+export type ResponseRecipe = z.infer<typeof responseRecipeSchema>
 
-export const ResponseRecipeCommentSchema = z.object({
+export const responseRecipeCommentSchema = z.object({
     id: z.string(),
     recipeId: z.string(),
     comment: z.string(),
     rating: z.number().min(1).max(5),
     date: z.string().transform((str) => new Date(str)),
 })
-export type ResponseRecipeComment = z.infer<typeof ResponseRecipeCommentSchema>
+export type ResponseRecipeComment = z.infer<typeof responseRecipeCommentSchema>
 
-export const DetailsSchema = z.object({
+export const detailsSchema = z.object({
     id: z.string(),
     name: z.string(),
 })
-export type DetailsType = z.infer<typeof DetailsSchema>
+export type DetailsType = z.infer<typeof detailsSchema>
 
 export const LIMIT = 4 as const
 
@@ -41,7 +41,7 @@ export const getAllRecipes = async (queryParamsString?: string) => {
         throw new Error('Could not fetch recipe :(')
     }
 
-    return z.array(ResponseRecipeSchema).parse(await response.json())
+    return z.array(responseRecipeSchema).parse(await response.json())
 }
 
 export const getPaginatedRecipes = async (
@@ -58,7 +58,7 @@ export const getPaginatedRecipes = async (
         throw new Error('Could not fetch recipe :(')
     }
 
-    return z.array(ResponseRecipeSchema).parse(await response.json())
+    return z.array(responseRecipeSchema).parse(await response.json())
 }
 
 export const getRecipe = async (recipeId: string) => {
@@ -68,7 +68,7 @@ export const getRecipe = async (recipeId: string) => {
         throw new Error('Could not fetch recipe :(')
     }
 
-    return ResponseRecipeSchema.parse(await response.json())
+    return responseRecipeSchema.parse(await response.json())
 }
 
 export const getComments = async (recipeId: string) => {
@@ -76,7 +76,7 @@ export const getComments = async (recipeId: string) => {
     if (!response.ok) {
         throw new Error('Could not fetch recipe comments')
     }
-    return z.array(ResponseRecipeCommentSchema).parse(await response.json())
+    return z.array(responseRecipeCommentSchema).parse(await response.json())
 }
 
 export const getCuisines = async () => {
@@ -86,7 +86,7 @@ export const getCuisines = async () => {
         throw new Error('Could not fetch cuisines')
     }
 
-    return z.array(DetailsSchema).parse(await response.json())
+    return z.array(detailsSchema).parse(await response.json())
 }
 
 export const getDifficulties = async () => {
@@ -95,7 +95,7 @@ export const getDifficulties = async () => {
         throw new Error('Could not fetch difficulties')
     }
 
-    return z.array(DetailsSchema).parse(await response.json())
+    return z.array(detailsSchema).parse(await response.json())
 }
 
 export const getDiets = async () => {
@@ -104,7 +104,7 @@ export const getDiets = async () => {
         throw new Error('Could not fetch diets')
     }
 
-    return z.array(DetailsSchema).parse(await response.json())
+    return z.array(detailsSchema).parse(await response.json())
 }
 
 export const submitRecipe = async (formData: FormValues) => {
@@ -167,5 +167,5 @@ export const submitComment = async ({
         throw new Error('Could not add comment')
     }
 
-    return ResponseRecipeCommentSchema.parse(await response.json())
+    return responseRecipeCommentSchema.parse(await response.json())
 }

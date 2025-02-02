@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import useSubmitRecipe from '../hooks/useSubmitRecipe'
 
-export const FormValidationSchema = z.object({
+export const formValidationSchema = z.object({
     name: z
         .string()
         .min(2, 'Name must be at least 2 characters')
@@ -28,7 +28,7 @@ export const FormValidationSchema = z.object({
         ),
 })
 
-export type FormValues = z.infer<typeof FormValidationSchema>
+export type FormValues = z.infer<typeof formValidationSchema>
 
 const initialFormValues: FormValues = {
     name: '',
@@ -93,7 +93,7 @@ export const FormProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     async function handleSubmit() {
         try {
-            FormValidationSchema.parse(state.values)
+            formValidationSchema.parse(state.values)
         } catch (error) {
             if (error instanceof z.ZodError) {
                 const errors = error.issues.reduce(
