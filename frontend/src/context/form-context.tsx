@@ -42,7 +42,7 @@ const initialFormValues: FormValues = {
 
 type FormState = {
     values: FormValues
-    errors: Record<keyof FormValues, string>
+    errors: Partial<Record<keyof FormValues, string>>
 }
 
 type Action =
@@ -52,7 +52,7 @@ type Action =
 
 const initialFormState: FormState = {
     values: initialFormValues,
-    errors: {} as Record<keyof FormValues, string>,
+    errors: {},
 }
 
 type FormContextType = {
