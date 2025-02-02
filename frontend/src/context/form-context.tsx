@@ -17,22 +17,18 @@ export const FormValidationSchema = z.object({
     difficultyId: z.string().min(1, 'Difficulty is required'),
     image: z
         .instanceof(File, { message: 'Image is required' })
-        .refine((file) => file.size > 0, 'File cannot be empty')
+        .nullable()
         .refine(
-            (file) => file.type.startsWith('image/'),
+            (file) => (file ? file.size > 0 : false),
+            'File cannot be empty'
+        )
+        .refine(
+            (file) => (file ? file.type.startsWith('image/') : false),
             'Must be an image file'
         ),
 })
 
-export type FormValues = {
-    name: string | undefined
-    ingredients: string | undefined
-    instructions: string | undefined
-    cuisineId: string
-    dietId: string
-    difficultyId: string
-    image: File | null
-}
+export type FormValues = z.infer<typeof FormValidationSchema>
 
 const initialFormValues: FormValues = {
     name: '',
