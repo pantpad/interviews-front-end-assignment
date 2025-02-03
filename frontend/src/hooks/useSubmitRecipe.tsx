@@ -1,17 +1,20 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { submitRecipe } from '../api/recipe'
+import { FormValues } from '../context/form-context'
 
 export default function useSubmitRecipe() {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: submitRecipe,
+        mutationFn: async (formValues: FormValues) => {
+            return await submitRecipe(formValues)
+        },
         onSuccess: () => {
-            console.log('Recipe added successfully')
+            console.info('Recipe added successfully')
             queryClient.invalidateQueries({ queryKey: ['recipes'] })
         },
         onError: (error) => {
-            console.log('Error adding recipe', error)
+            console.info('Error adding recipe', error)
         },
     })
 }

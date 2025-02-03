@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { RecipeCommentType, submitComment } from '../api/recipe'
+import { ResponseRecipeComment, submitComment } from '../api/recipe'
 
 export const mutationKey = ['submitComment']
 
@@ -33,7 +33,7 @@ export function useSubmitComment() {
             // actual optimistic update
             queryClient.setQueryData(
                 ['recipeComments', { recipeId }],
-                (recipeComments: RecipeCommentType[]) => {
+                (recipeComments: ResponseRecipeComment[]) => {
                     return recipeComments
                         ? [...recipeComments, newComment]
                         : [newComment]
@@ -49,7 +49,7 @@ export function useSubmitComment() {
             }
         },
         onError: (error, _, rollback) => {
-            console.log('Error adding comment', error)
+            console.info('Error adding comment', error)
             alert('Error adding comment')
             rollback?.()
         },
